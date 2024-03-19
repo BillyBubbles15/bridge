@@ -177,7 +177,7 @@ const [showexcelfile, setshowexcelfile] = useState(false);
 
         {showexcelfile && (
           <div className='absolute bg-gray-100 w-full text-center z-50'>
-            <button className='flex justify-start p-6 underline' onClick={back}><IoArrowBackCircleSharp size={28}/>Back</button>
+            <button className='flex justify-start pl-6 mt-4 underline' onClick={back}><IoArrowBackCircleSharp size={28}/>Back</button>
             <div className="flex justify-center mb-6">
               <img src={logo} alt="" />
             </div><br />
@@ -190,7 +190,7 @@ const [showexcelfile, setshowexcelfile] = useState(false);
             <h1 className='text-3xl font-semibold py-6'>Select File</h1><br />
             <p className='text-gray-800'>Choose your excel file with reference to our sample excel file and upload it. <br />Make sure that the format matches that of our provided sample file.</p>
             <br />
-            <div className="flex py-6 w-full justify-center">
+            <div className="flex pt-6 pb-10 w-full justify-center">
               <input id='fileinput' className='hidden' type="file" accept='.xlsx , .xls , .csv' onChange={handleFileUpload} />
               <label htmlFor="fileinput" className="cursor-pointer bg-blue-600 text-white p-2 px-8 rounded-sm hover:bg-blue-900" >{selectedFile ? `${selectedFile.file.name}` : 'Choose File'}</label>
               {loading ? (

@@ -4,7 +4,7 @@ import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Login from './components/Pages/Login';
+import Masterlogin from './components/Pages/Masterlogin';
 import reportWebVitals from './reportWebVitals';
 import ChangePassword from './components/Pages/ChangePassword';
 import Masterhome from './components/Pages/Masterhome';
@@ -28,9 +28,9 @@ ReactDOM.render(
       <Router>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/masterlogin" element={<Masterlogin />} />
           <Route path="/forgotpassword" element={<Forgotpw />} />
           <Route path="/newuser/resetpassword" element={<ResetPassword />} />
-          <Route path="/newuser/login" element={<Login />} />
           <Route path="/changepassword" element={<ChangePassword />} />
           <Route path="/home" element={<Home />} />
           <Route path="/home/addexcel" element={<Addexcelfile />} />
