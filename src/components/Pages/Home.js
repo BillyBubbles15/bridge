@@ -17,7 +17,7 @@ const Home = () => {
   const [showBridge, setshowBridge] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const superadminId = useState('');
+  const [superadminId, setSuperadminId]= useState('');
   const { enqueueSnackbar } = useSnackbar();
 
   const showAddBridge = (e) => {
@@ -44,16 +44,15 @@ const [showexcelfile, setshowexcelfile] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const superadminId = localStorage.getItem('superadminId');
+        const superadminIdFromLocalStorage = localStorage.getItem('superadminId');
+        setSuperadminId(superadminIdFromLocalStorage);
         // if (!superadminId) {
         //   enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error'});
         //   navigate('/');
         //   return;
         // }
         
-        const response = await axios.get(`http://localhost:8080/files/bridges?superadminId=${superadminId}`, {
-          superadminId:superadminId,
-        });
+        const response = await axios.get(`http://localhost:8080/files/bridges?superadminId=${superadminIdFromLocalStorage}`);
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data);
           setBackEndData(response.data);
