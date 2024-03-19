@@ -42,33 +42,24 @@ const [showexcelfile, setshowexcelfile] = useState(false);
   const superadminId = localStorage.getItem('superadminId')
 
 
-  const [superdata, setsuperdata] = useState({
-    country: '',
-    state: '',
-    coordinates: '',
-    division: '',
-    bridgeName: '',
-    noofgirders: '',
-    nobridgespan:'',
-});
+  const [superdata, setsuperdata] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // if (!superadminId) {
-        //   enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error'});
-        //   navigate('/');
-        //   return;
-        // }
+        if (!superadminId) {
+          enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error'});
+          navigate('/');
+          return;
+        }
         
         const response = await axios.get(`http://localhost:8080/files/bridges?superadminId=${superadminId}`);
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data);
-          const { country, state, coordinates, division, bridgeName, 
-            noofgirders, nobridgespan} = response.data;
+          setsuperdata(response.data);
+          const { country, state, coordinates, division, bridgeName, noofgirders, nobridgespan} = response.data;
 
-        setsuperdata({country, state, coordinates, division, bridgeName, 
-            noofgirders, nobridgespan});
+        setsuperdata({country, state, coordinates, division, bridgeName, noofgirders, nobridgespan});
         } else {
           console.error('Failed to fetch data:', response.statusText);
         }
