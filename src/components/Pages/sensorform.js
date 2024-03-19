@@ -145,11 +145,11 @@ const SensorForm = () => {
     if (!sensortype || !numSensors) {
       enqueueSnackbar('Please fill all the fields!', { variant: 'error'});
       setshowAddSensor(false);
-    } 
-    else if(!girderno || !spanno){
-      enqueueSnackbar('Please fill all the sensor locations correctly!', { variant: 'error'});
-      setshowAddSensor(false);
     }
+    else if(girderno === '0' || spanno === '0'){
+      enqueueSnackbar('Please enter all the Sensor Locations correctly!', { variant: 'error'});
+      setshowAddSensor(false);
+    } 
     else {
       try {
         setLoading(true);
@@ -207,7 +207,7 @@ const handleAddSensor = async (e) => {
     enqueueSnackbar('Please fill all the fields!', { variant: 'error'});
     setshowAddSensor(false);
   }
-  else if(!girderno || !spanno){
+  else if(girderno === '0' || spanno === '0'){
     enqueueSnackbar('Please enter all the Sensor Locations correctly!', { variant: 'error'});
     setshowAddSensor(false);
   } 
@@ -250,7 +250,7 @@ const handleAddSensor = async (e) => {
 
   const handleSubmit2 = (e) => {
     e.preventDefault();
-    if (!girderno || !spanno) {
+    if (girderno === '0' || spanno === '0') {
     enqueueSnackbar('Please enter all the Sensor Locations correctly!', { variant: 'error'});
     }
     else{
