@@ -95,7 +95,7 @@ const Masterhome = () => {
 
     const submitForm = async (event) => {
       if(phonenumber.length !== 10){
-        alert('Mobile Number should be exact 10 digits!')
+        enqueueSnackbar('Mobile Number should be exact 10 digits!', { variant: 'error'});
         setphonenumber(''); 
       }
       try {
@@ -116,7 +116,7 @@ const Masterhome = () => {
     
         const response = await axios.post('http://localhost:9090/masterhome/register', formData);
         console.log('Form submitted successfully', response.data);
-        alert('Form submitted successfully');
+        enqueueSnackbar('Form submitted successfully', { variant: 'success'});
         setName('');
         setDesignation('');
         setCompanyName('');
@@ -164,6 +164,7 @@ const Masterhome = () => {
     
             if (response.status === 200) {
                 console.log(response.data);
+                enqueueSnackbar('Logged out successfully', { variant: 'success'});
                 localStorage.removeItem('authToken');
                 navigate('/');
             } else {

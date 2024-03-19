@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import './tailwind.css';
 
 import { FaUser, FaLock } from "react-icons/fa";
+import { BsAwardFill } from "react-icons/bs";
 import loadingIcon from '../Assets/loading.gif';
 
 import logo from '../Assets/logo.png';
@@ -16,18 +17,22 @@ const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const [selectedRole, setSelectedRole] = useState(''); 
 
   const handleLogin = async () => {
     if (email === '') {
       enqueueSnackbar('Please enter your email!', { variant: 'error'});
     } else if (password === '') {
       enqueueSnackbar('Please enter your password!', { variant: 'error'});
+    }else if (selectedRole === null) {
+      enqueueSnackbar ('Please select a role',{variant:'error'});
     } else {
       try {
         setLoading(true);
         const response = await axios.post('http://localhost:9090/login', {
           email: email,
           password: password,
+          selectedRole: selectedRole,
         });
         localStorage.setItem('email', email);
   
@@ -50,7 +55,12 @@ const Login = () => {
         }
       } catch (error) {
         console.error('Error during login:', error);
-        enqueueSnackbar('User not found!', { variant: 'error'});  
+        if (error.response && error.response.status === 403 && error.response.data === 'Invalid role selected') {
+          enqueueSnackbar('Invalid role selected',{variant:'error'});
+        } else {
+          enqueueSnackbar('Incorrect login credentials!',{variant:'error'});
+          enqueueSnackbar('User not found!', { variant: 'error'});  
+        }
         setLoading(false);
       }
     }
@@ -70,21 +80,31 @@ const Login = () => {
           <img className='w-32 p-6' src={logo} alt="" />
         </div>
         <div className="w-1/2 text-center justify-center">
-          <div className="flex justify-center pt-8 pb-12">
+          <div className="flex justify-center pt-8 pb-16">
             <img className='w-40' src={logo2} alt="" />
           </div>
           <div className="text">
-              <h1 className='text-2xl pb-24 font-semibold text-indigo-900'>Login</h1>
+              <h1 className='text-3xl pb-24 font-semibold text-indigo-900'>Login</h1>
             </div>
           <div className="">
             <div className="pb-6 flex justify-center">
-              <FaUser style={{ alignItems: 'center', marginTop: '2%' }} size={22} />
+              <FaUser style={{ alignItems: 'center', marginTop: '1%' }} size={28}/>
               <input className="border border-gray-400 bg-gray-100 p-3 w-1/3 ml-3 pl-3 mr-2 rounded" type="email" placeholder="Enter Email" value={email} onChange={(e) => setemail(e.target.value)}/>
             </div>
-            <div className="pb-2 flex justify-center">
-            <FaLock style={{ alignItems: 'center', marginTop: '2%' }} size={22} />
+            <div className="pb-6 flex justify-center">
+            <FaLock style={{ alignItems: 'center', marginTop: '1%' }} size={28}/>
             <input className="border bg-gray-100 border-gray-400 p-3 w-1/3 ml-3 pl-3 mr-2 rounded" type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown}/>
         </div>
+      </div>
+          <div className="pb-2 flex justify-center">
+            <BsAwardFill style={{ alignItems: 'center', marginTop: '1%' }} size={30}/>
+            <select className="border bg-gray-100 border-gray-400 p-3 w-1/3 ml-3 pl-3 mr-2 rounded" onChange={(e) => setSelectedRole(e.target.value)}>
+              <option value="" disabled selected>Select Role</option>
+              <option value="SUPERADMIN">Superadmin</option>
+              <option value="bridge-owner">Bridge Owner</option>
+              <option value="bridge-admin">Bridge Admin</option>
+              <option value="bridge-manager">Bridge Manager</option>
+            </select>
           </div>
           <div className="pt-16">
             <div className="">

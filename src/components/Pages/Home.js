@@ -17,6 +17,7 @@ const Home = () => {
   const [showBridge, setshowBridge] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const superadminId = useState('');
   const { enqueueSnackbar } = useSnackbar();
 
   const showAddBridge = (e) => {
@@ -43,39 +44,28 @@ const [showexcelfile, setshowexcelfile] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const email = localStorage.getItem('email');
-        // if (!email) {
-        //   enqueueSnackbar('Please Login to Navigate!', { variant: 'error'});
+        const superadminId = localStorage.getItem('superadminId');
+        // if (!superadminId) {
+        //   enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error'});
         //   navigate('/');
         //   return;
         // }
         
-        // Fetch superadmin details based on email
-        const superadminResponse = await axios.get(`http://localhost:9090/bridge/showbridge?email=${email}`);
-        
-        if (superadminResponse.status >= 200 && superadminResponse.status < 300) {
-          const superadminId = superadminResponse.data.id;
-
-          // Fetch bridge details based on superadmin ID
-          const bridgeResponse = await axios.get(`http://localhost:9090/bridge/superbridges/?superadminId=${superadminId}`);
-          
-          if (bridgeResponse.status >= 200 && bridgeResponse.status < 300) {
-            console.log(bridgeResponse.data);
-            setBackEndData(bridgeResponse.data);
-          } else {
-            console.error('Failed to fetch bridge data:', bridgeResponse.statusText);
-          }
+        const response = await axios.get(`http://localhost:8080/files/bridges?superadminId=${superadminId}`, {
+          superadminId:superadminId,
+        });
+        if (response.status >= 200 && response.status < 300) {
+          console.log(response.data);
+          setBackEndData(response.data);
         } else {
-          console.error('Failed to fetch superadmin data:', superadminResponse.statusText);
+          console.error('Failed to fetch data:', response.statusText);
         }
       } catch (error) {
         console.error('Error:', error);
       }
     };
     fetchData();
-  }, [navigate, enqueueSnackbar]);  
-  
-  
+  }, [superadminId, navigate, enqueueSnackbar]);
 
   const RedirectDashboard = (bridgeName) => {
     localStorage.setItem('bridgeName', bridgeName);
@@ -84,6 +74,7 @@ const [showexcelfile, setshowexcelfile] = useState(false);
 
   const handleRowClick = (bridgeName) => {
     RedirectDashboard(bridgeName);
+    enqueueSnackbar('Welcome to Dashboard!', { variant: 'success'});
   };
 
   // Filter the data based on searchKeyword

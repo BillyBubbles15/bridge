@@ -483,7 +483,6 @@ const BridgeForm = ({onSubmit }) => {
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-
   const submitForm = async (e) => {
     e.preventDefault();
     if(adminName ==='' || adminEmail === '' || adminPhone === ''){
