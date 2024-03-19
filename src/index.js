@@ -20,7 +20,11 @@ import Sensorformexcel from './components/Pages/Sensorformexcel';
 
 ReactDOM.render(
   <React.StrictMode>
-    <SnackbarProvider>
+    <SnackbarProvider 
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}>
       <Router>
         <Routes>
           <Route path="/" element={<App />} />
