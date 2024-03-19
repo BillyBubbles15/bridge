@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Masterlogin from './components/Pages/Masterlogin';
@@ -18,7 +18,7 @@ import Forgotpw from './components/Pages/Forgotpw';
 import Bridges from './components/Pages/Bridges';
 import Sensorformexcel from './components/Pages/Sensorformexcel';
 
-ReactDOM.render(
+createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <SnackbarProvider 
       anchorOrigin={{

@@ -166,7 +166,7 @@ const Masterhome = () => {
                 console.log(response.data);
                 enqueueSnackbar('Logged out successfully', { variant: 'success'});
                 localStorage.removeItem('authToken');
-                navigate('/');
+                navigate('/masterlogin');
             } else {
                 console.error('Failed to fetch data:', response.statusText);
             }

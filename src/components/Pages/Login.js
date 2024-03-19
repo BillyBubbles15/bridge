@@ -14,10 +14,12 @@ import logo2 from '../Assets/logo2.png';
 const Login = () => {
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
   const [selectedRole, setSelectedRole] = useState(''); 
+
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+  
 
   const handleLogin = async () => {
     if (email === '') {
@@ -41,10 +43,11 @@ const Login = () => {
           enqueueSnackbar('Logged in successfully!', { variant: 'success'});
           setLoading(false);
           
-          const { token, superadminId, dashboardUrl } = response.data;
+          const { token, superadminId, dashboardUrl } = response.data.id;
           
           localStorage.setItem('authToken', token);
           localStorage.setItem('superadminId', superadminId);
+          console.log(superadminId);
           localStorage.setItem('dashboardUrl', dashboardUrl);          
           navigate(dashboardUrl);
         } else {
