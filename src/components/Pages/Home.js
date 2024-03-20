@@ -40,26 +40,31 @@ const [showexcelfile, setshowexcelfile] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
 
   const superadminId = localStorage.getItem('superadminId')
-
+  console.log('superadminId:', superadminId);
 
   const [superdata, setsuperdata] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!superadminId) {
-          enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error'});
-          navigate('/');
-          return;
+        const email = localStorage.getItem('email');
+        if(!email){
+            navigate('/');
+            enqueueSnackbar('Please Login to Navigate!', { variant: 'error'});
+            return;
         }
-        
-        const response = await axios.get(`http://localhost:8080/files/bridges?superadminId=${superadminId}`);
+        else if (!superadminId) {
+          enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error' });
+          navigate('/');
+        }
+        const response = await axios.get(`http://localhost:9090/bridge/superbridges?superadminId=${superadminId}`);
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data);
-          setsuperdata(response.data);
-          const { country, state, coordinates, division, bridgeName, noofgirders, nobridgespan} = response.data;
-
-        setsuperdata({country, state, coordinates, division, bridgeName, noofgirders, nobridgespan});
+          if (Array.isArray(response.data)) {
+            setsuperdata(response.data);
+          } else {
+            setsuperdata([response.data]);
+          }
         } else {
           console.error('Failed to fetch data:', response.statusText);
         }
@@ -75,19 +80,20 @@ const [showexcelfile, setshowexcelfile] = useState(false);
     navigate('/home/dashboard');
   };
 
-  const handleRowClick = (bridgeName) => {
-    RedirectDashboard(bridgeName);
-    enqueueSnackbar('Welcome to Dashboard!', { variant: 'success'});
-  };
+  const filteredData = superdata.filter((bridge) =>
+  bridge.bridgeName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+  bridge.country.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+  bridge.state.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+  bridge.division.toLowerCase().includes(searchKeyword.toLowerCase())
+);
 
-  // Filter the data based on searchKeyword
-  const filteredData = superdata.filter(
-    (data) =>
-      data.bridge.bridgeName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      data.bridge.country.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      data.bridge.state.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      data.bridge.division.toLowerCase().includes(searchKeyword.toLowerCase())
-  );
+
+const handleRowClick = (bridge) => {
+  if (bridge.id && bridge.bridgeName) {
+    RedirectDashboard(bridge.bridgeName);
+    enqueueSnackbar('Welcome to Dashboard!', { variant: 'success' });
+  }
+};
 
   const [data, setData] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -107,6 +113,7 @@ const [showexcelfile, setshowexcelfile] = useState(false);
       };
   };
 
+  
 
   const postDataToServer = async() => {
       if(!selectedFile){
@@ -235,25 +242,27 @@ const [showexcelfile, setshowexcelfile] = useState(false);
               </tr>
             </thead>
             <tbody>
-              {filteredData.length > 0 ? (
-                filteredData.map((data, index) => (
-                  <tr key={index} onClick={() => handleRowClick(superdata.bridgeName)} className="hover:bg-gray-300 text-center cursor-pointer border border-gray-300" >
-                    <td className="border px-2 py-3">{data.bridge.id}</td>
-                    <td className="border px-16 py-3">{superdata.bridgeName}</td>
-                    <td className="border px-8 py-3">{superdata.country}</td>
-                    <td className="border px-10 py-3">{superdata.state}</td>
-                    <td className="border px-8 py-3">{superdata.division}</td>
-                    <td className="border px-8 py-3">{superdata.coordinates}</td>
-                    <td className="border px-2 py-3">{superdata.noofgirders}</td>
-                    <td className="border px-2 py-3">{superdata.nobridgespan}</td>
-                  </tr>
-                ))
-                ) : (
-                <tr>
-                  <td colSpan="8" className="py-3 text-center text-lg hover:bg-gray-200 cursor-pointer">No bridges found</td>
-                </tr>
-              )}
-            </tbody>
+  {filteredData.length > 0 ? (
+    filteredData.map((bridge, index) => (
+      <tr key={index} onClick={() => handleRowClick(bridge)} className="hover:bg-gray-300 text-center cursor-pointer border border-gray-300">
+        <td className="border px-2 py-3">{bridge.id}</td>
+        <td className="border px-16 py-3">{bridge.bridgeName}</td>
+        <td className="border px-8 py-3">{bridge.country}</td>
+        <td className="border px-10 py-3">{bridge.state}</td>
+        <td className="border px-8 py-3">{bridge.division}</td>
+        <td className="border px-8 py-3">{bridge.coordinates}</td>
+        <td className="border px-2 py-3">{bridge.noofgirders}</td>
+        <td className="border px-2 py-3">{bridge.nobridgespan}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="8" className="py-3 text-center text-lg hover:bg-gray-200 cursor-pointer">
+        No bridges found
+      </td>
+    </tr>
+  )}
+</tbody>
           </table>
         </div>
       </div>
