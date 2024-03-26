@@ -47,13 +47,13 @@ const [showexcelfile, setshowexcelfile] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const email = localStorage.getItem('email');
-        if(!email){
-            navigate('/');
-            enqueueSnackbar('Please Login to Navigate!', { variant: 'error'});
-            return;
-        }
-        else if (!superadminId) {
+        // const email = localStorage.getItem('email');
+        // if(!email){
+        //     navigate('/');
+        //     enqueueSnackbar('Please Login to Navigate!', { variant: 'error'});
+        //     return;
+        // }
+        if (!superadminId) {
           enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error' });
           navigate('/');
         }

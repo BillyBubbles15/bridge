@@ -18,7 +18,9 @@ import Forgotpw from './components/Pages/Forgotpw';
 import Bridges from './components/Pages/Bridges';
 import Sensorformexcel from './components/Pages/Sensorformexcel';
 
-createRoot(document.getElementById('root')).render(
+const root = createRoot(document.getElementById('root'));
+
+root.render(
   <React.StrictMode>
     <SnackbarProvider 
       anchorOrigin={{
@@ -43,8 +45,7 @@ createRoot(document.getElementById('root')).render(
         </Routes>
       </Router>
     </SnackbarProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 
 reportWebVitals();

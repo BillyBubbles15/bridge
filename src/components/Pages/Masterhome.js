@@ -6,7 +6,7 @@ import './tailwind.css';
 
 
 import { FaBridge } from "react-icons/fa6";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import {MdHome, MdSettings, MdPerson, MdSearch, MdNotifications, MdDashboard, MdLogout, MdEdit } from 'react-icons/md'
 import loadingIcon from '../Assets/loading.gif';
 
@@ -175,12 +175,40 @@ const Masterhome = () => {
         }
     };
 
-    const id = useState('');
-    const DelBridge = async() => {
+  const id = useState('');
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const[showdelbridge, setshowdelbridge] = useState('');
+
+  const DelBridge = (e) => {
+    e.preventDefault();
+    setshowdelbridge(!showdelbridge);
+  }
+  const Deldelbridge = (e) => {
+    setshowdelbridge(false);
+  };
+
+  const [uploadedCsv, setUploadedCsv] = useState(null);
+
+  const handleCsvUpload = (event, bridgeId) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const csvData = e.target.result;
+        // You can now process the CSV data as needed
+        console.log('Uploaded CSV data:', csvData);
+        // Here you can set the uploaded CSV data in state or perform any other action
+        setUploadedCsv(csvData);
+      };
+      reader.readAsText(file);
+    }
+  };
+
+    const DelBridge1 = async() => {
         const response = await axios.delete(`http://localhost:9090/bridge/deletebridge/${id}`)
         if (response.status >= 200 && response.status < 300) {
             console.log(response.data);
-            navigate('/home');
+            enqueueSnackbar('Bridge Deleted Successfully!', { variant: 'success'});
         } 
         else {
             console.error('Failed to fetch data:', response.statusText);
@@ -188,8 +216,7 @@ const Masterhome = () => {
     };
 
     const [bridges, setBridges] = useState([]);
-    const [selectedBridge, setSelectedBridge] = useState('');
-  
+
     useEffect(() => {
       const fetchBridges = async () => {
         try {
@@ -202,12 +229,13 @@ const Masterhome = () => {
       fetchBridges();
     }, []);
   
-    
-    const handleBridgeChange = (e) => {
-      setSelectedBridge(e.target.value);
-    };
+    const filteredData = bridges.filter((bridge) =>
+    bridge.bridgeName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+    bridge.country.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+    bridge.state.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+    bridge.division.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
   
-
   return (
     <>
       <div className="flex fixed z-10 w-full justify-center bg-gray-100 py-2 shadow-xl">
@@ -250,9 +278,9 @@ const Masterhome = () => {
       {showHome && (
         <>
           <form onSubmit={submitForm}>
-          <div className='w-11/12 ml-28 p-6 pt-24 bg-white'>
-            <h1 className='text-center font-semibold text-3xl pb-16'>Register Super Admin</h1>
-              <div className='w-full flex px-24'>
+          <div className='w-11/12 ml-28 p-6 pt-24'>
+            <h1 className='text-center font-semibold mb-4 text-3xl'>Register Super Admin</h1>
+              <div className='w-full flex px-24 py-12 shadow-xl bg-gray-100'>
                 <div className=' grid w-full px-8'>
                   <label htmlFor="name">Name:</label>
                   <input  className='border border-gray-500 p-2 mr-2 rounded mb-12' type="text" value={Name} onChange={(e) => setName(e.target.value)} name="name" required />
@@ -497,7 +525,7 @@ const Masterhome = () => {
                   <input type="text" className='border border-gray-500 p-2 mr-2 rounded' value={role} name="superadmin" readOnly/>
               </div>
             </div>
-            <div className='text-center py-12'>
+            <div className='text-center mt-6'>
             {loading ? (
                 <img id='Licon-masterform' className='absolute' src={loadingIcon} alt="Loading" />
               ) : (
@@ -512,16 +540,96 @@ const Masterhome = () => {
 
       {showBridgeDashboard && (
         <div className='w-11/12 ml-28 p-6 pt-24 bg-white'>
-              <div>
-              <select className='w-1/2 border border-gray-600 rounded-sm p-2' id="bridge" value={selectedBridge} onChange={handleBridgeChange}>
-                <option value="">Select a bridge</option>
-                {bridges.map((bridge) => (
-                  <option key={bridge.id} value={bridge.id}>{bridge.name}</option>
-                ))}
-                <button className='p-2 mx-5 rounded-sm text-white bg-black hover:bg-white hover:text-black border border-black' onClick={DelBridge}>Delete Bridge</button>
-              </select>
-              {selectedBridge && <p>You selected: {selectedBridge}</p>}
+          <div className='flex py-5 px-6 bg-gray-200 border border-gray-300 shadow-2xl'>
+            <div className="w-full justify-left">
+              <img src={logo2} alt="" />
             </div>
+            <div className='flex w-full justify-center'>
+            <h1 className='font-bold text-3xl'>LIST OF ALL BRIDGES</h1>
+            </div>
+            <div className="flex w-full justify-end items-center">
+              <MdSearch size={36} className='text-gray-600'/>
+              <input type="text" placeholder="Search" className="border bg-gray-200 w-56 border-gray-600 rounded-md p-2 mr-2 focus:outline-none" value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)}/>
+            </div>
+          </div>
+          <div className="mt-4 bg-gray-100 border border-gray-200 rounded-sm shadow-2xl">
+          <table className="table-auto w-full border-collapse border">
+            <thead>
+              <tr>
+                <th className="border bg-black text-lg text-white px-3 py-4 font-bold">#</th>
+                <th className="border bg-black text-lg text-white px-16 py-4 font-bold">Name</th>
+                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Superadmin</th>
+                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Admin(s)</th>
+                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Manager(s)</th>
+                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Owner(s)</th>
+                <th className="border bg-black text-lg text-white px-2 py-4 font-bold">Add Datasheet</th>
+                <th className="justify-center border bg-black text-lg text-white px-3 py-4 font-bold">Delete</th>
+              </tr>
+            </thead>
+            {showdelbridge&&(
+              <div>
+                <h1>Do you really want to delete this bridge?</h1>
+                <div>
+                  <button onClick={DelBridge1}>Yes</button>
+                  <button onClick={Deldelbridge}>No</button>
+                </div>
+              </div>
+            )}
+            <tbody>
+              {filteredData.length > 0 ? (
+                filteredData.map((bridge, index) => (
+                  <tr key={index} className="text-center border border-gray-300">
+                    <td className="border px-3 py-3">{bridge.id}</td>
+                    <td className="border px-16 py-3">{bridge.bridgeName}</td>
+                    <td className="border px-8 py-3">{bridge.superadminname}</td>
+                    <td className="border px-10 py-3">
+                      <select id="adminName" className="border text-gray-700 border-gray-300 p-1 w-full rounded">
+                        <option value={bridge.adminName}>{bridge.adminName}</option>
+                        {bridge.adminName2 ? <option value={bridge.adminName2}>{bridge.adminName2}</option> : <option value="">Admin 2</option>}
+                        {bridge.adminName3 ? <option value={bridge.adminName3}>{bridge.adminName3}</option> : <option value="">Admin 3</option>}
+                      </select>
+                    </td>
+                    <td className="border px-8 py-3">
+                      <select id="adminName" className="border text-gray-700 border-gray-300 p-1 w-full rounded">
+                        <option value={bridge.managerName}>{bridge.managerName}</option>
+                        {bridge.managerName2 ? <option value={bridge.managerName2}>{bridge.managerName2}</option>: <option value="">Manager 2</option>}
+                        {bridge.managerName3 ? <option value={bridge.managerName3}>{bridge.managerName3}</option>: <option value="">Manager 3</option>}
+                        {bridge.managerName4 ? <option value={bridge.managerName4}>{bridge.managerName4}</option>: <option value="">Manager 4</option>}
+                        {bridge.managerName5 ? <option value={bridge.managerName5}>{bridge.managerName5}</option>: <option value="">Manager 5</option>}
+                        {bridge.managerName6 ? <option value={bridge.managerName6}>{bridge.managerName6}</option>: <option value="">Manager 6</option>}
+                      </select>
+                    </td>
+                    <td className="border px-8 py-3">
+                      <select id="adminName" className="border text-gray-700 border-gray-300 p-1 w-full rounded" readOnly>
+                        <option value={bridge.ownerName}>{bridge.ownerName}</option>:
+                        {bridge.ownerName2 ? <option value={bridge.ownerName2}>{bridge.ownerName2}</option>: <option value="">Owner 2</option>}
+                        {bridge.ownerName3 ? <option value={bridge.ownerName3}>{bridge.ownerName3}</option>: <option value="">Owner 3</option>}
+                      </select>
+                    </td>
+                    <td className="border px-2 py-3 hover:bg-gray-200">
+                      <label htmlFor={`uploadCsv_${bridge.id}`} className="cursor-pointer">Upload CSV
+                      <input type="file" id={`uploadCsv_${bridge.id}`} className="hidden" onChange={(e) => handleCsvUpload(e, bridge.id)} accept=".csv"/>
+                      </label>
+                    </td>
+                    <td className="border px-3 py-3 cursor-pointer"><button onClick={DelBridge}><FaTrash size={20}/></button></td>
+                  </tr>
+                ))
+                ) : (
+                <tr>
+                  <td colSpan="8" className="py-3 text-center text-lg">
+                    No bridges found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        </div>
+      )}
+      {uploadedCsv && (
+        <div className='hidden'>
+          <h2>Uploaded CSV Data:</h2>
+          <pre>{uploadedCsv}</pre>
         </div>
       )}
 

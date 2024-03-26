@@ -15,7 +15,7 @@ const Login = () => {
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(''); 
+  const [selectedRole, setSelectedRole] = useState('Select Role'); 
 
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -26,7 +26,7 @@ const Login = () => {
       enqueueSnackbar('Please enter your email!', { variant: 'error'});
     } else if (password === '') {
       enqueueSnackbar('Please enter your password!', { variant: 'error'});
-    }else if (selectedRole === null) {
+    }else if (selectedRole === 'Select Role') {
       enqueueSnackbar ('Please select a role',{variant:'error'});
     } else {
       try {
@@ -102,7 +102,7 @@ const Login = () => {
           <div className="pb-2 flex justify-center">
             <BsAwardFill style={{ alignItems: 'center', marginTop: '1%' }} size={30}/>
             <select className="border bg-gray-100 border-gray-400 p-3 w-1/3 ml-3 pl-3 mr-2 rounded" onChange={(e) => setSelectedRole(e.target.value)}>
-              <option value="" disabled selected>Select Role</option>
+              <option value="Select Role" selected disabled>Select Role</option>
               <option value="SUPERADMIN">Superadmin</option>
               <option value="bridge-owner">Bridge Owner</option>
               <option value="bridge-admin">Bridge Admin</option>

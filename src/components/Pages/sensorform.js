@@ -312,6 +312,8 @@ const handleAddSensor = async (e) => {
               </div>
             </>
           )}
+
+          
         </div>
           )}
         {!showAddSensor && (
