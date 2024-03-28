@@ -28,12 +28,13 @@ const BridgeForm = ({onSubmit }) => {
   const [owner2countryCode , setCountryCode11] = useState('code');
   const [owner3countryCode , setCountryCode12] = useState('code');
   const [state, setState] = useState('');
+  const [city, setCity] = useState('');
   const [coordinates, setCoordinates] =useState('');
   const [division, setDivision] = useState('');
   const [bridgeName, setBridgeName] = useState('');
   const [location, setlocation] = useState('');
-  const [nobridgespan, setnobridgespan] = useState('1');
-  const [noofgirders, setnoofgirders] = useState('1');
+  const [nobridgespan, setnobridgespan] = useState('');
+  const [noofgirders, setnoofgirders] = useState('');
 
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -234,7 +235,7 @@ const BridgeForm = ({onSubmit }) => {
 
   const UserForm = async(e) => {
     e.preventDefault();
-    if(!country || !state || !nobridgespan || !noofgirders || !coordinates || !division || !location || !bridgeName){
+    if(!country || !state || !city || !coordinates || !division || !location || !bridgeName){
       enqueueSnackbar('Please fill all the fields!', { variant: 'error'});
     }
     else{
@@ -487,6 +488,7 @@ const BridgeForm = ({onSubmit }) => {
     setBridgeName('');
     setlocation('');
     setSearchTerm('');
+    setCity('');
   };
 
   const submitForm = async (e) => {
@@ -1024,6 +1026,7 @@ const BridgeForm = ({onSubmit }) => {
           const response = await axios.post('http://localhost:9090/bridge/register', {
             country:country,
             state:state,
+            city: city,
             nobridgespan:nobridgespan,
             noofgirders:noofgirders,
             division:division,
@@ -1094,6 +1097,7 @@ const BridgeForm = ({onSubmit }) => {
           localStorage.setItem('bid',bridgeId);
           localStorage.setItem('country', country);
           localStorage.setItem('state', state);
+          localStorage.setItem('city', city);
           localStorage.setItem('noofgirders', noofgirders);
           localStorage.setItem('nobridgespan', nobridgespan);
           localStorage.setItem('division', division);
@@ -1203,7 +1207,7 @@ const BridgeForm = ({onSubmit }) => {
     <div className="flex w-full">
         {showUserForm && ( 
         <div id='userform' className='text-left w-full'>
-          <button type="submit" onClick={PrevFrom} className="inline-flex underline mt-4 p-2 hover:text-blue-800"><IoArrowBackCircleSharp size={32}/>Back</button>
+          <button type="submit" onClick={PrevFrom} className="inline-flex underline mt-4 p-2 hover:text-blue-700"><IoArrowBackCircleSharp size={32}/>Back</button>
         <div className='text-center justify-center flex'>
           <img className='' src={logo} alt="" />
           {showBackendError && (
@@ -1850,7 +1854,7 @@ const BridgeForm = ({onSubmit }) => {
 
     {showBridgeForm && ( 
       <div className="w-full px-2 bg-white rounded-xl">
-            <button className='flex underline mt-4 hover:text-blue-800' onClick={backHome}><IoArrowBackCircleSharp size={32}/>Home</button>
+            <button className='flex underline mt-4 hover:text-blue-700' onClick={backHome}><IoArrowBackCircleSharp size={32}/>Home</button>
             <div className='w-full flex text-center justify-center items-center'>
             <img className='mb-8' src={logo} alt="" />
             </div>
@@ -1869,14 +1873,12 @@ const BridgeForm = ({onSubmit }) => {
             </select>
           </div>
           <div className="mb-6">
-              <label htmlFor="coordinates" className="block text-gray-700">Bridge Coordinates:</label>
-              <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={coordinates} onChange={(e) => setCoordinates(e.target.value)} className="border border-gray-300 p-2 w-full rounded"/>
+              <label htmlFor="division" className="block text-gray-700">Division:</label>
+              <input type="text" id="division" placeholder='Enter Division' name="division" value={division} onChange={(e) => setDivision(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
             </div>
           <div className="mb-6">
-            <label htmlFor="nobridgespan" className="block text-gray-700">Number of Bridge Spans:</label>
-            <select id="nobridgespan" name="nobridgespan" onChange={(e) => setnobridgespan(e.target.value)} className="border border-gray-300 p-2 w-full rounded">
-              {[...Array(50).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
-            </select>
+            <label htmlFor='bridgeName' className="block text-gray-700">Bridge Name:</label>
+            <input type="text" id="name" placeholder='Enter Name' name="name" value={bridgeName} onChange={(e) => setBridgeName(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
           </div>
         </div>
             <div className='w-full mx-5'>
@@ -1890,25 +1892,31 @@ const BridgeForm = ({onSubmit }) => {
             </select>
           </div>
           <div className="mb-6">
-            <label htmlFor='bridgeName' className="block text-gray-700">Bridge Location:</label>
-            <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
+            <label htmlFor="coordinates" className="block text-gray-700">Bridge Coordinates:</label>
+            <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={coordinates} onChange={(e) => setCoordinates(e.target.value)} className="border border-gray-300 p-2 w-full rounded"/>
           </div>
           <div className="mb-6">
-            <label htmlFor="noofgirders" className="block text-gray-700">Number of Girders:</label>
-            <select id="noofgirders" name="noofgirders" onChange={(e) => setnoofgirders(e.target.value)} className="border border-gray-300 p-2 w-full rounded">
-              {[...Array(20).keys()].map((girder) => (<option key={girder + 1} value={girder + 1}>{girder + 1}</option>))}
+            <label htmlFor="nobridgespan" className="block text-gray-700">Total Number of Spans:</label>
+            <select id="nobridgespan" name="nobridgespan" onChange={(e) => setnobridgespan(e.target.value)} className="border border-gray-300 p-2 w-full rounded">
+              {[...Array(50).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
             </select>
           </div>
         </div>
         <div className='w-full mx-5'>
             <div className="mb-6">
-              <label htmlFor="division" className="block text-gray-700">Division:</label>
-              <input type="text" id="division" placeholder='Enter Division' name="division" value={division} onChange={(e) => setDivision(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
+              <label htmlFor="division" className="block text-gray-700">City:</label>
+              <input type="text" id="division" placeholder='Enter City' name="division" value={city} onChange={(e) => setCity(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
             </div>
             <div className="mb-6">
-              <label htmlFor='bridgeName' className="block text-gray-700">Bridge Name:</label>
-              <input type="text" id="name" placeholder='Enter Name' name="name" value={bridgeName} onChange={(e) => setBridgeName(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
+              <label htmlFor='bridgeName' className="block text-gray-700">Bridge Location:</label>
+              <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
             </div>
+            <div className="mb-6">
+            <label htmlFor="noofgirders" className="block text-gray-700">Total Number of Girders:</label>
+            <select id="noofgirders" name="noofgirders" onChange={(e) => setnoofgirders(e.target.value)} className="border border-gray-300 p-2 w-full rounded">
+              {[...Array(20).keys()].map((girder) => (<option key={girder + 1} value={girder + 1}>{girder + 1}</option>))}
+            </select>
+          </div>
         </div>
       </div>
           <div className='flex align-center justify-center text-center mt-12 mb-12'>

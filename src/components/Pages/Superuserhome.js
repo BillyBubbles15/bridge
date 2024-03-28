@@ -19,8 +19,19 @@ import {
 import { FaBridge } from "react-icons/fa6";
 import { FaArrowCircleRight, FaEdit } from "react-icons/fa";
 import {MdHome, MdSettings, MdPerson, MdSearch, MdNotifications, MdDashboard, MdSensors, MdDescription, MdLogout, MdEdit } from 'react-icons/md'
+import { PiWind } from "react-icons/pi";
+import { WiHumidity } from "react-icons/wi";
+import { GiSpeedometer } from "react-icons/gi";
 
 import logo2 from '../Assets/logo2.png';
+import clear_icon from '../Assets/weather/clear.png';
+import cloud_icon from '../Assets/weather/cloud.png';
+import drizzle_icon from '../Assets/weather/drizzle.png';
+import rain_icon from '../Assets/weather/rain.png';
+import snow_icon from '../Assets/weather/snow.png';
+import mist_icon from '../Assets/weather/fog.png';
+import thunderstorm_icon from '../Assets/weather/thunderstorm.png';
+
 
 ChartJS.register(
     CategoryScale,
@@ -56,6 +67,7 @@ const Superuserhome = () => {
     const [averageSensor2Temp, setAverageSensor2Temp] = useState(null);
     const [averageSensor2Freq, setAverageSensor2Freq] = useState(null);
     const [averageSensor2Eng, setAverageSensor2Eng] = useState(null);
+
 
     useEffect(() => {
       const fetchData = async () => {
@@ -305,7 +317,7 @@ const bridgeName = localStorage.getItem('bridgeName');
     }; 
 
 
-    console.log(bridgeName);
+    // console.log(bridgeName);
     useEffect(() => {
         const findBridgeID = async () => {
                 try {
@@ -329,6 +341,7 @@ const bridgeName = localStorage.getItem('bridgeName');
       const [userData, setUserData] = useState({
         country: '',
         state: '',
+        city:'',
         coordinates: '',
         division: '',
         location: '',
@@ -404,7 +417,7 @@ const bridgeName = localStorage.getItem('bridgeName');
               const response = await axios.get(`http://localhost:9090/bridge/getbridge/${id}`);
               if (response.status >= 200 && response.status < 300) {
                 console.log(response.data);
-                const { country, state, coordinates, division, location, bridgeName, 
+                const { country, state, city, coordinates, division, location, bridgeName, 
                     adminName, adminEmail, adminPhone, adminName2, adminEmail2, adminPhone2, 
                     adminName3, adminEmail3, adminPhone3, managerName, managerEmail, managerPhone,
                     managerName2, managerEmail2, managerPhone2, managerName3, managerEmail3, managerPhone3,
@@ -415,7 +428,7 @@ const bridgeName = localStorage.getItem('bridgeName');
                     owner3countryCode,manager1countryCode ,manager2countryCode ,manager3countryCode ,manager4countryCode,
                     manager5countryCode ,manager6countryCode} = response.data;
 
-                setUserData({country, state, coordinates, division, location, bridgeName, 
+                setUserData({country, state, city, coordinates, division, location, bridgeName, 
                     adminName, adminEmail, adminPhone, adminName2, adminEmail2, adminPhone2, 
                     adminName3, adminEmail3, adminPhone3, managerName, managerEmail, managerPhone,
                     managerName2, managerEmail2, managerPhone2, managerName3, managerEmail3, managerPhone3,
@@ -455,6 +468,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             const dataToUpdate = {
                 country: userData.country,
                 state: userData.state,
+                city: userData.city,
                 coordinates: userData.coordinates,
                 division: userData.division,
                 location: userData.location,
@@ -587,6 +601,22 @@ const bridgeName = localStorage.getItem('bridgeName');
         }
       };
 
+    const weatherapi = {
+        key: "ce6e8efc9563bba968f6c6284d0253df",
+        base: "https://api.openweathermap.org/data/2.5/",
+    };
+
+    const [searchPlace, setsearchPlace] = useState(userData.city);
+    const [Weather, setWeather] = useState('');
+
+    const searchPressed = () => {
+        fetch(`${weatherapi.base}weather?q=${searchPlace}&units=metric&APPID=${weatherapi.key}`)
+        .then((res) => res.json())
+        .then((result) => {
+            setWeather(result);
+            console.log(result);
+        })
+    };
 
     const UserDetails = () => {
         setshowUserDetails(!showUserDetails);
@@ -959,7 +989,77 @@ const bridgeName = localStorage.getItem('bridgeName');
 
       {showDashboard && (
         <>
-        <div className='w-11/12 ml-24 p-6 flex pt-24 bg-white'>
+        <div className='w-11/12 ml-24 p-6 text-white pt-24 flex w-1/2 mx-8 shadow-xl'>
+            <div className='bg-indigo-800 w-3/5 text-center py-6 mx-8 shadow-2xl rounded-xl'>
+                <input className='bg-indigo-800 rounded-sm mr-2 p-1 border border-white' type="text" placeholder='Enter city' onChange={(e) => setsearchPlace(e.target.value)}/>
+                <button className='bg-blue-600 hover:bg-pink-600 px-2 py-1 rounded-sm shadow shadow-2xl' onClick={searchPressed}>Search</button>
+                <br />
+                { typeof Weather.main != "undefined" ? (
+                <div className='flex justify-center pt-6'>
+
+                    <div className='w-1/4'>
+                        <div className='flex justify-start'>
+                            {Weather.weather[0].main === "Clouds" && (
+                                <img className='w-24' src={cloud_icon} alt="Cloud Icon" />
+                            )}
+                            {Weather.weather[0].main === "Smoke" && (
+                                <img className='w-24' src={mist_icon} alt="Cloud Icon" />
+                            )}
+                            {Weather.weather[0].main === "Haze" && (
+                                <img className='w-24' src={mist_icon} alt="Cloud Icon" />
+                            )}
+                            {Weather.weather[0].main === "Clear" && (
+                                <img className='w-24' src={clear_icon} alt="Clear Icon" />
+                            )}
+                            {Weather.weather[0].main === "Rain" && (
+                                <img className='w-24' src={rain_icon} alt="Clear Icon" />
+                            )}
+                            {Weather.weather[0].main === "Mist" && (
+                                <img className='w-24' src={mist_icon} alt="Clear Icon" />
+                            )}
+                            {Weather.weather[0].main === "Snow" && (
+                                <img className='w-24' src={snow_icon} alt="Clear Icon" />
+                            )}
+                            {Weather.weather[0].main === "Thunderstorm" && (
+                                <img className='w-24' src={thunderstorm_icon} alt="Clear Icon" />
+                            )}
+                            {Weather.weather[0].main === "Drizzle" && (
+                                <img className='w-24' src={drizzle_icon} alt="Clear Icon" />
+                            )}
+                        </div>
+                        <div>
+                            <p className='text-3xl mt-4 text-left'>{Weather.weather[0].main}</p>
+                        </div>
+                    </div>
+
+                    <div className='w-1/3 pt-6 text-left'>
+                        <p className='text-4xl font-semibold'>{Weather.name}, {Weather.sys.country}</p><br />
+                        <p className='text-4xl font-semibold'>{Weather.main.temp}°C</p>
+                        <p>({Weather.weather[0].description})</p>
+                    </div>
+
+                    <div className='w-1/3 pt-6'>
+                        <div className='flex'>
+                            <WiHumidity size={30}/>
+                            <p className='ml-2 text-xl'>Air Humidity: {Weather.main.humidity}%</p>
+                        </div>
+                        <div className=' mt-2 flex'>
+                            <PiWind size={30}/>
+                            <p className='ml-2 text-xl'>Wind Speed: {Weather.wind.speed} km/h</p>
+                        </div>
+                        <div className='mt-2 flex'>
+                            <GiSpeedometer size={30}/>
+                            <p className='ml-2 text-xl'>Air Pressure: {Weather.main.pressure} mBar</p>
+                        </div>
+                    </div>
+                </div>
+
+                ) :  (
+                <div></div>
+                )}
+            </div>
+        </div>
+        <div className='w-11/12 ml-24 p-6 flex bg-white'>
             <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
                 <h1 className='text-center font-bold'>Battery Voltage Monitoring</h1><br />
                 {chartData.labels && chartData.datasets && chartData.labels.length > 0 && chartData.datasets.length > 0 ? (
@@ -975,7 +1075,7 @@ const bridgeName = localStorage.getItem('bridgeName');
                     <Line data={chartData1} />
                     ) : (
                     <h1>Loading...</h1>
-        )}
+            )}
             </div>
 
 
@@ -1150,7 +1250,7 @@ const bridgeName = localStorage.getItem('bridgeName');
     <>
         <div className='w-11/12 ml-24 p-6 pt-24 bg-white'>
         <form>
-        <h1 className='text-center text-3xl w-full font-semibold pb-12'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; Bridge Information &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
+        <h1 className='text-center text-3xl w-full font-semibold pb-12'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; {userData.bridgeName} &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
           <div className="flex w-full px-6 justify-center">
             <div className='w-1/2 mx-5'>
                 <div className="mb-6">
@@ -1171,10 +1271,11 @@ const bridgeName = localStorage.getItem('bridgeName');
                     ))}
                     </select>
                 </div>
+                
                 <div className="mb-6">
                     <label htmlFor="nobridgespan" className="block text-gray-700">Number of Bridge Spans:</label>
                     <select id="nobridgespan" name="nobridgespan" value={userData.nobridgespan} onChange={(e) => setUserData(prevData => ({...prevData, nobridgespan: e.target.value}))} className="border border-gray-300 p-2 w-full rounded">
-                    {[...Array(50).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
+                    {[...Array(20).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
                     </select>
                 </div>
                 <div className="mb-6">
@@ -1186,6 +1287,10 @@ const bridgeName = localStorage.getItem('bridgeName');
             </div>
             <div className="w-1/2 px-6 justify-center">
                 <div className="mb-6">
+                    <label htmlFor="division" className="block text-gray-700">City:</label>
+                    <input type="text" id="division" placeholder='Enter Division' name="division" value={userData.city} onChange={(e) => setUserData(prevData => ({...prevData, division: e.target.value}))} className="border border-gray-300 p-2 w-full rounded" />
+                </div>
+                <div className="mb-6">
                     <label htmlFor="division" className="block text-gray-700">Division:</label>
                     <input type="text" id="division" placeholder='Enter Division' name="division" value={userData.division} onChange={(e) => setUserData(prevData => ({...prevData, division: e.target.value}))} className="border border-gray-300 p-2 w-full rounded" />
                 </div>
@@ -1196,10 +1301,6 @@ const bridgeName = localStorage.getItem('bridgeName');
                 <div className="mb-6">
                     <label htmlFor="coordinates" className="block text-gray-700">Bridge Coordinates:</label>
                     <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={userData.coordinates} onChange={(e) => setUserData(prevData => ({...prevData, coordinates: e.target.value}))} className="border border-gray-300 p-2 w-full rounded"/>
-                </div>
-                <div className="mb-6">
-                    <label htmlFor='bridgeName' className="block text-gray-700">Bridge Name:</label>
-                    <input type="text" id="name" placeholder='Enter Name' name="name" value={userData.bridgeName} onChange={(e) => setUserData(prevData => ({...prevData, bridgeName: e.target.value}))} className="border border-gray-300 p-2 w-full rounded" />
                 </div>
             </div>
         </div>

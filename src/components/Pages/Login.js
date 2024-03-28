@@ -23,9 +23,9 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (email === '') {
-      enqueueSnackbar('Please enter your email!', { variant: 'error'});
+      enqueueSnackbar('Please enter an email!', { variant: 'error'});
     } else if (password === '') {
-      enqueueSnackbar('Please enter your password!', { variant: 'error'});
+      enqueueSnackbar('Please enter a password!', { variant: 'error'});
     }else if (selectedRole === 'Select Role') {
       enqueueSnackbar ('Please select a role',{variant:'error'});
     } else {
@@ -62,7 +62,6 @@ const Login = () => {
           enqueueSnackbar('Invalid role selected',{variant:'error'});
         } else {
           enqueueSnackbar('Incorrect login credentials!',{variant:'error'});
-          enqueueSnackbar('User not found!', { variant: 'error'});  
         }
         setLoading(false);
       }
@@ -80,28 +79,28 @@ const Login = () => {
     <>
       <div className="w-full flex">
         <div className="background w-1/2">
-          <img className='w-32 p-6' src={logo} alt="" />
+          <img className='xl:w-32 xl:p-6 md:w-20 md:p-4' src={logo} alt="" />
         </div>
         <div className="w-1/2 text-center justify-center">
-          <div className="flex justify-center pt-8 pb-16">
-            <img className='w-40' src={logo2} alt="" />
+          <div className="flex justify-center pt-8 xl:pb-16 md:pb-8">
+            <img className='xl:w-40 md:w-24' src={logo2} alt="" />
           </div>
           <div className="text">
-              <h1 className='text-3xl pb-24 font-semibold text-indigo-900'>Login</h1>
+              <h1 className='xl:text-3xl xl:pb-24 md:pb-10 font-semibold text-indigo-900 md:text-lg'>Login</h1>
             </div>
           <div className="">
-            <div className="pb-6 flex justify-center">
+            <div className="xl:pb-6 md:pb-4 flex justify-center">
               <FaUser style={{ alignItems: 'center', marginTop: '1%' }} size={28}/>
-              <input className="border border-gray-400 bg-gray-100 p-3 w-1/3 ml-3 pl-3 mr-2 rounded" type="email" placeholder="Enter Email" value={email} onChange={(e) => setemail(e.target.value)}/>
+              <input className="border border-gray-400 bg-gray-100 xl:p-3 xl:w-1/3 xl:text-base ml-3 pl-3 mr-2 rounded md:w-2/5 md:pl-3 md:p-1 md:text-xs" type="email" placeholder="Enter Email" value={email} onChange={(e) => setemail(e.target.value)}/>
             </div>
-            <div className="pb-6 flex justify-center">
+            <div className="xl:pb-6 md:pb-4 flex justify-center">
             <FaLock style={{ alignItems: 'center', marginTop: '1%' }} size={28}/>
-            <input className="border bg-gray-100 border-gray-400 p-3 w-1/3 ml-3 pl-3 mr-2 rounded" type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown}/>
+            <input className="border bg-gray-100 border-gray-400 xl:p-3 xl:w-1/3 xl:text-base ml-3 pl-3 mr-2 rounded md:w-2/5 md:pl-3 md:p-1 md:text-xs" type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown}/>
         </div>
       </div>
-          <div className="pb-2 flex justify-center">
+          <div className="xl:pb-6 md:pb-2 flex justify-center">
             <BsAwardFill style={{ alignItems: 'center', marginTop: '1%' }} size={30}/>
-            <select className="border bg-gray-100 border-gray-400 p-3 w-1/3 ml-3 pl-3 mr-2 rounded" onChange={(e) => setSelectedRole(e.target.value)}>
+            <select className="border bg-gray-100 border-gray-400 xl:p-3 xl:w-1/3 xl:text-base ml-3 pl-3 mr-2 rounded md:w-2/5 md:pl-3 md:p-1 md:text-xs cursor-pointer" onChange={(e) => setSelectedRole(e.target.value)}>
               <option value="Select Role" selected disabled>Select Role</option>
               <option value="SUPERADMIN">Superadmin</option>
               <option value="bridge-owner">Bridge Owner</option>
@@ -109,14 +108,14 @@ const Login = () => {
               <option value="bridge-manager">Bridge Manager</option>
             </select>
           </div>
-          <div className="pt-16">
+          <div className="pt-16 md:pt-8">
             <div className="">
             {loading ? (
                 <img id='Licon-login' className='absolute' src={loadingIcon} alt="Loading" />
               ) : (
-                <button onClick={handleLogin} className='p-2 mb-2 bg-blue-600 hover:bg-blue-900 text-white rounded-sm px-8'>Login</button>
+                <button onClick={handleLogin} className='xl:p-2 mb-2 bg-blue-600 hover:bg-blue-900 text-white xl:text-base rounded-sm xl:px-8 md:text-xs md:px-4 md:py-2'>Login</button>
               )}
-              <p className='underline text-m text-blue-800'><a href="./forgotpassword">Forgot Password?</a></p>
+              <p className='underline xl:mb-16 xl:text-sm text-blue-800 hover:text-red-600 md:text-xs md:mb-2'><a href="./forgotpassword">Forgot Password?</a></p>
             </div>
           </div>
         </div>

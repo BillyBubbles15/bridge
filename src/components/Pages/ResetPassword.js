@@ -22,16 +22,19 @@ const ResetPassword = () => {
     console.log('Token from URL:', tokenFromURL);
     setToken(tokenFromURL);
 
-    if (!tokenFromURL) {
-      enqueueSnackbar('Authorization token not found! Kindly open this page with the provided link on your email.', { variant: 'error'});
-      navigate('/');
-      return;
-    }
+    // if (!tokenFromURL) {
+    //   enqueueSnackbar('Authorization token not found! Kindly open this page with the provided link on your email.', { variant: 'error'});
+    //   navigate('/');
+    //   return;
+    // }
   }, [location.search, navigate, enqueueSnackbar]);
 
   const handleConfirm = async () => {
     try {
-      if (newPassword !== confirmNewPassword) {
+      if(!newPassword || !confirmNewPassword){
+        enqueueSnackbar('Please fill all the fields!', { variant: 'error'});
+      }
+      else if (newPassword !== confirmNewPassword) {
         enqueueSnackbar('Passwords do not match!', { variant: 'error'});
         setConfirmNewPassword('');
         return;
@@ -51,8 +54,6 @@ const ResetPassword = () => {
       }
     } catch (error) {
       console.error('An error occurred during password change:', error);
-      enqueueSnackbar('An error occurred during password change. Please try again!', { variant: 'error'});
-
     }
   };
 
@@ -66,26 +67,26 @@ const ResetPassword = () => {
     <>
       <div className="flex">
         <div className="background w-1/2">
-          <img className='p-6 w-32' src={logo} alt="" />
+          <img className='xl:p-6 xl:w-32 md:p-4 md:w-20' src={logo} alt="" />
         </div>
         <div className="w-1/2">
-          <div className='flex justify-center mb-16 mt-12'>
-          <img className='w-40' src={logo2} alt="" />
+          <div className='flex justify-center xl:mb-16 md:mb-8 xl:mt-12 md:mt-6'>
+          <img className='xl:w-40 md:w-24' src={logo2} alt="" />
           </div>
-            <h1 className='text-3xl font-semibold pb-24 text-center text-indigo-900'>Reset Password</h1>
-          <div className="pb-16">
+            <h1 className='xl:text-3xl md:text-lg font-semibold xl:pb-24 md:pb-12 text-center text-indigo-900'>Reset Password</h1>
+          <div className="xl:pb-16 md:pb-12">
             <div className="flex justify-center pb-6">
-              <FaLock style={{ alignItems: 'center', marginTop: '1%' }} size={28} />
-              <input className="border border-gray-400 bg-gray-100 p-3 ml-3 w-1/3 pl-3 mr-2 rounded" type="password" placeholder="Enter New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              <FaLock style={{ alignItems: 'center', marginTop: '2%' }} size={24} />
+              <input className="border border-gray-400 bg-gray-100 xl:p-3 xl:text-base md:text-xs md:p-2 ml-3 w-1/3 pl-3 mr-2 rounded" type="password" placeholder="Enter New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
             </div>
             <div className="flex justify-center">
-              <LuRepeat style={{ alignItems: 'center', marginTop: '1%' }} size={28} />
-              <input className="border border-gray-400 bg-gray-100 p-3 ml-3 w-1/3 pl-3 mr-2 rounded" type="password" placeholder="Confirm Password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} onKeyDown={handleKeyDown} />
+              <LuRepeat style={{ alignItems: 'center', marginTop: '2%' }} size={24} />
+              <input className="border border-gray-400 bg-gray-100 xl:p-3 xl:text-base md:text-xs md:p-2 ml-3 w-1/3 pl-3 mr-2 rounded" type="password" placeholder="Confirm Password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} onKeyDown={handleKeyDown} />
             </div>
           </div>
           <div className="">
             <div className="text-center">
-                <button className='p-2 bg-blue-600 hover:bg-blue-900 px-5 text-white rounded-sm' onClick={handleConfirm}>Confirm</button>
+                <button className='xl:p-2 md:p-1 bg-blue-600 hover:bg-blue-900 xl:px-5 md:text-xs md:px-3 xl:text-base text-white rounded-sm' onClick={handleConfirm}>Confirm</button>
             </div>
           </div>
         </div>

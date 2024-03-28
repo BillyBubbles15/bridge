@@ -7,7 +7,7 @@ import './tailwind.css';
 import logo from '../Assets/logo2.png';
 import loadingIcon from '../Assets/loading.gif';
 
-import { MdCancel } from "react-icons/md";
+import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 const SensorForm = () => {
   const [loading, setLoading] = useState(false);
@@ -21,6 +21,7 @@ const SensorForm = () => {
   const [sensortype, setsensortype]= useState('');
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
+  const [city, setCity] = useState('');
   const [division, setDivision] = useState('');
   const [coordinates, setCoordinates] = useState('');
   const [bridgeLocation, setBridgeLocation] = useState('');
@@ -53,6 +54,7 @@ const SensorForm = () => {
   useEffect(() => {
     const storedCountry = localStorage.getItem('country');
     const storedState = localStorage.getItem('state');
+    const storedCity = localStorage.getItem('city');
     const storedBridgespan = localStorage.getItem('nobridgespan');
     const storedGirders = localStorage.getItem('noofgirders');
     const storedDivision = localStorage.getItem('division');
@@ -79,6 +81,7 @@ const SensorForm = () => {
   
     setCountry(storedCountry || '');
     setState(storedState || '');
+    setCity(storedCity || '');
     setnobridgespan(storedBridgespan || '');
     setnoofgirders(storedGirders || '')
     setDivision(storedDivision || '');
@@ -326,12 +329,12 @@ const handleAddSensor = async (e) => {
     </div>
   
     {showAddLocation && (
-        <div className='absolute bg-white shadow-2xl w-full justify-center text-left'>
-          <h1 className='p-4 w-12 cursor-pointer' onClick={handleCancel2}><MdCancel size={30}/></h1>
-          <label htmlFor="sensorlocation" className="mb-8 font-semibold px-5 text-center text-3xl block text-gray-700">Sensor Location(s):</label>
+        <div className='absolute bg-white shadow-2xl w-full justify-center text-left py-12 px-20'>
+          <h1 className='absolute cursor-pointer flex hover:text-blue-700 underline' onClick={handleCancel2}><IoArrowBackCircleSharp size={25}/>Back</h1>
+          <label htmlFor="sensorlocation" className="mb-16 font-semibold px-5 ml-20 text-center text-3xl block text-gray-700">Sensor Location(s):</label>
           {sensorLocations.map((location, index) => (
             <div key={index + 1} className="mb-4 px-5 flex">
-              <div className='w-1/3 mt-6 font-semibold'>
+              <div className='w-1/6 mt-6 font-semibold'>
                 <h1>Sensor {index + 1}:</h1>
               </div>
               <div className="mb-2 w-full px-5">
@@ -352,7 +355,7 @@ const handleAddSensor = async (e) => {
               </div>
             </div>
           ))}
-          <div className='my-12 text-center'>
+          <div className='my-12 mt-16 ml-20 text-center'>
             <button className="bg-blue-600 px-5 mx-2 py-2 text-gray-100 rounded-sm hover:bg-blue-900" onClick={handleSubmit2}>Confirm</button>
             <button className="bg-black px-5 mx-2 py-2 text-gray-100 rounded-sm hover:bg-pink-600" onClick={handleCancel2}>Cancel</button>
           </div>
@@ -371,12 +374,16 @@ const handleAddSensor = async (e) => {
           <input type="text" value={state} className="border border-gray-300 bg-white p-1 w-full rounded" disabled/>
         </div>
         <div className="mb-4 px-2 w-full">
-          <label htmlFor="sensorlocation" className="block text-gray-700">Division:</label>
-          <input type="text" value={division} className="border border-gray-300 bg-white p-1 w-full rounded" disabled/>
+          <label htmlFor="sensorlocation" className="block text-gray-700">City:</label>
+          <input type="text" value={city} className="border border-gray-300 bg-white p-1 w-full rounded" disabled/>
         </div>
       </div>
     
       <div className='flex'>
+        <div className="mb-4 px-2 w-full">
+          <label htmlFor="sensorlocation" className="block text-gray-700">Division:</label>
+          <input type="text" value={division} className="border border-gray-300 bg-white p-1 w-full rounded" disabled/>
+        </div>
         <div className="mb-4 px-2 w-full">
           <label htmlFor="sensorlocation" className="block text-gray-700">Coordinates:</label>
           <input type="text" value={coordinates} className="border border-gray-300 bg-white p-1 w-full rounded" disabled/>
@@ -385,13 +392,13 @@ const handleAddSensor = async (e) => {
           <label htmlFor="sensorlocation" className="block text-gray-700">Bridge Location:</label>
           <input type="text" value={bridgeLocation} className="border border-gray-300 bg-white p-1 w-full rounded" disabled/>
         </div>
-        <div className="mb-4 px-2 w-full">
-          <label htmlFor="sensorlocation" className="block text-gray-700">Bridge Name:</label>
-          <input type="text" value={bridgeName} className="border border-gray-300 p-1 bg-white w-full rounded" disabled/>
-        </div>
       </div>
 
       <div className='flex'>
+      <div className="mb-4 px-2 w-full">
+          <label htmlFor="sensorlocation" className="block text-gray-700">Bridge Name:</label>
+          <input type="text" value={bridgeName} className="border border-gray-300 p-1 bg-white w-full rounded" disabled/>
+        </div>
       <div className="mb-4 px-2 w-full">
           <label htmlFor="nobridgespan" className="block text-gray-700">No of Spans:</label>
           <input type="text" value={nobridgespan} className="border border-gray-300 bg-white p-1 w-full rounded" disabled/>
@@ -423,7 +430,7 @@ const handleAddSensor = async (e) => {
           </select>
         </div>
         <div className="mb-4 px-2 w-full">
-          <label htmlFor="owners" className="block text-left text-gray-700 px-8">Bridge Owner(s):</label>
+          <label htmlFor="owners" className="block text-gray-700">Bridge Owner(s):</label>
           <select id="adminName" className="border text-gray-700 border-gray-300 p-1 w-full rounded" readOnly>
             <option value={ownerName}>{ownerName}</option>:
             {ownerName2 ? <option value={ownerName2}>{ownerName2}</option>: <option value="">Owner 2</option>}
