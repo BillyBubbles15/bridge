@@ -1060,13 +1060,13 @@ const bridgeName = localStorage.getItem('bridgeName');
   return (
     <>
       <div className="flex fixed z-10 w-full justify-center bg-gray-100 py-2 shadow-xl">
-        <div className='w-full'>   
+        <div className='w-1/2'>   
            <img className='h-10 pt-2 cursor-pointer px-5'  src={logo2} alt=""/>
         </div>
         <div className='w-full text-center pt-1'>
             <h1 className='text-2xl font-semibold'>Structural Health Monitoring Dashboard</h1>
         </div>
-        <div className='w-full text-right'>
+        <div className='w-1/2 text-right'>
             <button className='px-2'><MdSearch size={36} /></button>
             <button className='px-2'><MdNotifications size={36} /></button>
             <button onClick={UserDetails} className='px-2'><MdPerson onClick={UserDetails} size={36} /></button>
@@ -1155,21 +1155,21 @@ const bridgeName = localStorage.getItem('bridgeName');
                     <div className='w-1/3 pt-6'>
                         <div className='flex'>
                             <WiHumidity size={30}/>
-                            <p className='ml-2 text-xl'>Air Humidity: {Weather.main.humidity}%</p>
+                            <p className='ml-2 text-lg'>Air Humidity: {Weather.main.humidity}%</p>
                         </div>
                         <div className=' mt-2 flex'>
                             <PiWind size={30}/>
-                            <p className='ml-2 text-xl'>Wind Speed: {Weather.wind.speed} km/h</p>
+                            <p className='ml-2 text-lg'>Wind Speed: {Weather.wind.speed} km/h</p>
                         </div>
                         <div className='mt-2 flex'>
                             <GiSpeedometer size={30}/>
-                            <p className='ml-2 text-xl'>Air Pressure: {Weather.main.pressure} mBar</p>
+                            <p className='ml-2 text-lg'>Air Pressure: {Weather.main.pressure} mBar</p>
                         </div>
                     </div>
                 </div>
 
                 ) :  (
-                <div>No weather report could be found for {userData.city}. <br />Edit the city name to check if your area's weather gets shown.</div>
+                <div>No weather report could be found for {userData.city}. <br />Edit the city name to check if your area's weather gets shown. <br /> Source: https://openweathermap.org/</div>
                 )}
             </div>
         </div>
