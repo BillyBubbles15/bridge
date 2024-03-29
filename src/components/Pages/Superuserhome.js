@@ -606,17 +606,20 @@ const bridgeName = localStorage.getItem('bridgeName');
         base: "https://api.openweathermap.org/data/2.5/",
     };
 
-    const [searchPlace, setsearchPlace] = useState(userData.city);
     const [Weather, setWeather] = useState('');
 
-    const searchPressed = () => {
-        fetch(`${weatherapi.base}weather?q=${searchPlace}&units=metric&APPID=${weatherapi.key}`)
-        .then((res) => res.json())
-        .then((result) => {
-            setWeather(result);
-            console.log(result);
-        })
-    };
+    useEffect(() => {
+        // Fetch weather data for 'Pune' when component mounts
+        fetch(`${weatherapi.base}weather?q=${userData.city}&units=metric&APPID=${weatherapi.key}`)
+            .then((res) => res.json())
+            .then((result) => {
+                setWeather(result);
+                console.log(result);
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);
+            });
+    }, [weatherapi.base, weatherapi.key, userData.city]);
 
     const removeAdmin1 = (e) => {
         e.preventDefault();
@@ -1105,9 +1108,6 @@ const bridgeName = localStorage.getItem('bridgeName');
         <>
         <div className='w-11/12 ml-24 p-6 text-white pt-24 flex w-1/2 mx-8 shadow-xl'>
             <div className='bg-indigo-800 w-3/5 text-center py-6 mx-8 shadow-2xl rounded-xl'>
-                <input className='bg-indigo-800 rounded-sm mr-2 p-1 border border-white' type="text" placeholder='Enter city' onChange={(e) => setsearchPlace(e.target.value)}/>
-                <button className='bg-blue-600 hover:bg-pink-600 px-2 py-1 rounded-sm shadow shadow-2xl' onClick={searchPressed}>Search</button>
-                <br />
                 { typeof Weather.main != "undefined" ? (
                 <div className='flex justify-center pt-6'>
 
@@ -1169,7 +1169,7 @@ const bridgeName = localStorage.getItem('bridgeName');
                 </div>
 
                 ) :  (
-                <div></div>
+                <div>No weather report could be found for {userData.city}. <br />Edit the city name to check if your area's weather gets shown.</div>
                 )}
             </div>
         </div>
