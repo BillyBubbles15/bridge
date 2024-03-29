@@ -16,7 +16,7 @@ import {
     LineElement,
 } from 'chart.js';
 
-import { FaBridge } from "react-icons/fa6";
+import { FaBridge, FaTrash } from "react-icons/fa6";
 import { FaArrowCircleRight, FaEdit } from "react-icons/fa";
 import {MdHome, MdSettings, MdPerson, MdSearch, MdNotifications, MdDashboard, MdSensors, MdDescription, MdLogout, MdEdit } from 'react-icons/md'
 import { PiWind } from "react-icons/pi";
@@ -543,7 +543,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             throw error;
         }
     }
-      };
+};
 
 
 
@@ -617,6 +617,120 @@ const bridgeName = localStorage.getItem('bridgeName');
             console.log(result);
         })
     };
+
+    const removeAdmin1 = (e) => {
+        e.preventDefault();
+        setUserData({
+            adminName: '',
+            adminEmail: '',
+            admin1countryCode: '',
+            adminPhone: ''
+        });
+    };
+    const removeAdmin2 = (e) => {
+        e.preventDefault();
+        setUserData({
+            adminName2: '',
+            adminEmail2: '',
+            admin2countryCode: '',
+            adminPhone2: ''
+        });
+    };
+    const removeAdmin3 = (e) => {
+        e.preventDefault();
+        setUserData({
+            adminName3: '',
+            adminEmail3: '',
+            admin3countryCode: '',
+            adminPhone3: ''
+        });
+    };
+
+
+    const removeManager1 = (e) => {
+        e.preventDefault();
+        setUserData({
+            managerName: '',
+            managerEmail: '',
+            manager1countryCode: '',
+            managerPhone: ''
+        });
+    };
+    const removeManager2 = (e) => {
+        e.preventDefault();
+        setUserData({
+            managerName2: '',
+            managerEmail2: '',
+            manager2countryCode: '',
+            managerPhone2: ''
+        });
+    };
+    const removeManager3 = (e) => {
+        e.preventDefault();
+        setUserData({
+            managerName3: '',
+            managerEmail3: '',
+            manager3countryCode: '',
+            managerPhone3: ''
+        });
+    };
+    const removeManager4 = (e) => {
+        e.preventDefault();
+        setUserData({
+            managerName4: '',
+            managerEmail4: '',
+            manager4countryCode: '',
+            managerPhone4: ''
+        });
+    };
+    const removeManager5 = (e) => {
+        e.preventDefault();
+        setUserData({
+            managerName5: '',
+            managerEmail5: '',
+            manager5countryCode: '',
+            managerPhone5: ''
+        });
+    };
+    const removeManager6 = (e) => {
+        e.preventDefault();
+        setUserData({
+            managerName6: '',
+            managerEmail6: '',
+            manager6countryCode: '',
+            managerPhone6: ''
+        });
+    };
+
+
+    const removeOwner1 = (e) => {
+        e.preventDefault();
+        setUserData({
+            ownerName: '',
+            ownerEmail: '',
+            owner1countryCode: '',
+            ownerPhone: ''
+        });
+    };
+    const removeOwner2 = (e) => {
+        e.preventDefault();
+        setUserData({
+            ownerName2: '',
+            ownerEmail2: '',
+            owner2countryCode: '',
+            ownerPhone2: ''
+        });
+    };
+    const removeOwner3 = (e) => {
+        e.preventDefault();
+        setUserData({
+            ownerName3: '',
+            ownerEmail3: '',
+            owner3countryCode: '',
+            ownerPhone3: ''
+        });
+    };
+
 
     const UserDetails = () => {
         setshowUserDetails(!showUserDetails);
@@ -1372,6 +1486,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
             </select>
             <input id='adminPhone' value={userData.adminPhone} onChange={(e) => setUserData(prevData => ({...prevData, adminPhone: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <button className='w-1/6 mt-4' onClick={removeAdmin1}><FaTrash size={20}/></button>
         </div>
         <form action="submit">
         <div className='mt-5 flex'>
@@ -1383,7 +1498,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
                 </select>
             <input id='adminPhone2' value={userData.adminPhone2} onChange={(e) => setUserData(prevData => ({...prevData, adminPhone2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            {/* <button className='pl-2 text-black' onClick={RemoveAdmin}><MdOutlineRemoveCircleOutline size={22}/></button> */}
+            <button className='w-1/6 mt-4' onClick={removeAdmin2}><FaTrash size={20}/></button>
         </div>
         <div className='mt-5 flex'>
             <input id='adminName3' value={userData.adminName3} onChange={(e) => setUserData(prevData => ({...prevData, adminName3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Admin 3)'/>
@@ -1394,7 +1509,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
             </select>
             <input id='adminPhone3' value={userData.adminPhone3} onChange={(e) => setUserData(prevData => ({...prevData, adminPhone3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            {/* <button className='pl-2 text-black' onClick={RemoveAdmin2}><MdOutlineRemoveCircleOutline size={22}/></button> */}
+            <button className='w-1/6 mt-4' onClick={removeAdmin3}><FaTrash size={20}/></button>
         </div>
         </form>
 
@@ -1409,6 +1524,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
             </select>
             <input id='managerPhone' value={userData.managerPhone} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <button className='w-1/6 mt-4' onClick={removeManager1}><FaTrash size={20}/></button>
         </div>
 
         <form action="submit">
@@ -1421,6 +1537,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
             </select>
             <input id='managerPhone2' value={userData.managerPhone2} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <button className='w-1/6 mt-4' onClick={removeManager2}><FaTrash size={20}/></button>
         </div>
 
 
@@ -1433,6 +1550,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
                 </select>
             <input id='managerPhone3' value={userData.managerPhone3} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <button className='w-1/6 mt-4' onClick={removeManager3}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
@@ -1444,6 +1562,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
                 </select>
             <input id='managerPhone4' value={userData.managerPhone4} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone4: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <button className='w-1/6 mt-4' onClick={removeManager4}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
@@ -1455,6 +1574,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
                 </select>
             <input id='managerPhone5' value={userData.managerPhone5} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone5: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <button className='w-1/6 mt-4' onClick={removeManager5}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
@@ -1466,6 +1586,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
                 </select>
             <input id='managerPhone6' value={userData.managerPhone6} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone6: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <button className='w-1/6 mt-4' onClick={removeManager6}><FaTrash size={20}/></button>
         </div>
         </form>
 
@@ -1480,6 +1601,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
                 </select>
             <input id='ownerPhone' value={userData.ownerPhone} onChange={(e) => setUserData(prevData => ({...prevData, ownerPhone: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <button className='w-1/6 mt-4' onClick={removeOwner1}><FaTrash size={20}/></button>
         </div>
 
         <form action="submit">
@@ -1492,6 +1614,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
                 </select>
             <input id='ownerPhone2' value={userData.ownerPhone2} onChange={(e) => setUserData(prevData => ({...prevData, ownerPhone2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <button className='w-1/6 mt-4' onClick={removeOwner2}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
@@ -1503,6 +1626,7 @@ const bridgeName = localStorage.getItem('bridgeName');
             ))}
                 </select>
             <input id='ownerPhone3' value={userData.ownerPhone3} onChange={(e) => setUserData(prevData => ({...prevData, ownerPhone3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <button className='w-1/6 mt-4' onClick={removeOwner3}><FaTrash size={20}/></button>
         </div>
         </form>
         </div>
