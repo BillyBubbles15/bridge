@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { City, Country, State } from "country-state-city";
+import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import Papa from 'papaparse';
 import { Line } from 'react-chartjs-2';
 import SensorData from '../Assets/Data.csv';
 import './tailwind.css';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    Title,
-    Tooltip,
-    Legend,
-    LineElement,
-} from 'chart.js';
+import Selector from "./Selector";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend, LineElement } from 'chart.js';
 
 import { FaBridge, FaTrash } from "react-icons/fa6";
 import { FaArrowCircleRight, FaEdit } from "react-icons/fa";
@@ -32,16 +26,7 @@ import snow_icon from '../Assets/weather/snow.png';
 import mist_icon from '../Assets/weather/fog.png';
 import thunderstorm_icon from '../Assets/weather/thunderstorm.png';
 
-
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    LineElement,
-    PointElement,
-    Title,
-    Tooltip,
-    Legend,
-)
+ChartJS.register( CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend)
 
 
 
@@ -106,8 +91,6 @@ const Superuserhome = () => {
         const average1 = sum1 / LoggerTemp.length.toFixed(2);
         setAverageLoggerTemp(average1.toFixed(2));
     
-
-        //INDIVIDUAL NUMERICAL VALUES (Sensors Dashboard)
 
         //Sensor 1
         const sum2 = Sensor1Temp.reduce((accumulator, currentValue) => accumulator + parseFloat(currentValue), 0);
@@ -295,6 +278,7 @@ const Superuserhome = () => {
 
 
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
     const [isSelected, setIsSelected] = useState(true);
     const [isSelected1, setIsSelected1] = useState(false);
     const [isSelected4, setIsSelected4] = useState(false);
@@ -309,12 +293,30 @@ const Superuserhome = () => {
 const [id,setId]=useState('');
 const bridgeName = localStorage.getItem('bridgeName');
   
-    const countries = ['India', 'USA', 'Australia']; 
-    const statesByCountry = {
-      India: ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'],
-      USA: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'],
-      Australia: ['Australian Capital Territory', 'New South Wales', 'Northern Territory', 'Queensland', 'South Australia', 'Tasmania', 'Victoria', 'Western Australia'],
-    }; 
+let countryData = Country.getAllCountries();
+const [stateData, setStateData] = useState();
+const [cityData, setCityData] = useState();
+
+const [country, setCountry] = useState(countryData[0]);
+const [state, setState] = useState();
+const [city, setCity] = useState();
+
+useEffect(() => {
+  setStateData(State.getStatesOfCountry(country?.isoCode));
+}, [country]);
+
+useEffect(() => {
+  setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
+}, [country?.isoCode, state]);
+
+
+useEffect(() => {
+  stateData && setState(stateData[0]);
+}, [stateData]);
+
+useEffect(() => {
+  cityData && setCity(cityData[0]);
+}, [cityData]);
 
 
     // console.log(bridgeName);
@@ -392,20 +394,20 @@ const bridgeName = localStorage.getItem('bridgeName');
         noofgirders: '',
         nobridgespan:'',
 
-        admin1countryCode:'',
-        admin2countryCode:'',
-        admin3countryCode:'',
+        admin1countryCode:'code',
+        admin2countryCode:'code',
+        admin3countryCode:'code',
 
-        manager1countryCode:'',
-        manager2countryCode:'',
-        manager3countryCode:'',
-        manager4countryCode:'',
-        manager5countryCode:'',
-        manager6countryCode:'',
+        manager1countryCode:'code',
+        manager2countryCode:'code',
+        manager3countryCode:'code',
+        manager4countryCode:'code',
+        manager5countryCode:'code',
+        manager6countryCode:'code',
 
-        owner1countryCode:'',
-        owner2countryCode:'',
-        owner3countryCode:'',
+        owner1countryCode:'code',
+        owner2countryCode:'code',
+        owner3countryCode:'code',
     });
 
     useEffect(() => {
@@ -451,17 +453,14 @@ const bridgeName = localStorage.getItem('bridgeName');
 
 
       const updateData = async (dataToUpdate) => {
-        if(userData.country ===  userData.state === ''){
-            alert('Please Select a Country & State')
+        if(!userData.adminName || !userData.adminEmail || !userData.adminPhone || userData.admin1countryCode === 'code'){
+            enqueueSnackbar('Please Add Atleast One Admin!', { variant: 'error'});
         }
-        else if(userData.adminName === userData.adminEmail === userData.adminPhone === ''){
-            alert('Please Add Atleast One Admin!')
+        else if(!userData.managerName || !userData.managerEmail || !userData.managerPhone || userData.manager1countryCode === 'code'){
+            enqueueSnackbar('Please Add Atleast One Manager!', { variant: 'error'});
         }
-        else if(userData.managerName === userData.managerEmail === userData.managerPhone === ''){
-            alert('Please Add Atleast One Manager!');
-        }
-        else if(userData.ownerName === userData.ownerEmail === userData.ownerPhone === ''){
-            alert('Please Add Atleast One Owner!');
+        else if(!userData.ownerName || !userData.ownerEmail || !userData.ownerPhone || userData.owner1countryCode === 'code'){
+            enqueueSnackbar('Please Add Atleast One Owner!', { variant: 'error'});
         }
         else{
         try {
@@ -546,7 +545,6 @@ const bridgeName = localStorage.getItem('bridgeName');
 };
 
 
-
       //SensorData
       const [sensorDataList, setSensorDataList] = useState([]);
 
@@ -626,7 +624,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             adminName: '',
             adminEmail: '',
-            admin1countryCode: '',
+            admin1countryCode: 'code',
             adminPhone: ''
         });
     };
@@ -635,7 +633,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             adminName2: '',
             adminEmail2: '',
-            admin2countryCode: '',
+            admin2countryCode: 'code',
             adminPhone2: ''
         });
     };
@@ -644,7 +642,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             adminName3: '',
             adminEmail3: '',
-            admin3countryCode: '',
+            admin3countryCode: 'code',
             adminPhone3: ''
         });
     };
@@ -655,7 +653,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             managerName: '',
             managerEmail: '',
-            manager1countryCode: '',
+            manager1countryCode: 'code',
             managerPhone: ''
         });
     };
@@ -664,7 +662,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             managerName2: '',
             managerEmail2: '',
-            manager2countryCode: '',
+            manager2countryCode: 'code',
             managerPhone2: ''
         });
     };
@@ -673,7 +671,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             managerName3: '',
             managerEmail3: '',
-            manager3countryCode: '',
+            manager3countryCode: 'code',
             managerPhone3: ''
         });
     };
@@ -682,7 +680,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             managerName4: '',
             managerEmail4: '',
-            manager4countryCode: '',
+            manager4countryCode: 'code',
             managerPhone4: ''
         });
     };
@@ -691,7 +689,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             managerName5: '',
             managerEmail5: '',
-            manager5countryCode: '',
+            manager5countryCode: 'code',
             managerPhone5: ''
         });
     };
@@ -700,7 +698,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             managerName6: '',
             managerEmail6: '',
-            manager6countryCode: '',
+            manager6countryCode: 'code',
             managerPhone6: ''
         });
     };
@@ -711,7 +709,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             ownerName: '',
             ownerEmail: '',
-            owner1countryCode: '',
+            owner1countryCode: 'code',
             ownerPhone: ''
         });
     };
@@ -720,7 +718,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             ownerName2: '',
             ownerEmail2: '',
-            owner2countryCode: '',
+            owner2countryCode: 'code',
             ownerPhone2: ''
         });
     };
@@ -729,7 +727,7 @@ const bridgeName = localStorage.getItem('bridgeName');
         setUserData({
             ownerName3: '',
             ownerEmail3: '',
-            owner3countryCode: '',
+            owner3countryCode: 'code',
             ownerPhone3: ''
         });
     };
@@ -1364,63 +1362,61 @@ const bridgeName = localStorage.getItem('bridgeName');
     <>
         <div className='w-11/12 ml-24 p-6 pt-24 bg-white'>
         <form>
-        <h1 className='text-center text-3xl w-full font-semibold pb-12'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; {userData.bridgeName} &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
-          <div className="flex w-full px-6 justify-center">
-            <div className='w-1/2 mx-5'>
+        <h1 className='text-center text-3xl w-full font-semibold pb-12'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; Bridge Information &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
+          <div className="flex w-full pl-16 py-6 justify-center bg-gray-100">
+
+            <div className='w-1/3 px-2 justify-center'>
                 <div className="mb-6">
                     <label htmlFor="country" className="block text-gray-700">Country:</label>
-                    <select id="country" name="country" value={userData.country} onChange={(e) => setUserData(prevData => ({...prevData, country: e.target.value}))} className="border border-gray-300 p-2 w-full rounded" >
-                        <option value="country" disabled>Select Country</option>
-                        {countries.map((country, index) => (
-                        <option key={index} value={country}>{country}</option>
-                    ))}
-                </select>
-                </div>
-                <div className="mb-6">
-                    <label htmlFor="state" className="block text-gray-700">State:</label>
-                    <select id="state" name="state" value={userData.state} onChange={(e) => setUserData(prevData => ({...prevData, state: e.target.value}))} className="border border-gray-300 p-2 w-full rounded">
-                    <option value="state" disabled>Select State</option>
-                    {statesByCountry[userData.country]?.map((state, index) => (
-                        <option key={index} value={state}>{state}</option>
-                    ))}
-                    </select>
-                </div>
-                
-                <div className="mb-6">
-                    <label htmlFor="nobridgespan" className="block text-gray-700">Number of Bridge Spans:</label>
-                    <select id="nobridgespan" name="nobridgespan" value={userData.nobridgespan} onChange={(e) => setUserData(prevData => ({...prevData, nobridgespan: e.target.value}))} className="border border-gray-300 p-2 w-full rounded">
-                    {[...Array(20).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
-                    </select>
-                </div>
-                <div className="mb-6">
-                    <label htmlFor="noofgirders" className="block text-gray-700">Number of Girders:</label>
-                    <select id="noofgirders" name="noofgirders" value={userData.nobridgespan} onChange={(e) => setUserData(prevData => ({...prevData, noofgirders: e.target.value}))} className="border border-gray-300 p-2 w-full rounded">
-                    {[...Array(20).keys()].map((girder) => (<option key={girder + 1} value={girder + 1}>{girder + 1}</option>))}
-                    </select>
-                </div>
-            </div>
-            <div className="w-1/2 px-6 justify-center">
-                <div className="mb-6">
-                    <label htmlFor="division" className="block text-gray-700">City:</label>
-                    <input type="text" id="division" placeholder='Enter Division' name="division" value={userData.city} onChange={(e) => setUserData(prevData => ({...prevData, division: e.target.value}))} className="border border-gray-300 p-2 w-full rounded" />
+                    <Selector value={userData.country} data={countryData} selected={country} setSelected={setCountry}/>
                 </div>
                 <div className="mb-6">
                     <label htmlFor="division" className="block text-gray-700">Division:</label>
-                    <input type="text" id="division" placeholder='Enter Division' name="division" value={userData.division} onChange={(e) => setUserData(prevData => ({...prevData, division: e.target.value}))} className="border border-gray-300 p-2 w-full rounded" />
+                    <input type="text" id="division" placeholder='Enter Division' name="division" value={userData.division} onChange={(e) => setUserData(prevData => ({...prevData, division: e.target.value}))} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
+                </div>
+                <div className="mb-6">
+                    <label htmlFor="division" className="block text-gray-700">Bridge Name:</label>
+                    <input type="text" id="name" placeholder='Enter Name' name="name" value={userData.bridgeName} onChange={(e) => setUserData(prevData => ({...prevData, bridgeName: e.target.value}))} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
+                </div>
+            </div>
+
+            <div className="w-1/3 px-2 justify-center">
+            <div className="mb-6">
+                    <label htmlFor="state" className="block text-gray-700">State:</label>
+                    <Selector value={userData.state} data={stateData} selected={state} setSelected={setState} />
                 </div>
                 <div className="mb-6">
                     <label htmlFor='bridgeName' className="block text-gray-700">Bridge Location:</label>
-                    <input type="text" id="location" placeholder='Enter Location' name="location" value={userData.location} onChange={(e) => setUserData(prevData => ({...prevData, location: e.target.value}))} className="border border-gray-300 p-2 w-full rounded" />
+                    <input type="text" id="location" placeholder='Enter Location' name="location" value={userData.location} onChange={(e) => setUserData(prevData => ({...prevData, location: e.target.value}))} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
+                </div>
+                <div className="mb-6">
+                    <label htmlFor="nobridgespan" className="block text-gray-700">Number of Bridge Spans:</label>
+                    <select id="nobridgespan" name="nobridgespan" value={userData.nobridgespan} onChange={(e) => setUserData(prevData => ({...prevData, nobridgespan: e.target.value}))} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
+                    {[...Array(20).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
+                    </select>
+                </div>
+            </div>
+
+            <div className='w-1/3 px-2 justify-center'>
+                <div className="mb-6">
+                    <label htmlFor="division" className="block text-gray-700">City:</label>
+                    <Selector value={userData.city} data={cityData} selected={city} setSelected={setCity} />
                 </div>
                 <div className="mb-6">
                     <label htmlFor="coordinates" className="block text-gray-700">Bridge Coordinates:</label>
-                    <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={userData.coordinates} onChange={(e) => setUserData(prevData => ({...prevData, coordinates: e.target.value}))} className="border border-gray-300 p-2 w-full rounded"/>
+                    <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={userData.coordinates} onChange={(e) => setUserData(prevData => ({...prevData, coordinates: e.target.value}))} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
+                </div>
+                <div className="mb-6">
+                    <label htmlFor="noofgirders" className="block text-gray-700">Number of Girders:</label>
+                    <select id="noofgirders" name="noofgirders" value={userData.nobridgespan} onChange={(e) => setUserData(prevData => ({...prevData, noofgirders: e.target.value}))} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
+                    {[...Array(20).keys()].map((girder) => (<option key={girder + 1} value={girder + 1}>{girder + 1}</option>))}
+                    </select>
                 </div>
             </div>
         </div>
         </form>
         <div className='text-center'>
-            <button className='mt-12 p-2 bg-pink-600 text-white px-6 mx-4 rounded-sm hover:bg-pink-900' onClick={updateData}>Save</button>
+            <button className='p-2 bg-pink-600 text-white px-6 mx-4 rounded-sm hover:bg-pink-900' onClick={updateData}>Save</button>
         </div> 
         </div>
     </>

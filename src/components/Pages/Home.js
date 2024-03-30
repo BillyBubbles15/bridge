@@ -232,13 +232,14 @@ const handleRowClick = (bridge) => {
             <thead>
               <tr>
                 <th className="border bg-black text-lg text-white px-2 py-4 font-bold">#</th>
-                <th className="border bg-black text-lg text-white px-16 py-4 font-bold">Name</th>
-                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Country</th>
-                <th className="border bg-black text-lg text-white px-10 py-4 font-bold">State</th>
-                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Division</th>
-                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Coordinates</th>
-                <th className="border bg-black text-lg text-white px-2 py-4 font-bold">Girders</th>
+                <th className="border bg-black text-lg text-white px-12 py-4 font-bold">Name</th>
+                <th className="border bg-black text-lg text-white px-4 py-4 font-bold">Country</th>
+                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">State</th>
+                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">City</th>
+                <th className="border bg-black text-lg text-white px-4 py-4 font-bold">Division</th>
+                <th className="border bg-black text-lg text-white py-4 font-bold">Coordinates</th>
                 <th className="border bg-black text-lg text-white px-2 py-4 font-bold">Spans</th>
+                <th className="border bg-black text-lg text-white py-4 font-bold">Girders</th>
               </tr>
             </thead>
             <tbody>
@@ -246,18 +247,19 @@ const handleRowClick = (bridge) => {
     filteredData.map((bridge, index) => (
       <tr key={index} onClick={() => handleRowClick(bridge)} className="hover:bg-gray-300 text-center cursor-pointer border border-gray-300">
         <td className="border px-2 py-3">{bridge.id}</td>
-        <td className="border px-16 py-3">{bridge.bridgeName}</td>
-        <td className="border px-8 py-3">{bridge.country}</td>
-        <td className="border px-10 py-3">{bridge.state}</td>
-        <td className="border px-8 py-3">{bridge.division}</td>
-        <td className="border px-8 py-3">{bridge.coordinates}</td>
-        <td className="border px-2 py-3">{bridge.noofgirders}</td>
+        <td className="border px-12 py-3">{bridge.bridgeName}</td>
+        <td className="border px-4 py-3">{bridge.country}</td>
+        <td className="border px-8 py-3">{bridge.state}</td>
+        <td className="border px-8 py-3">{bridge.city}</td>
+        <td className="border px-4 py-3">{bridge.division}</td>
+        <td className="border py-4">{bridge.coordinates}</td>
         <td className="border px-2 py-3">{bridge.nobridgespan}</td>
+        <td className="border py-3">{bridge.noofgirders}</td>
       </tr>
     ))
   ) : (
     <tr>
-      <td colSpan="8" className="py-3 text-center text-lg hover:bg-gray-200 cursor-pointer">
+      <td colSpan="9" className="py-3 text-center text-lg hover:bg-gray-200 cursor-pointer">
         No bridges found
       </td>
     </tr>

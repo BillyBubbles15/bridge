@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { City, Country, State } from "country-state-city";
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import './tailwind.css';
+import Selector from "./Selector";
 
 import loadingIcon from '../Assets/loading.gif';
 import logo from '../Assets/logo2.png';
@@ -11,10 +13,8 @@ import { IoIosArrowDown, IoIosWarning } from "react-icons/io";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 
-
 const BridgeForm = ({onSubmit }) => {
   
-  const [country, setCountry] = useState('');
   const [admin1countryCode , setCountryCode1] = useState('code');
   const [admin2countryCode , setCountryCode2] = useState('code');
   const [admin3countryCode , setCountryCode3] = useState('code');
@@ -27,14 +27,13 @@ const BridgeForm = ({onSubmit }) => {
   const [owner1countryCode , setCountryCode10] = useState('code');
   const [owner2countryCode , setCountryCode11] = useState('code');
   const [owner3countryCode , setCountryCode12] = useState('code');
-  const [state, setState] = useState('');
-  const [city, setCity] = useState('');
   const [coordinates, setCoordinates] =useState('');
   const [division, setDivision] = useState('');
   const [bridgeName, setBridgeName] = useState('');
   const [location, setlocation] = useState('');
   const [nobridgespan, setnobridgespan] = useState('');
   const [noofgirders, setnoofgirders] = useState('');
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -45,13 +44,30 @@ const BridgeForm = ({onSubmit }) => {
     setsuperadminId(storedSuperadminId || '');
   }
   
-  const navigate = useNavigate();
-  const countries = ['India', 'USA', 'Australia']; 
-  const statesByCountry = {
-    India: ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'],
-    USA: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'],
-    Australia: ['Australian Capital Territory', 'New South Wales', 'Northern Territory', 'Queensland', 'South Australia', 'Tasmania', 'Victoria', 'Western Australia'],
-  }; 
+  let countryData = Country.getAllCountries();
+  const [stateData, setStateData] = useState();
+  const [cityData, setCityData] = useState();
+
+  const [country, setCountry] = useState(countryData[0]);
+  const [state, setState] = useState();
+  const [city, setCity] = useState();
+
+  useEffect(() => {
+    setStateData(State.getStatesOfCountry(country?.isoCode));
+  }, [country]);
+
+  useEffect(() => {
+    setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
+  }, [country?.isoCode, state]);
+  
+
+  useEffect(() => {
+    stateData && setState(stateData[0]);
+  }, [stateData]);
+
+  useEffect(() => {
+    cityData && setCity(cityData[0]);
+  }, [cityData]);
 
   
   const[showUserForm, setShowUserForm] = useState(false);
@@ -1810,7 +1826,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='ownerPhone' value={ownerPhone} onChange={(e) => setOwnerPhone(e.target.value)} className="border border-gray-500 p-2 mr-2 rounded" type="text" placeholder='Mobile Number' minLength="10" maxLength="10"/>
       </div>
 
-      <div className='mt-5 flex justify-center'>
+        <div className='mt-5 flex justify-center'>
           <h1 className='text-lg font-semibold mt-1'>Owner 2: &nbsp;</h1>
           <input id='ownerName2' value={ownerName2} onChange={(e) => setOwnerName2(e.target.value)} className="border border-gray-500 p-2 mr-2 rounded" type="text" placeholder='Name (Owner 2)'/>
           <input id='ownerEmail2' value={ownerEmail2} onChange={(e) => setOwnerEmail2(e.target.value)} className="border border-gray-500 p-2 mr-2 rounded" type="email" placeholder='email'/>
@@ -1822,9 +1838,9 @@ const BridgeForm = ({onSubmit }) => {
             ))}
           </select>
           <input id='ownerPhone2' value={ownerPhone2} onChange={(e) => setOwnerPhone2(e.target.value)} className="border border-gray-500 p-2 mr-2 rounded" type="text" placeholder='Mobile Number' minLength="10" maxLength="10"/>
-      </div>
+        </div>
             
-      <div className='mt-5 flex justify-center'>
+        <div className='mt-5 flex justify-center'>
           <h1 className='text-lg font-semibold mt-1'>Owner 3: &nbsp;</h1>
           <input id='ownerName3' value={ownerName3} onChange={(e) => setOwnerName3(e.target.value)} className="border border-gray-500 p-2 mr-2 rounded" type="text" placeholder='Name (Owner 3)'/>
           <input id='ownerEmail3' value={ownerEmail3} onChange={(e) => setOwnerEmail3(e.target.value)} className="border border-gray-500 p-2 mr-2 rounded" type="email" placeholder='email'/>
@@ -1836,7 +1852,7 @@ const BridgeForm = ({onSubmit }) => {
             ))}
           </select>
           <input id='ownerPhone3' value={ownerPhone3} onChange={(e) => setOwnerPhone3(e.target.value)} className="border border-gray-500 p-2 mr-2 rounded" type="text" placeholder='Mobile Number' minLength="10" maxLength="10"/>
-      </div>
+        </div>
       </form>
       )}
     
@@ -1865,55 +1881,53 @@ const BridgeForm = ({onSubmit }) => {
             <div className='w-full mx-5'>
               <div className="mb-6">
             <label htmlFor="country" className="block text-gray-700">Country:</label>
-            <select id="country" name="country" value={country} onChange={(e) => setCountry(e.target.value)} className="border border-gray-300 p-2 w-full rounded" >
-                <option value="" disabled>Select Country</option>
-                {countries.map((country, index) => (
-                <option key={index} value={country}>{country}</option>
-              ))}
-            </select>
+            <div>
+            <Selector value={country} data={countryData} selected={country} setSelected={setCountry}/>
+          </div>
           </div>
           <div className="mb-6">
               <label htmlFor="division" className="block text-gray-700">Division:</label>
-              <input type="text" id="division" placeholder='Enter Division' name="division" value={division} onChange={(e) => setDivision(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
+              <input type="text" id="division" placeholder='Enter Division' name="division" value={division} onChange={(e) => setDivision(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
             </div>
           <div className="mb-6">
             <label htmlFor='bridgeName' className="block text-gray-700">Bridge Name:</label>
-            <input type="text" id="name" placeholder='Enter Name' name="name" value={bridgeName} onChange={(e) => setBridgeName(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
+            <input type="text" id="name" placeholder='Enter Name' name="name" value={bridgeName} onChange={(e) => setBridgeName(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
           </div>
         </div>
             <div className='w-full mx-5'>
             <div className="mb-6">
-            <label htmlFor="state" className="block text-gray-700">State:</label>
-            <select id="state" name="state" value={state} onChange={(e) => setState(e.target.value)} className="border border-gray-300 p-2 w-full rounded">
-                <option value="" disabled>Select State</option>
-                {statesByCountry[country]?.map((state, index) => (
-                <option key={index} value={state}>{state}</option>
-              ))}
-            </select>
+            {state && (
+            <div>
+              <label htmlFor="state" className="block text-gray-700">State:</label>
+              <Selector value={state} data={stateData} selected={state} setSelected={setState} />
+            </div>
+          )}
           </div>
           <div className="mb-6">
             <label htmlFor="coordinates" className="block text-gray-700">Bridge Coordinates:</label>
-            <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={coordinates} onChange={(e) => setCoordinates(e.target.value)} className="border border-gray-300 p-2 w-full rounded"/>
+            <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={coordinates} onChange={(e) => setCoordinates(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
           </div>
           <div className="mb-6">
             <label htmlFor="nobridgespan" className="block text-gray-700">Total Number of Spans:</label>
-            <select id="nobridgespan" name="nobridgespan" onChange={(e) => setnobridgespan(e.target.value)} className="border border-gray-300 p-2 w-full rounded">
+            <select id="nobridgespan" name="nobridgespan" onChange={(e) => setnobridgespan(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
               {[...Array(50).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
             </select>
           </div>
         </div>
         <div className='w-full mx-5'>
-            <div className="mb-6">
-              <label htmlFor="division" className="block text-gray-700">City:</label>
-              <input type="text" id="division" placeholder='Enter City' name="division" value={city} onChange={(e) => setCity(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
+        {city && (
+            <div className='mb-6'>
+              <label htmlFor="state" className="block text-gray-700">City:</label>
+              <Selector value={city} data={cityData} selected={city} setSelected={setCity} />
             </div>
+          )}
             <div className="mb-6">
               <label htmlFor='bridgeName' className="block text-gray-700">Bridge Location:</label>
-              <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="border border-gray-300 p-2 w-full rounded" />
+              <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
             </div>
             <div className="mb-6">
             <label htmlFor="noofgirders" className="block text-gray-700">Total Number of Girders:</label>
-            <select id="noofgirders" name="noofgirders" onChange={(e) => setnoofgirders(e.target.value)} className="border border-gray-300 p-2 w-full rounded">
+            <select id="noofgirders" name="noofgirders" onChange={(e) => setnoofgirders(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
               {[...Array(20).keys()].map((girder) => (<option key={girder + 1} value={girder + 1}>{girder + 1}</option>))}
             </select>
           </div>
