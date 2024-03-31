@@ -85,19 +85,19 @@ function Forgotpw() {
                     <img className='w-40' src={logo2} alt="" />
                   </div>
                     <h1 className='text-center pb-8 text-indigo-900 pt-8 text-2xl font-semibold'>Forgot Password?</h1>
-                    <p className='px-16 pb-16 text-center'>Please provide your email address, and we'll promptly send you a secure link to reset your password via email.</p>
+                    <p className='px-24 pb-16 text-center'>Please provide your email address, and we'll promptly send you a secure link to reset your password via email.</p>
                     <div className='flex justify-center'>
                         <FaUser style={{ alignItems: 'center', marginTop: '1%' }} size={28} />
-                        <input className="border border-gray-400 bg-gray-100 p-3 ml-3 w-1/3 pl-3 mr-2 rounded" type="email" placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <input className="border border-gray-300 bg-gray-50 p-3 ml-3 w-1/3 pl-3 mr-2 rounded-lg overflow-hidden shadow-md outline-0" type="email" placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className='flex justify-center pt-6'>
                         <FaLock style={{ alignItems: 'center', marginTop: '1%' }} size={28}/>
-                        <input className="border border-gray-400 bg-gray-100 p-3 ml-3 w-1/3 pl-3 mr-2 rounded" type="text" placeholder="Enter Captcha" value={userInput} onChange={(e) => setUserInput(e.target.value)} onKeyDown={handleKeyDown}/>
+                        <input className="border border-gray-300 bg-gray-50 p-3 ml-3 w-1/3 pl-3 mr-2 rounded-lg overflow-hidden shadow-md outline-0" type="text" placeholder="Enter Captcha" value={userInput} onChange={(e) => setUserInput(e.target.value)} onKeyDown={handleKeyDown}/>
                     </div>
                     <p className='text-center mt-12 font-semibold'>Captcha</p>
-                    <p className='text-center mb-6 bg-gray-800 text-white mx-72 p-4 rounded text-2xl'><strong>{randomCharacters}</strong></p>
+                    <p className='text-center mb-6 bg-gray-800 text-white mx-72 p-4 text-2xl overflow-hidden shadow-md outline-0'><strong>{randomCharacters}</strong></p>
                     <div className='text-center'>
-                        <button onClick={handleSubmit} className='p-2 bg-blue-600 hover:bg-blue-900 px-5 text-white rounded-sm'>Submit</button>
+                        <button onClick={handleSubmit} className='p-2 bg-blue-600 hover:bg-blue-900 px-5 text-white rounded-sm overflow-hidden shadow-md outline-0'>Submit</button>
                     </div>
                 </div>
             </div>

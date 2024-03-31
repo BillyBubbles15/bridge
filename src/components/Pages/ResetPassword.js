@@ -77,16 +77,16 @@ const ResetPassword = () => {
           <div className="xl:pb-16 md:pb-12">
             <div className="flex justify-center pb-6">
               <FaLock style={{ alignItems: 'center', marginTop: '2%' }} size={24} />
-              <input className="border border-gray-400 bg-gray-100 xl:p-3 xl:text-base md:text-xs md:p-2 ml-3 w-1/3 pl-3 mr-2 rounded" type="password" placeholder="Enter New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              <input className="border border-gray-300 bg-gray-50 xl:p-3 xl:text-base md:text-xs md:p-2 ml-3 w-1/3 pl-3 mr-2 rounded-lg overflow-hidden shadow-md outline-0" type="password" placeholder="Enter New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
             </div>
             <div className="flex justify-center">
               <LuRepeat style={{ alignItems: 'center', marginTop: '2%' }} size={24} />
-              <input className="border border-gray-400 bg-gray-100 xl:p-3 xl:text-base md:text-xs md:p-2 ml-3 w-1/3 pl-3 mr-2 rounded" type="password" placeholder="Confirm Password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} onKeyDown={handleKeyDown} />
+              <input className="border border-gray-300 bg-gray-50 xl:p-3 xl:text-base md:text-xs md:p-2 ml-3 w-1/3 pl-3 mr-2 rounded-lg overflow-hidden shadow-md outline-0" type="password" placeholder="Confirm Password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} onKeyDown={handleKeyDown} />
             </div>
           </div>
           <div className="">
             <div className="text-center">
-                <button className='xl:p-2 md:p-1 bg-blue-600 hover:bg-blue-900 xl:px-5 md:text-xs md:px-3 xl:text-base text-white rounded-sm' onClick={handleConfirm}>Confirm</button>
+                <button className='xl:p-2 md:p-1 bg-blue-600 hover:bg-blue-900 xl:px-5 md:text-xs md:px-3 xl:text-base text-white rounded-sm overflow-hidden shadow-md' onClick={handleConfirm}>Confirm</button>
             </div>
           </div>
         </div>

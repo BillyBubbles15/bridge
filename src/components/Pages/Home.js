@@ -223,7 +223,7 @@ const handleRowClick = (bridge) => {
           </div>
           <div className="flex w-full justify-end items-center">
             <MdSearch size={36} className='text-gray-600'/>
-            <input type="text" placeholder="Search" className="border bg-gray-200 w-56 border-gray-600 rounded-md p-2 mr-2 focus:outline-none" value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)}/>
+            <input type="text" placeholder="Search" className="border border-gray-300 p-2 pl-3 mr-5 outline-0 w-1/2 rounded-lg overflow-hidden shadow-md" value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)}/>
           </div>
         </div>
         <br />

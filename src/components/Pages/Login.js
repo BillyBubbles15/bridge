@@ -91,16 +91,16 @@ const Login = () => {
           <div className="">
             <div className="xl:pb-6 md:pb-4 flex justify-center">
               <FaUser style={{ alignItems: 'center', marginTop: '1%' }} size={28}/>
-              <input className="border border-gray-400 bg-gray-100 xl:p-3 xl:w-1/3 xl:text-base ml-3 pl-3 mr-2 rounded md:w-2/5 md:pl-3 md:p-1 md:text-xs" type="email" placeholder="Enter Email" value={email} onChange={(e) => setemail(e.target.value)}/>
+              <input className="border border-gray-300 bg-gray-50 xl:p-3 xl:w-1/3 xl:text-base ml-3 pl-3 mr-2 md:w-2/5 md:pl-3 md:p-1 md:text-xs rounded-lg overflow-hidden shadow-md outline-0" type="email" placeholder="Enter Email" value={email} onChange={(e) => setemail(e.target.value)}/>
             </div>
             <div className="xl:pb-6 md:pb-4 flex justify-center">
             <FaLock style={{ alignItems: 'center', marginTop: '1%' }} size={28}/>
-            <input className="border bg-gray-100 border-gray-400 xl:p-3 xl:w-1/3 xl:text-base ml-3 pl-3 mr-2 rounded md:w-2/5 md:pl-3 md:p-1 md:text-xs" type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown}/>
+            <input className="border bg-gray-50 border-gray-300 xl:p-3 xl:w-1/3 xl:text-base ml-3 pl-3 mr-2 md:w-2/5 md:pl-3 md:p-1 md:text-xs rounded-lg overflow-hidden shadow-md outline-0" type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown}/>
         </div>
       </div>
           <div className="xl:pb-6 md:pb-2 flex justify-center">
             <BsAwardFill style={{ alignItems: 'center', marginTop: '1%' }} size={30}/>
-            <select className="border bg-gray-100 border-gray-400 xl:p-3 xl:w-1/3 xl:text-base ml-3 pl-3 mr-2 rounded md:w-2/5 md:pl-3 md:p-1 md:text-xs cursor-pointer" onChange={(e) => setSelectedRole(e.target.value)}>
+            <select className="border bg-gray-50 border-gray-300 xl:p-3 xl:w-1/3 xl:text-base ml-3 pl-3 mr-2 md:w-2/5 md:pl-3 md:p-1 md:text-xs cursor-pointer rounded-lg overflow-hidden shadow-md outline-0" onChange={(e) => setSelectedRole(e.target.value)}>
               <option value="Select Role" selected disabled>Select Role</option>
               <option value="SUPERADMIN">Superadmin</option>
               <option value="bridge-owner">Bridge Owner</option>
@@ -113,9 +113,9 @@ const Login = () => {
             {loading ? (
                 <img id='Licon-login' className='absolute' src={loadingIcon} alt="Loading" />
               ) : (
-                <button onClick={handleLogin} className='xl:p-2 mb-2 bg-blue-600 hover:bg-blue-900 text-white xl:text-base rounded-sm xl:px-8 md:text-xs md:px-4 md:py-2'>Login</button>
+                <button onClick={handleLogin} className='xl:p-2 mb-2 bg-blue-600 hover:bg-blue-900 text-white xl:text-base xl:px-8 md:text-xs md:px-4 md:py-2 rounded-sm overflow-hidden shadow-xl'>Login</button>
               )}
-              <p className='underline xl:mb-16 xl:text-sm text-blue-800 hover:text-red-600 md:text-xs md:mb-2'><a href="./forgotpassword">Forgot Password?</a></p>
+              <p className='underline xl:mb-16 xl:text-sm text-blue-800 hover:text-red-600 md:text-xs md:mb-2 rounded-sm'><a href="./forgotpassword">Forgot Password?</a></p>
             </div>
           </div>
         </div>
