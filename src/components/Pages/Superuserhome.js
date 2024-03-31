@@ -1167,7 +1167,7 @@ useEffect(() => {
                 </div>
 
                 ) :  (
-                <div>No weather report could be found for {userData.city}. <br />Edit the city name to check if your area's weather gets shown. <br /> Source: https://openweathermap.org/</div>
+                <div>No weather report could be found for {userData.city}. <br />Edit the city name to check if the area's weather gets shown. <br /> Source: https://openweathermap.org/</div>
                 )}
             </div>
         </div>
