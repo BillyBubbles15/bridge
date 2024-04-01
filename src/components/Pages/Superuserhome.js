@@ -1391,15 +1391,15 @@ useEffect(() => {
                     <div className='w-1/3'>
                         <div className='flex'>
                             <WiHumidity size={25}/>
-                            <p className='text-md'>Air Humidity: {Weather.main.humidity}%</p>
+                            <p className='ml-2 text-sm'>Air Humidity: {Weather.main.humidity}%</p>
                         </div>
                         <div className=' mt-2 flex'>
                             <PiWind size={25}/>
-                            <p className='text-sm'>Wind Speed: {Weather.wind.speed} km/h</p>
+                            <p className='ml-2 text-sm'>Wind Speed: {Weather.wind.speed} km/h</p>
                         </div>
                         <div className='mt-2 flex'>
                             <GiSpeedometer size={20}/>
-                            <p className='text-sm'>Air Pressure: {Weather.main.pressure} mBar</p>
+                            <p className='ml-2 text-sm'>Air Pressure: {Weather.main.pressure} mBar</p>
                         </div>
                     </div>
                 </div>
@@ -1935,7 +1935,6 @@ useEffect(() => {
             <input id='ownerName3' value={userData.ownerName3} onChange={(e) => setUserData(prevData => ({...prevData, ownerName3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Owner 3)'/>
             <input id='ownerEmail3' value={userData.ownerEmail3} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
             <select name="countryCode" value={userData.owner3countryCode} onChange={(e) => setUserData(prevData => ({...prevData, owner3countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-        ter'>
             {filteredOptions.map(option => (
             <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
             ))}
@@ -1955,4 +1954,4 @@ useEffect(() => {
 
   )
 };
-export default
+export default Superuserhome;
