@@ -5,7 +5,6 @@ import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import Papa from 'papaparse';
 import { Line } from 'react-chartjs-2';
-import SensorData from '../Assets/Data.csv';
 import './tailwind.css';
 import Selector from "./Selector";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend, LineElement } from 'chart.js';
@@ -26,6 +25,9 @@ import snow_icon from '../Assets/weather/snow.png';
 import mist_icon from '../Assets/weather/fog.png';
 import thunderstorm_icon from '../Assets/weather/thunderstorm.png';
 
+import SensorData from '../Assets/Data.csv';
+import SampleData from '../Assets/SGdata.csv';
+
 ChartJS.register( CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend)
 
 
@@ -41,6 +43,15 @@ const Superuserhome = () => {
     const [chartData6, setChartData6] = useState({});
     const [chartData7, setChartData7] = useState({});
 
+
+    const [SampleChartData, setSampleChartData] = useState({});
+    const [SampleChartData0, setSampleChartData0] = useState({});
+    const [SampleChartData1, setSampleChartData1] = useState({});
+    const [SampleChartData2, setSampleChartData2] = useState({});
+    const [SampleChartData3, setSampleChartData3] = useState({});
+    const [SampleChartData4, setSampleChartData4] = useState({});
+    const [SampleChartData5, setSampleChartData5] = useState({});
+    const [SampleChartData6, setSampleChartData6] = useState({});
 
     const [averageLoggerTemp, setAverageLoggerTemp] = useState(null);
     const [averageBatteryVoltage, setAverageBatteryVoltage] = useState(null);
@@ -274,6 +285,221 @@ const Superuserhome = () => {
       };
   
       fetchData();
+    }, []);
+
+
+    const [showaccelerometers, setshowaccelerometers] = useState(false);
+    const [showstraingauges, setshowstraingauges] = useState(false);
+
+    const accelerometerbtn = (e) => {
+        e.preventDefault();
+        setIsSelected(!isSelected);
+        setshowaccelerometers(true);
+        setshowstraingauges(false);
+        setshowDashboard(false);
+        setshowSensorDashboard(false);
+        setshowModify(false);
+        setshowSensorDetails(false);
+        setshowBridgeDetails(false);
+        setshowUser(false);
+    }
+
+    const straingaugebtn = (e) => {
+        e.preventDefault();
+        setIsSelected(!isSelected);
+        setshowaccelerometers(false);
+        setshowstraingauges(true);
+        setshowDashboard(false);
+        setshowSensorDashboard(false);
+        setshowModify(false);
+        setshowSensorDetails(false);
+        setshowBridgeDetails(false);
+        setshowUser(false);
+    }
+
+    useEffect(() => {
+
+        const fetchData1 = async () => {
+            const response1 = await fetch(SampleData); // Change path to your CSV file
+            const reader1 = response1.body.getReader();
+            const result1 = await reader1.read();
+            const decoder1 = new TextDecoder('utf-8');
+            const csv1 = decoder1.decode(result1.value);
+            const parsedData1 = Papa.parse(csv1, { header: true });
+
+            const label = parsedData1.data.slice(0, 3).map(row => row.TIME);
+
+            const straingauge1 = parsedData1.data.slice(0, 3).map(row => row.SG1);
+            const straingauge2 = parsedData1.data.slice(0, 3).map(row => row.SG2);
+            const straingauge3 = parsedData1.data.slice(0, 3).map(row => row.SG3);
+
+            const accelerometer1 = parsedData1.data.slice(0, 3).map(row => row.ACC1);
+            const accelerometer2 = parsedData1.data.slice(0, 3).map(row => row.ACC2);
+            const accelerometer3 = parsedData1.data.slice(0, 3).map(row => row.ACC3);
+
+            setSampleChartData({
+                labels: label,
+                datasets: [
+                  {
+                      label: 'Date/Time vs Strain Gauge 1',
+                      data: straingauge1,
+                      borderColor: 'red',
+                      borderWidth: 1,
+                      pointBorderColor: 'black',  
+                      pointRadius: 1,
+                      pointHoverRadius: 1,
+                      tension: 0,
+                  }
+                ]
+              });
+            setSampleChartData1({
+                labels: label,
+                datasets: [
+                  {
+                      label: 'Date/Time vs Strain Gauge 2',
+                      data: straingauge2,
+                      borderColor: 'blue',
+                      borderWidth: 1,
+                      pointBorderColor: 'black',
+                      pointRadius: 1,
+                      pointHoverRadius: 1,
+                      tension: 0,
+                  }
+                ]
+              });
+            setSampleChartData2({
+                labels: label,
+                datasets: [
+                  {
+                      label: 'Date/Time vs Strain Gauge 3',
+                      data: straingauge3,
+                      borderColor: 'green',
+                      borderWidth: 1,
+                      pointBorderColor: 'black',  
+                      pointRadius: 1,
+                      pointHoverRadius: 1,
+                      tension: 0,
+                  }
+                ]
+              });
+            setSampleChartData3({
+                labels: label,
+                datasets: [
+                  {
+                      label: 'Date/Time vs Acclerometer 1',
+                      data: accelerometer1,
+                      borderColor: 'red',
+                      borderWidth: 1,
+                      pointBorderColor: 'black',  
+                      pointRadius: 1,
+                      pointHoverRadius: 1,
+                      tension: 0,
+                  }
+                ]
+              });
+            setSampleChartData4({
+                labels: label,
+                datasets: [
+                  {
+                      label: 'Date/Time vs Accelerometer 2',
+                      data: accelerometer2,
+                      borderColor: 'blue',
+                      borderWidth: 1,
+                      pointBorderColor: 'black',  
+                      pointRadius: 1,
+                      pointHoverRadius: 1,
+                      tension: 0,
+                  }
+                ]
+              });
+            setSampleChartData5({
+                labels: label,
+                datasets: [
+                  {
+                      label: 'Date/Time vs Accelerometer 3',
+                      data: accelerometer3,
+                      borderColor: 'green',
+                      borderWidth: 1,
+                      pointBorderColor: 'black',  
+                      pointRadius: 1,
+                      pointHoverRadius: 1,
+                      tension: 0,
+                  }
+                ]
+              });
+              setSampleChartData6({
+                labels: label,
+                datasets: [
+                    {
+                        label: 'Strain Gauge 1',
+                        data: straingauge1,
+                        borderColor: 'red',
+                        borderWidth: 1,
+                        pointBorderColor: 'black',
+                        pointRadius: 1,
+                        pointHoverRadius: 1,
+                        tension: 0,
+                    },
+                    {
+                        label: 'Strain Gauge 2',
+                        data: straingauge2,
+                        borderColor: 'blue',
+                        borderWidth: 1,
+                        pointBorderColor: 'black',
+                        pointRadius: 1,
+                        pointHoverRadius: 1,
+                        tension: 0,
+                    },
+                    {
+                        label: 'Strain Gauge 3',
+                        data: straingauge3,
+                        borderColor: 'green',
+                        borderWidth: 1,
+                        pointBorderColor: 'black',
+                        pointRadius: 1,
+                        pointHoverRadius: 1,
+                        tension: 0,
+                    },
+                ]
+            });
+              setSampleChartData0({
+                labels: label,
+                datasets: [
+                    {
+                        label: 'Accelerometer 1',
+                        data: accelerometer1,
+                        borderColor: 'red',
+                        borderWidth: 1,
+                        pointBorderColor: 'black',
+                        pointRadius: 1,
+                        pointHoverRadius: 1,
+                        tension: 0,
+                    },
+                    {
+                        label: 'Accelerometer 2',
+                        data: accelerometer2,
+                        borderColor: 'blue',
+                        borderWidth: 1,
+                        pointBorderColor: 'black',
+                        pointRadius: 1,
+                        pointHoverRadius: 1,
+                        tension: 0,
+                    },
+                    {
+                        label: 'Accelerometer 3',
+                        data: accelerometer3,
+                        borderColor: 'green',
+                        borderWidth: 1,
+                        pointBorderColor: 'black',
+                        pointRadius: 1,
+                        pointHoverRadius: 1,
+                        tension: 0,
+                    },
+                ]
+            });
+  
+        }
+    fetchData1();
     }, []);
 
 
@@ -608,7 +834,7 @@ useEffect(() => {
 
     useEffect(() => {
         // Fetch weather data for 'Pune' when component mounts
-        fetch(`${weatherapi.base}weather?q=${userData.city}&units=metric&APPID=${weatherapi.key}`)
+        fetch(`${weatherapi.base}weather?q=Pune&units=metric&APPID=${weatherapi.key}`)
             .then((res) => res.json())
             .then((result) => {
                 setWeather(result);
@@ -747,6 +973,8 @@ useEffect(() => {
         setshowSensorDetails(false);
         setshowBridgeDetails(false);
         setshowUser(false);
+        setshowaccelerometers(false);
+        setshowstraingauges(false);
     };
 
     const SensorDashboard = () => {
@@ -759,6 +987,8 @@ useEffect(() => {
         setshowBridgeDetails(false);
         setshowSensorDetails(false);
         setshowUser(false);    
+        setshowaccelerometers(false);
+        setshowstraingauges(false);
     };
 
     const RedirectHome = () => {
@@ -775,6 +1005,8 @@ useEffect(() => {
         setshowUser(false);    
         setshowModify(!showModify);
         setIsSelected4(!isSelected4);
+        setshowaccelerometers(false);
+        setshowstraingauges(false);
     };
 
     const [showBridgeDetails, setshowBridgeDetails] = useState(false);
@@ -1071,19 +1303,20 @@ useEffect(() => {
         </div>
       </div>
 
+
       <nav className='w-24 bg-gray-300 fixed mt-14'>
         <div className='text-center'>
-            <button className='w-full py-3 hover:bg-gray-400' onClick={RedirectHome}><ul><MdHome style={{width: '100%', alignItems: 'center'}} size={40} />Home</ul></button>
-            <hr /><hr />
-            <button className={`w-full py-3 ${isSelected ? 'bg-gray-400' : 'hover:bg-gray-400'}`} onClick={Dashboard}><ul><MdDashboard style={{width: '100%', alignItems: 'center'}} size={40} />Dashboard</ul></button>
+            <button className={`w-full py-3 ${isSelected ? 'bg-gray-400' : 'hover:bg-gray-400'}`} onClick={Dashboard}><ul><MdDashboard style={{width: '100%', alignItems: 'center'}} size={40} />Home</ul></button>
             <hr /><hr />
             <button className={`w-full py-3 ${isSelected1 ? 'bg-gray-400' : 'hover:bg-gray-400'}`} onClick={SensorDashboard}><ul><MdSensors style={{width: '100%', alignItems: 'center'}} size={40} />Sensors</ul></button>
             <hr /><hr />
-            <button className='w-full py-3 hover:bg-gray-400'><ul><FaBridge style={{width: '100%', alignItems: 'center'}} size={40} />Bridge</ul></button>
+            <button className='w-full py-3 hover:bg-gray-400'><ul><MdHome style={{width: '100%', alignItems: 'center'}} size={40} />Bridge</ul></button>
             <hr /><hr />
             <button className='w-full py-3 hover:bg-gray-400'><ul><MdDescription style={{width: '100%', alignItems: 'center'}} size={40} />Report</ul></button>
             <hr /><hr />
             <button className={`w-full py-3 ${isSelected4 ? 'bg-gray-400' : 'hover:bg-gray-400'}`} onClick={Modify}><ul><FaEdit style={{width: '100%', alignItems: 'center'}} size={40} />Edit</ul></button>
+            <hr /><hr />
+            <button className='w-full py-3 hover:bg-gray-400' onClick={RedirectHome}><ul><FaBridge  style={{width: '100%', alignItems: 'center'}} size={40} />Bridge List</ul></button>
             <hr /><hr />
             <button className='w-full py-3 hover:bg-gray-400'><ul><MdSettings style={{width: '100%', alignItems: 'center'}} size={40}/>Settings</ul></button>
         </div>  
@@ -1100,14 +1333,19 @@ useEffect(() => {
       )}
 
 
-
-
       {showDashboard && (
         <>
-        <div className='w-11/12 ml-24 p-6 text-white pt-24 flex w-1/2 mx-8 shadow-xl'>
-            <div className='bg-indigo-800 w-3/5 text-center py-6 mx-8 shadow-2xl rounded-xl'>
+        <div className='w-11/12 ml-24 p-6 pt-20 flex w-1/2 mx-8'>
+        <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Accelerometer</button>
+        <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={straingaugebtn}>Strain Gauge</button>
+        <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Deflection Gauge</button>
+        <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Camera</button>
+        </div>
+
+        <div className='w-11/12 ml-24 p-6 text-white pt-4 flex w-1/2 mx-8'>
+            <div className='bg-indigo-800 w-2/5 text-center py-6 mx-8 shadow-2xl rounded-xl'>
                 { typeof Weather.main != "undefined" ? (
-                <div className='flex justify-center pt-6'>
+                <div className='flex justify-center'>
 
                     <div className='w-1/4'>
                         <div className='flex justify-start'>
@@ -1144,28 +1382,27 @@ useEffect(() => {
                         </div>
                     </div>
 
-                    <div className='w-1/3 pt-6 text-left'>
+                    <div className='w-1/3 text-left'>
                         <p className='text-4xl font-semibold'>{Weather.name}, {Weather.sys.country}</p><br />
                         <p className='text-4xl font-semibold'>{Weather.main.temp}°C</p>
-                        <p>({Weather.weather[0].description})</p>
+                        <p className='text-xl'>({Weather.weather[0].description})</p>
                     </div>
 
-                    <div className='w-1/3 pt-6'>
+                    <div className='w-1/3'>
                         <div className='flex'>
-                            <WiHumidity size={30}/>
-                            <p className='ml-2 text-lg'>Air Humidity: {Weather.main.humidity}%</p>
+                            <WiHumidity size={25}/>
+                            <p className='text-md'>Air Humidity: {Weather.main.humidity}%</p>
                         </div>
                         <div className=' mt-2 flex'>
-                            <PiWind size={30}/>
-                            <p className='ml-2 text-lg'>Wind Speed: {Weather.wind.speed} km/h</p>
+                            <PiWind size={25}/>
+                            <p className='text-sm'>Wind Speed: {Weather.wind.speed} km/h</p>
                         </div>
                         <div className='mt-2 flex'>
-                            <GiSpeedometer size={30}/>
-                            <p className='ml-2 text-lg'>Air Pressure: {Weather.main.pressure} mBar</p>
+                            <GiSpeedometer size={20}/>
+                            <p className='text-sm'>Air Pressure: {Weather.main.pressure} mBar</p>
                         </div>
                     </div>
                 </div>
-
                 ) :  (
                 <div>No weather report could be found for {userData.city}. <br />Edit the city name to check if the area's weather gets shown. <br /> Source: https://openweathermap.org/</div>
                 )}
@@ -1189,11 +1426,8 @@ useEffect(() => {
                     <h1>Loading...</h1>
             )}
             </div>
-
-
-            </div>
+        </div>
             <div className='w-11/12 ml-24 p-6 flex'>
-
               <div className="bg-gray-100 w-1/6 mx-6 shadow-2xl rounded-xl"><br />
                 <h2 className="text-lg font-semibold text-center text-gray-600">Avg Battery Voltage</h2><br />
                 <h1 className='text-center font-bold text-6xl text-gray-800'>{averageBatteryVoltage} </h1><br />
@@ -1210,12 +1444,96 @@ useEffect(() => {
                 users to monitor system health and performance. With intuitive visualizations, 
                 it provides insights into power supply stability and environmental conditions, facilitating 
                 informed decision-making and proactive maintenance.</p>
-
               </div>
             </div>
             </>
       )}
 
+
+    {showaccelerometers && (
+        <>
+        <div className='w-11/12 ml-24 p-6 pt-24 flex bg-white'>
+            <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
+                <h1 className='text-center font-bold'>Accelerometer 1</h1><br />
+                {SampleChartData3.labels && SampleChartData3.datasets && SampleChartData3.labels.length > 0 && SampleChartData3.datasets.length > 0 ? (
+                    <Line data={SampleChartData3}/>
+                    ) : (
+                    <h1>Loading...</h1>
+                )}
+            </div>
+
+            <div className="bg-gray-100 w-1/2 shadow-xl">
+            <h1 className='text-center font-bold'>Accelerometer 2</h1><br />
+            {SampleChartData4.labels && SampleChartData4.datasets && SampleChartData4.labels.length > 0 && SampleChartData4.datasets.length > 0 ? (
+                    <Line data={SampleChartData4} />
+                    ) : (
+                    <h1>Loading...</h1>
+            )}
+            </div>
+        </div>
+        <div className='w-11/12 ml-24 p-6 flex bg-white'>
+            <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
+                <h1 className='text-center font-bold'>Accelerometer 3</h1><br />
+                {SampleChartData5.labels && SampleChartData5.datasets && SampleChartData5.labels.length > 0 && SampleChartData5.datasets.length > 0 ? (
+                    <Line data={SampleChartData5}/>
+                    ) : (
+                    <h1>Loading...</h1>
+                )}
+            </div>
+            <div className="bg-gray-100 w-1/2 shadow-xl">
+                <h1 className='text-center font-bold'>Relative Accelerometer Plots</h1><br />
+                {SampleChartData0.labels && SampleChartData0.datasets && SampleChartData0.labels.length > 0 && SampleChartData0.datasets.length > 0 ? (
+                    <Line data={SampleChartData0}/>
+                    ) : (
+                    <h1>Loading...</h1>
+                )}
+            </div>
+        </div>
+        </>
+    )}
+
+
+    {showstraingauges && (
+        <>
+                <div className='w-11/12 ml-24 p-6 pt-24 flex bg-white'>
+            <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
+                <h1 className='text-center font-bold'>Strain Gauge 1</h1><br />
+                {SampleChartData.labels && SampleChartData.datasets && SampleChartData.labels.length > 0 && SampleChartData.datasets.length > 0 ? (
+                    <Line data={SampleChartData}/>
+                    ) : (
+                    <h1>Loading...</h1>
+                )}
+            </div>
+
+            <div className="bg-gray-100 w-1/2 shadow-xl">
+            <h1 className='text-center font-bold'>Strain Gauge 2</h1><br />
+            {SampleChartData1.labels && SampleChartData1.datasets && SampleChartData1.labels.length > 0 && SampleChartData1.datasets.length > 0 ? (
+                    <Line data={SampleChartData1} />
+                    ) : (
+                    <h1>Loading...</h1>
+            )}
+            </div>
+        </div>
+        <div className='w-11/12 ml-24 p-6 flex bg-white'>
+            <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
+                <h1 className='text-center font-bold'>Strain Gauge 3</h1><br />
+                {SampleChartData2.labels && SampleChartData2.datasets && SampleChartData2.labels.length > 0 && SampleChartData2.datasets.length > 0 ? (
+                    <Line data={SampleChartData2}/>
+                    ) : (
+                    <h1>Loading...</h1>
+                )}
+            </div>
+            <div className="bg-gray-100 w-1/2 shadow-xl">
+                <h1 className='text-center font-bold'>Relative Strain Gauge Plots</h1><br />
+                {SampleChartData6.labels && SampleChartData6.datasets && SampleChartData6.labels.length > 0 && SampleChartData6.datasets.length > 0 ? (
+                    <Line data={SampleChartData6}/>
+                    ) : (
+                    <h1>Loading...</h1>
+                )}
+            </div>
+        </div>
+        </>
+    )}
 
 
       {showSensorDashboard && (
@@ -1617,6 +1935,7 @@ useEffect(() => {
             <input id='ownerName3' value={userData.ownerName3} onChange={(e) => setUserData(prevData => ({...prevData, ownerName3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Owner 3)'/>
             <input id='ownerEmail3' value={userData.ownerEmail3} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
             <select name="countryCode" value={userData.owner3countryCode} onChange={(e) => setUserData(prevData => ({...prevData, owner3countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
+        ter'>
             {filteredOptions.map(option => (
             <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
             ))}
@@ -1636,4 +1955,4 @@ useEffect(() => {
 
   )
 };
-export default Superuserhome;
+export default
