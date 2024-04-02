@@ -834,7 +834,7 @@ useEffect(() => {
 
     useEffect(() => {
         // Fetch weather data for 'Pune' when component mounts
-        fetch(`${weatherapi.base}weather?q=Pune&units=metric&APPID=${weatherapi.key}`)
+        fetch(`${weatherapi.base}weather?q={userData.city}&units=metric&APPID=${weatherapi.key}`)
             .then((res) => res.json())
             .then((result) => {
                 setWeather(result);
