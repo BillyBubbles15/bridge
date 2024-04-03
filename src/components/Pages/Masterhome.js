@@ -193,27 +193,31 @@ const Masterhome = () => {
 
   const handleCsvUpload = async () => {
     if (!uploadedCsv) {
-        enqueueSnackbar('Please add a file!', { variant: 'error' });
+      enqueueSnackbar('Please add a file!', { variant: 'error' });
     } else {
-        try {
-            const formData = new FormData();
-            formData.append('file', uploadedCsv);
-            const response = await axios.post('http://localhost:9090/files/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            });
-            if (response.status >= 200 && response.status < 300) {
-                console.log('Backend Response: ', response.data);
-                enqueueSnackbar('File uploaded successfully!', { variant: 'success' });
-                navigate('/home');
-            }
-        } catch (error) {
-            console.log(error);
-            enqueueSnackbar('Error submitting file! Please check your file format!', { variant: 'error' });
+      try {
+        const formData = new FormData();
+        formData.append('file', uploadedCsv);
+        const response = await axios.post('http://localhost:9090/files/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        });
+        if (response.status >= 200 && response.status < 300) {
+          console.log('Backend Response: ', response.data);
+          enqueueSnackbar('File uploaded successfully!', { variant: 'success' });
+          navigate('/home');
         }
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar('Error submitting file! Please check your file format!', { variant: 'error' });
+      }
     }
-};
+  };
+
+  const handleFileChange = (e) => {
+    setUploadedCsv(e.target.files[0]);
+  };
 
 
     const DelBridge1 = async() => {
@@ -347,7 +351,7 @@ const Masterhome = () => {
             <thead>
               <tr>
                 <th className="border bg-black text-lg text-white px-3 py-4 font-bold">#</th>
-                <th className="border bg-black text-lg text-white px-16 py-4 font-bold">Name</th>
+                <th className="border bg-black text-lg text-white px-16 py-4 font-bold">Bridge Name</th>
                 <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Superadmin</th>
                 <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Admin(s)</th>
                 <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Manager(s)</th>
@@ -397,17 +401,15 @@ const Masterhome = () => {
                       </select>
                     </td>
                     <td className="border px-2 py-3">
-                      <div>
-                        <div className='hover:bg-gray-200 w-3/5'>
-                          <label htmlFor={`uploadCsv_${bridge.id}`} className="cursor-pointer">
-                            Add CSV
-                            <input type="file" id={`uploadCsv_${bridge.id}`} className="hidden" onChange={(e) => setUploadedCsv(e.target.files[0])} accept=".csv" />
-                          </label>
-                        </div>
-                        <div className='w-2/5'>
-                          <button onClick={handleCsvUpload}>Submit</button>
-                        </div>
+                    <div>
+                      <div className='hover:bg-gray-200 w-3/5'>
+                        <label htmlFor='uploadCsv' className="cursor-pointer">
+                          Add CSV
+                          <input type="file" id="uploadCsv" className="hidden" onChange={handleFileChange} accept=".csv" />
+                        </label>
                       </div>
+                      <button onClick={handleCsvUpload}>Upload CSV</button>
+                    </div>
                     </td>
                     <td className="border px-3 py-3 cursor-pointer"><button onClick={DelBridge}><FaTrash size={20}/></button></td>
                   </tr>

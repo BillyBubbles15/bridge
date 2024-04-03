@@ -1346,7 +1346,6 @@ useEffect(() => {
             <div className='bg-indigo-800 w-2/5 text-center py-6 mx-8 overflow-hidden shadow-xl rounded-xl'>
                 { typeof Weather.main != "undefined" ? (
                 <div className='flex justify-center'>
-
                     <div className='w-1/4'>
                         <div className='flex justify-start'>
                             {Weather.weather[0].main === "Clouds" && (
