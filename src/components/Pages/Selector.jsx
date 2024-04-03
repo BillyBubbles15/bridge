@@ -31,11 +31,9 @@ function Selector({ data, selected, setSelected }) {
                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                   Nothing found.
                 </div>
-              ) : (
+                ) : (
                 filteredPeople.map((person) => (
-                  <Combobox.Option
-                    key={person.id}
-                    className={({ active }) =>
+                  <Combobox.Option key={person.id} className={({ active }) =>
                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
                         active ? "bg-pink-600 text-white" : "text-gray-900"
                       }`
@@ -44,8 +42,7 @@ function Selector({ data, selected, setSelected }) {
                   >
                     {({ selected, active }) => (
                       <>
-                        <span
-                          className={`block truncate ${
+                        <span className={`block truncate ${
                             selected ? "font-medium" : "font-normal"
                           }`}
                         >
