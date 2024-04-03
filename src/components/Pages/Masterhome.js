@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import * as XLSX from 'xlsx';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import axios from 'axios';
@@ -189,34 +190,48 @@ const Masterhome = () => {
     setshowdelbridge(false);
   };
 
-  const [uploadedCsv, setUploadedCsv] = useState(null);
+  const [data, setData] = useState([]);;
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleCsvUpload = async () => {
-    if (!uploadedCsv) {
-      enqueueSnackbar('Please add a file!', { variant: 'error' });
-    } else {
-      try {
-        const formData = new FormData();
-        formData.append('file', uploadedCsv);
-        const response = await axios.post('http://localhost:9090/files/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          }
-        });
-        if (response.status >= 200 && response.status < 300) {
-          console.log('Backend Response: ', response.data);
-          enqueueSnackbar('File uploaded successfully!', { variant: 'success' });
-          navigate('/home');
-        }
-      } catch (error) {
-        console.log(error);
-        enqueueSnackbar('Error submitting file! Please check your file format!', { variant: 'error' });
-      }
-    }
+  const handleFileUpload = (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsBinaryString(file);
+      reader.onload = (e) => {
+          const data = e.target.result;
+          const workbook = XLSX.read(data, { type: "binary" });
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+          const parsedData = XLSX.utils.sheet_to_json(sheet);
+          setData(parsedData);
+          setSelectedFile({ file, data: parsedData });
+      };
   };
 
-  const handleFileChange = (e) => {
-    setUploadedCsv(e.target.files[0]);
+  const postDataToServer = async() => {
+      if(!selectedFile){
+          enqueueSnackbar('Please add a file!', { variant: 'error'});
+      }
+      else{
+          try{
+              const formData = new FormData();
+                formData.append('file', selectedFile.file);
+              const response = await axios.post('http://localhost:9090/bridge/csv/1', formData,{
+                  headers:{
+                      'Content-Type': 'multipart/form-data',
+                  }
+              });
+              if(response.status >= 200 && response.status < 300){
+                  console.log('Backend Response: ',response.data);
+                  enqueueSnackbar('File uploaded successfully!', { variant: 'success'});
+                  navigate('/home');
+              }
+          }
+          catch(error){
+              console.log(error);
+              enqueueSnackbar('Error Submitting file! Please check your file format! ', { variant: 'error'});
+          }
+      }
   };
 
 
@@ -403,12 +418,10 @@ const Masterhome = () => {
                     <td className="border px-2 py-3">
                     <div>
                       <div className='hover:bg-gray-200 w-3/5'>
-                        <label htmlFor='uploadCsv' className="cursor-pointer">
-                          Add CSV
-                          <input type="file" id="uploadCsv" className="hidden" onChange={handleFileChange} accept=".csv" />
-                        </label>
+                      <input id='fileinput' className='hidden' type="file" accept='.xlsx , .xls , .csv' onChange={handleFileUpload} />
+                      <label htmlFor="fileinput" className="cursor-pointer bg-blue-600 text-white p-2 px-8 rounded-sm hover:bg-blue-900" >{selectedFile ? `${selectedFile.file.name}` : 'Choose File'}</label>
+                      <button className='bg-green-600 justify-end text-white p-2 px-4 rounded-sm ml-12 hover:bg-green-900' onClick={postDataToServer}>Submit</button>
                       </div>
-                      <button onClick={handleCsvUpload}>Upload CSV</button>
                     </div>
                     </td>
                     <td className="border px-3 py-3 cursor-pointer"><button onClick={DelBridge}><FaTrash size={20}/></button></td>
@@ -424,15 +437,28 @@ const Masterhome = () => {
             </tbody>
           </table>
         </div>
+        {data.length > 0 && (
+            <table className='hidden text-left'>
+                <thead>
+                    <tr className='grid'>
+                        {Object.keys(data[0]).map((key)=>(
+                            <th className='p-2 w-full' key={key}><label htmlFor="label">{key}:</label></th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.map((row, index) => (
+                        <tr className='grid' key={index}>
+                            {Object.values(row).map((value, index) => (
+                                <td key={index}><input className='p-2 w-full' type="text" value={value} readOnly/></td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        )}
         </div>
       )}
-      {uploadedCsv && (
-        <div className='hidden'>
-          <h2>Uploaded CSV Data:</h2>
-          <pre>{uploadedCsv}</pre>
-        </div>
-      )}
-
 </>
 
   )
