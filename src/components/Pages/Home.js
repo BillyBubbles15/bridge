@@ -53,10 +53,10 @@ const [showexcelfile, setshowexcelfile] = useState(false);
         //     enqueueSnackbar('Please Login to Navigate!', { variant: 'error'});
         //     return;
         // }
-        // if (!superadminId) {
-        //   enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error' });
-        //   navigate('/');
-        // }
+        if (!superadminId) {
+          enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error' });
+          navigate('/');
+        }
         const response = await axios.get(`http://localhost:9090/bridge/superbridges?superadminId=${superadminId}`);
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data);

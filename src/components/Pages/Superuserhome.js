@@ -327,15 +327,15 @@ const Superuserhome = () => {
             const csv1 = decoder1.decode(result1.value);
             const parsedData1 = Papa.parse(csv1, { header: true });
 
-            const label = parsedData1.data.slice(0, 3).map(row => row.TIME);
+            const label = parsedData1.data.slice(0, 10).map(row => row.TIME);
 
-            const straingauge1 = parsedData1.data.slice(0, 3).map(row => row.SG1);
-            const straingauge2 = parsedData1.data.slice(0, 3).map(row => row.SG2);
-            const straingauge3 = parsedData1.data.slice(0, 3).map(row => row.SG3);
+            const straingauge1 = parsedData1.data.slice(0, 10).map(row => row.SG1);
+            const straingauge2 = parsedData1.data.slice(0, 10).map(row => row.SG2);
+            const straingauge3 = parsedData1.data.slice(0, 10).map(row => row.SG3);
 
-            const accelerometer1 = parsedData1.data.slice(0, 3).map(row => row.ACC1);
-            const accelerometer2 = parsedData1.data.slice(0, 3).map(row => row.ACC2);
-            const accelerometer3 = parsedData1.data.slice(0, 3).map(row => row.ACC3);
+            const accelerometer1 = parsedData1.data.slice(0, 10).map(row => row.ACC1);
+            const accelerometer2 = parsedData1.data.slice(0, 10).map(row => row.ACC2);
+            const accelerometer3 = parsedData1.data.slice(0, 10).map(row => row.ACC3);
 
             setSampleChartData({
                 labels: label,
