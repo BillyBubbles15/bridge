@@ -221,7 +221,8 @@ const Masterhome = () => {
       const fetchBridges = async () => {
         try {
           const response = await axios.get('http://localhost:9090/bridge/getallbridge');
-          setBridges(response.data); // Assuming the response data is an array of bridges
+          setBridges(response.data);
+          console.log(response.data);
         } catch (error) {
           console.error('Error fetching bridges:', error);
         }

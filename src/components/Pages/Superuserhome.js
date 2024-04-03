@@ -11,7 +11,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tool
 
 import { FaBridge, FaTrash } from "react-icons/fa6";
 import { FaArrowCircleRight, FaEdit } from "react-icons/fa";
-import {MdHome, MdSettings, MdPerson, MdSearch, MdNotifications, MdDashboard, MdSensors, MdDescription, MdLogout, MdEdit } from 'react-icons/md'
+import {MdHome, MdSettings, MdPerson, MdSearch, MdNotifications, MdDashboard, MdSensors, MdDescription, MdLogout, MdEdit } from 'react-icons/md';
 import { PiWind } from "react-icons/pi";
 import { WiHumidity } from "react-icons/wi";
 import { GiSpeedometer } from "react-icons/gi";
@@ -834,7 +834,7 @@ useEffect(() => {
 
     useEffect(() => {
         // Fetch weather data for 'Pune' when component mounts
-        fetch(`${weatherapi.base}weather?q={userData.city}&units=metric&APPID=${weatherapi.key}`)
+        fetch(`${weatherapi.base}weather?q=Pune&units=metric&APPID=${weatherapi.key}`)
             .then((res) => res.json())
             .then((result) => {
                 setWeather(result);
@@ -1343,7 +1343,7 @@ useEffect(() => {
         </div>
 
         <div className='w-11/12 ml-24 p-6 text-white pt-4 flex w-1/2 mx-8'>
-            <div className='bg-indigo-800 w-2/5 text-center py-6 mx-8 shadow-2xl rounded-xl'>
+            <div className='bg-indigo-800 w-2/5 text-center py-6 mx-8 overflow-hidden shadow-xl rounded-xl'>
                 { typeof Weather.main != "undefined" ? (
                 <div className='flex justify-center'>
 
