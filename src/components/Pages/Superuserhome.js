@@ -854,28 +854,27 @@ useEffect(() => {
     const removeAdmin1 = (e) => {
         e.preventDefault();
         setUserData({
-            adminName: '',
-            adminEmail: '',
-            admin1countryCode: 'code',
-            adminPhone: ''
+            adminName: null,
+            adminEmail: null,
+            adminPhone: null
         });
     };
     const removeAdmin2 = (e) => {
         e.preventDefault();
         setUserData({
-            adminName2: '',
-            adminEmail2: '',
-            admin2countryCode: 'code',
-            adminPhone2: ''
+            adminName2: null,
+            adminEmail2: null,
+            admin2countryCode: null,
+            adminPhone2: null
         });
     };
     const removeAdmin3 = (e) => {
         e.preventDefault();
         setUserData({
-            adminName3: '',
-            adminEmail3: '',
-            admin3countryCode: 'code',
-            adminPhone3: ''
+            adminName3: null,
+            adminEmail3: null,
+            admin3countryCode: null,
+            adminPhone3: null
         });
     };
 
@@ -883,55 +882,55 @@ useEffect(() => {
     const removeManager1 = (e) => {
         e.preventDefault();
         setUserData({
-            managerName: '',
-            managerEmail: '',
-            manager1countryCode: 'code',
-            managerPhone: ''
+            managerName: null,
+            managerEmail: null,
+            manager1countryCode: null,
+            managerPhone: null
         });
     };
     const removeManager2 = (e) => {
         e.preventDefault();
         setUserData({
-            managerName2: '',
-            managerEmail2: '',
-            manager2countryCode: 'code',
-            managerPhone2: ''
+            managerName2: null,
+            managerEmail2: null,
+            manager2countryCode: null,
+            managerPhone2: null
         });
     };
     const removeManager3 = (e) => {
         e.preventDefault();
         setUserData({
-            managerName3: '',
-            managerEmail3: '',
-            manager3countryCode: 'code',
-            managerPhone3: ''
+            managerName3: null,
+            managerEmail3: null,
+            manager3countryCode: null,
+            managerPhone3: null
         });
     };
     const removeManager4 = (e) => {
         e.preventDefault();
         setUserData({
-            managerName4: '',
-            managerEmail4: '',
-            manager4countryCode: 'code',
-            managerPhone4: ''
+            managerName4: null,
+            managerEmail4: null,
+            manager4countryCode: null,
+            managerPhone4: null
         });
     };
     const removeManager5 = (e) => {
         e.preventDefault();
         setUserData({
-            managerName5: '',
-            managerEmail5: '',
-            manager5countryCode: 'code',
-            managerPhone5: ''
+            managerName5: null,
+            managerEmail5: null,
+            manager5countryCode: null,
+            managerPhone5: null
         });
     };
     const removeManager6 = (e) => {
         e.preventDefault();
         setUserData({
-            managerName6: '',
-            managerEmail6: '',
-            manager6countryCode: 'code',
-            managerPhone6: ''
+            managerName6: null,
+            managerEmail6: null,
+            manager6countryCode: null,
+            managerPhone6: null
         });
     };
 
@@ -939,28 +938,28 @@ useEffect(() => {
     const removeOwner1 = (e) => {
         e.preventDefault();
         setUserData({
-            ownerName: '',
-            ownerEmail: '',
-            owner1countryCode: 'code',
-            ownerPhone: ''
+            ownerName: null,
+            ownerEmail: null,
+            owner1countryCode: null,
+            ownerPhone: null
         });
     };
     const removeOwner2 = (e) => {
         e.preventDefault();
         setUserData({
-            ownerName2: '',
-            ownerEmail2: '',
-            owner2countryCode: 'code',
-            ownerPhone2: ''
+            ownerName2: null,
+            ownerEmail2: null,
+            owner2countryCode: null,
+            ownerPhone2: null
         });
     };
     const removeOwner3 = (e) => {
         e.preventDefault();
         setUserData({
-            ownerName3: '',
-            ownerEmail3: '',
-            owner3countryCode: 'code',
-            ownerPhone3: ''
+            ownerName3: null,
+            ownerEmail3: null,
+            owner3countryCode: null,
+            ownerPhone3: null
         });
     };
 
@@ -1112,7 +1111,7 @@ useEffect(() => {
 
       {showDashboard && (
         <>
-        <div className='w-11/12 ml-24 p-6 pt-20 flex w-1/2 mx-8'>
+        <div className='w-11/12 ml-32 p-6 pt-20 flex w-1/2'>
         <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Accelerometer</button>
         <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={straingaugebtn}>Strain Gauge</button>
         <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Deflection Gauge</button>
@@ -1121,7 +1120,7 @@ useEffect(() => {
 
 
 
-        <div className='w-11/12 ml-24 p-6 text-white pt-4 flex w-1/2 mx-8'>
+        <div className='w-11/12 ml-32 p-6 text-white pt-4 flex w-1/2'>
             <div className='bg-indigo-800 w-2/5 text-center py-6 overflow-hidden shadow-xl rounded-xl'>
                 { typeof Weather.main != "undefined" ? (
                 <div className='flex justify-center'>
@@ -1569,21 +1568,21 @@ useEffect(() => {
         <div className='text-left text-gray-800'>
         <h3 className='font-semibold pb-6'>Added Admin(s):</h3>
         <div className='flex'>
-            <input id='adminName' value={userData.adminName} onChange={(e) => setUserData(prevData => ({...prevData, adminName: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 1)'/>
-            <input id='adminEmail' value={userData.adminEmail} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='adminName' value={userData.adminName || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminName: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 1)'/>
+            <input id='adminEmail' value={userData.adminEmail || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0 rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.adminPhone || ''} onChange={(value) => setUserData(prevData => ({ ...prevData, adminPhone: value }))} inputProps={{ required: true }} />
             <button className='w-1/6 mt-4' onClick={removeAdmin1}><FaTrash size={20}/></button>
         </div>
         <form action="submit">
         <div className='mt-5 flex'>
-            <input id='adminName2' value={userData.adminName2} onChange={(e) => setUserData(prevData => ({...prevData, adminName2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 2)'/>
-            <input id='adminEmail2' value={userData.adminEmail2} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='adminName2' value={userData.adminName2 || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminName2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 2)'/>
+            <input id='adminEmail2' value={userData.adminEmail2 || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.adminPhone2 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, adminPhone2: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6 mt-4' onClick={removeAdmin2}><FaTrash size={20}/></button>
         </div>
         <div className='mt-5 flex'>
-            <input id='adminName3' value={userData.adminName3} onChange={(e) => setUserData(prevData => ({...prevData, adminName3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 3)'/>
-            <input id='adminEmail3' value={userData.adminEmail3} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='adminName3' value={userData.adminName3 || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminName3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 3)'/>
+            <input id='adminEmail3' value={userData.adminEmail3 || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.adminPhone3 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, adminPhone3: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6 mt-4' onClick={removeAdmin3}><FaTrash size={20}/></button>
         </div>
@@ -1592,45 +1591,45 @@ useEffect(() => {
         <br /><br /><br />
         <h3 className='font-semibold pb-6 mx-4'>Added Manager(s):</h3>
         <div className='flex'>
-            <input id='managerName' value={userData.managerName} onChange={(e) => setUserData(prevData => ({...prevData, managerName: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 1)'/>
-            <input id='managerEmail' value={userData.managerEmail} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='managerName' value={userData.managerName || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerName: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 1)'/>
+            <input id='managerEmail' value={userData.managerEmail || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6' onClick={removeManager1}><FaTrash size={20}/></button>
         </div>
 
         <form action="submit">
         <div className='mt-5 flex'>
-            <input id='managerName2' value={userData.managerName2} onChange={(e) => setUserData(prevData => ({...prevData, managerName2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 2)'/>
-            <input id='managerEmail2' value={userData.managerEmail2} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='managerName2' value={userData.managerName2 || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerName2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 2)'/>
+            <input id='managerEmail2' value={userData.managerEmail2 || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone2 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone2: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6' onClick={removeManager2}><FaTrash size={20}/></button>
         </div>
 
 
         <div className='mt-5 flex'>
-            <input id='managerName3' value={userData.managerName3} onChange={(e) => setUserData(prevData => ({...prevData, managerName3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 3)'/>
-            <input id='managerEmail3' value={userData.managerEmail3} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='managerName3' value={userData.managerName3 || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerName3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 3)'/>
+            <input id='managerEmail3' value={userData.managerEmail3 || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone3 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone3: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6' onClick={removeManager3}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
-            <input id='managerName4' value={userData.managerName4} onChange={(e) => setUserData(prevData => ({...prevData, managerName4: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 4)'/>
-            <input id='managerEmail4' value={userData.managerEmail4} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail4: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='managerName4' value={userData.managerName4 || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerName4: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 4)'/>
+            <input id='managerEmail4' value={userData.managerEmail4 || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail4: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone4 || ''} onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone4: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6' onClick={removeManager4}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
-            <input id='managerName5' value={userData.managerName5} onChange={(e) => setUserData(prevData => ({...prevData, managerName5: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 5)'/>
-            <input id='managerEmail5' value={userData.managerEmail5} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail5: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='managerName5' value={userData.managerName5 || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerName5: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 5)'/>
+            <input id='managerEmail5' value={userData.managerEmail5 || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail5: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone5 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone5: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6' onClick={removeManager5}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
-            <input id='managerName6' value={userData.managerName6} onChange={(e) => setUserData(prevData => ({...prevData, managerName6: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 6)'/>
-            <input id='managerEmail6' value={userData.managerEmail6} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail6: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='managerName6' value={userData.managerName6 || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerName6: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 6)'/>
+            <input id='managerEmail6' value={userData.managerEmail6 || ''} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail6: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone6 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone6: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6' onClick={removeManager6}><FaTrash size={20}/></button>
         </div>
@@ -1639,23 +1638,23 @@ useEffect(() => {
         <br /><br /><br />
         <h3 className='font-semibold pb-6'>Added Owner(s):</h3>
         <div className='flex'>
-            <input id='ownerName' value={userData.ownerName} onChange={(e) => setUserData(prevData => ({...prevData, ownerName: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Owner 1)'/>
-            <input id='ownerEmail' value={userData.ownerEmail} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='ownerName' value={userData.ownerName || ''} onChange={(e) => setUserData(prevData => ({...prevData, ownerName: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Owner 1)'/>
+            <input id='ownerEmail' value={userData.ownerEmail || ''} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.ownerPhone || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, ownerPhone: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6' onClick={removeOwner1}><FaTrash size={20}/></button>
         </div>
 
         <form action="submit">
         <div className='mt-5 flex'>
-            <input id='ownerName2' value={userData.ownerName2} onChange={(e) => setUserData(prevData => ({...prevData, ownerName2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Owner 2)'/>
-            <input id='ownerEmail2' value={userData.ownerEmail2} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='ownerName2' value={userData.ownerName2 || ''} onChange={(e) => setUserData(prevData => ({...prevData, ownerName2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Owner 2)'/>
+            <input id='ownerEmail2' value={userData.ownerEmail2 || ''} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.ownerPhone2 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, ownerPhone2: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6' onClick={removeOwner2}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
-            <input id='ownerName3' value={userData.ownerName3} onChange={(e) => setUserData(prevData => ({...prevData, ownerName3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Owner 3)'/>
-            <input id='ownerEmail3' value={userData.ownerEmail3} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <input id='ownerName3' value={userData.ownerName3 || ''} onChange={(e) => setUserData(prevData => ({...prevData, ownerName3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Owner 3)'/>
+            <input id='ownerEmail3' value={userData.ownerEmail3 || ''} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.ownerPhone3 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, ownerPhone3: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6' onClick={removeOwner3}><FaTrash size={20}/></button>
         </div>
