@@ -97,8 +97,8 @@ const Masterhome = () => {
     const [role, setRole] = useState('SUPERADMIN');
 
     const submitForm = async (event) => {
-      if(phonenumber.length !== 10){
-        enqueueSnackbar('Mobile Number should be exact 10 digits!', { variant: 'error'});
+      if(phonenumber.length < 11){
+        enqueueSnackbar('Incorrect Mobile Number!', { variant: 'error'});
         setphonenumber(''); 
       }
       try {
@@ -316,20 +316,22 @@ const Masterhome = () => {
                   <label htmlFor="name">Name:</label>
                   <input  className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' placeholder='Enter Name' type="text" value={Name} onChange={(e) => setName(e.target.value)} name="name" required />
                   <label htmlFor="designation">Designation:</label>
-                  <input className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' type="text" value={designation} onChange={(e) => setDesignation(e.target.value)} name="designation" required />
+                  <input className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' placeholder='Enter Designation' type="text" value={designation} onChange={(e) => setDesignation(e.target.value)} name="designation" required />
                 </div>
 
                 <div className='grid w-full px-14'>
                   <label htmlFor="companyName">Company Name:</label>
-                  <input  className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} name="companyName" required />
+                  <input  className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' placeholder='Enter Company' type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} name="companyName" required />
                   <label  htmlFor="email">Email id:</label>
-                  <input className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' type="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" required />
+                  <input className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' placeholder='Enter Email' type="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" required />
                 </div>
                 
 
               <div className='grid w-full px-14'>
                 <label htmlFor="phonenumber">Mobile Number: </label>
-                <PhoneInput className="bg-white border border-gray-300 overflow-hidden shadow-md rounded mb-4" country={'us'} value={phonenumber} onChange={(value) => setphonenumber(value)} inputProps={{  required: true, }}/>
+                <div>
+                  <PhoneInput country={'us'} value={phonenumber} onChange={(value) => setphonenumber(value)} inputProps={{  required: true, }}/>
+                </div>
                 <label className='' htmlFor="Role">Role:</label>
                 <input type="text" className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' value={role} name="superadmin" readOnly/>
               </div>
@@ -376,7 +378,7 @@ const Masterhome = () => {
               </tr>
             </thead>
             {showdelbridge&&(
-              <div>
+              <div className='absolute'>
                 <h1>Do you really want to delete this bridge?</h1>
                 <div>
                   <button onClick={DelBridge1}>Yes</button>

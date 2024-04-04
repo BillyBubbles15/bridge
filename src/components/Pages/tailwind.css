@@ -4,6 +4,10 @@
     }
   }
 
+  .react-tel-input{
+    outline: none;
+    border: none;
+}
 
 #kinda{
     background-image: linear-gradient(to right, #000000, #000000c9, #00000000), url('../Assets/sabg.jpg');

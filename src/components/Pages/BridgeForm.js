@@ -615,7 +615,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='adminName' value={adminName} onChange={(e) => setAdminName(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Admin 1)'/>
             <input id='adminEmail' value={adminEmail} onChange={(e) => setAdminEmail(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 overflow-hidden shadow-md rounded-xl" country={'us'} value={adminPhone} onChange={(value) => setAdminPhone(value)} inputProps={{   required: true, }}/>
+              <PhoneInput className="border border-gray-300 overflow-hidden shadow-md rounded-xl" country={'us'} value={adminPhone} onChange={(value) => setAdminPhone(value)} inputProps={{   required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
         
@@ -624,7 +624,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='adminName2' value={adminName2} onChange={(e) => setAdminName2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Admin 2)'/>
             <input id='adminEmail2' value={adminEmail2} onChange={(e) => setAdminEmail2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={adminPhone2} onChange={(value) => setAdminPhone2(value)} inputProps={{   required: true, }}/>
+              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={adminPhone2} onChange={(value) => setAdminPhone2(value)} inputProps={{   required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
 
@@ -633,7 +633,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='adminName3' value={adminName3} onChange={(e) => setAdminName3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Admin 3)'/>
             <input id='adminEmail3' value={adminEmail3} onChange={(e) => setAdminEmail3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={adminPhone3} onChange={(value) => setAdminPhone3(value)} inputProps={{   required: true, }}/>
+              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={adminPhone3} onChange={(value) => setAdminPhone3(value)} inputProps={{   required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
         </form>
@@ -648,7 +648,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='managerName' value={managerName} onChange={(e) => setManagerName(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 1)'/>
             <input id='managerEmail' value={managerEmail} onChange={(e) => setManagerEmail(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone} onChange={(value) => setManagerPhone(value)} inputProps={{  required: true, }}/>
+              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone} onChange={(value) => setManagerPhone(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
  
@@ -657,7 +657,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='managerName2' value={managerName2} onChange={(e) => setManagerName2(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 2)'/>
             <input id='managerEmail2' value={managerEmail2} onChange={(e) => setManagerEmail2(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone2} onChange={(value) => setManagerPhone2(value)} inputProps={{  required: true, }}/>
+              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone2} onChange={(value) => setManagerPhone2(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
 
@@ -667,7 +667,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='managerName3' value={managerName3} onChange={(e) => setManagerName3(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 3)'/>
             <input id='managerEmail3' value={managerEmail3} onChange={(e) => setManagerEmail3(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone3} onChange={(value) => setManagerPhone3(value)} inputProps={{  required: true, }}/>
+              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone3} onChange={(value) => setManagerPhone3(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
 
@@ -676,7 +676,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='managerName4' value={managerName4} onChange={(e) => setManagerName4(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 4)'/>
             <input id='managerEmail4' value={managerEmail4} onChange={(e) => setManagerEmail4(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone4} onChange={(value) => setManagerPhone4(value)} inputProps={{  required: true, }}/>
+              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone4} onChange={(value) => setManagerPhone4(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
 
@@ -685,7 +685,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='managerName5' value={managerName5} onChange={(e) => setManagerName5(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 5)'/>
             <input id='managerEmail5' value={managerEmail5} onChange={(e) => setManagerEmail5(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone5} onChange={(value) => setManagerPhone5(value)} inputProps={{  required: true, }}/>
+              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone5} onChange={(value) => setManagerPhone5(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
 
@@ -694,7 +694,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='managerName6' value={managerName6} onChange={(e) => setManagerName6(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 6)'/>
             <input id='managerEmail6' value={managerEmail6} onChange={(e) => setManagerEmail6(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone6} onChange={(value) => setManagerPhone6(value)} inputProps={{  required: true, }}/>
+              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone6} onChange={(value) => setManagerPhone6(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
         </form>
@@ -708,7 +708,7 @@ const BridgeForm = ({onSubmit }) => {
             <input id='ownerName' value={ownerName} onChange={(e) => setOwnerName(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Owner 1)'/>
             <input id='ownerEmail' value={ownerEmail} onChange={(e) => setOwnerEmail(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={ownerPhone} onChange={(value) => setOwnerPhone(value)} inputProps={{  required: true, }}/>
+              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={ownerPhone} onChange={(value) => setOwnerPhone(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
           </div>
 
@@ -717,7 +717,7 @@ const BridgeForm = ({onSubmit }) => {
           <input id='ownerName2' value={ownerName2} onChange={(e) => setOwnerName2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Owner 2)'/>
           <input id='ownerEmail2' value={ownerEmail2} onChange={(e) => setOwnerEmail2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
           <div>
-            <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={ownerPhone2} onChange={(value) => setOwnerPhone2(value)} inputProps={{  required: true, }}/>
+            <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={ownerPhone2} onChange={(value) => setOwnerPhone2(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
           </div>
         </div>
             
@@ -726,7 +726,7 @@ const BridgeForm = ({onSubmit }) => {
           <input id='ownerName3' value={ownerName3} onChange={(e) => setOwnerName3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Owner 3)'/>
           <input id='ownerEmail3' value={ownerEmail3} onChange={(e) => setOwnerEmail3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
           <div>
-            <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={ownerPhone3} onChange={(value) => setOwnerPhone3(value)} inputProps={{  required: true, }}/>
+            <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={ownerPhone3} onChange={(value) => setOwnerPhone3(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
           </div>
         </div>
       </form>
