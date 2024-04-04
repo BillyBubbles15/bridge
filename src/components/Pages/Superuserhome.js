@@ -2,19 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { City, Country, State } from "country-state-city";
 import { useSnackbar } from 'notistack';
+import PhoneInput from 'react-phone-input-2';
 import axios from 'axios';
 import Papa from 'papaparse';
 import { Line } from 'react-chartjs-2';
-import './tailwind.css';
-import Selector from "./Selector";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend, LineElement } from 'chart.js';
-
 import { FaBridge, FaTrash } from "react-icons/fa6";
 import { FaArrowCircleRight, FaEdit } from "react-icons/fa";
 import {MdHome, MdSettings, MdPerson, MdSearch, MdNotifications, MdDashboard, MdSensors, MdDescription, MdLogout, MdEdit } from 'react-icons/md';
 import { PiWind } from "react-icons/pi";
 import { WiHumidity } from "react-icons/wi";
 import { GiSpeedometer } from "react-icons/gi";
+// import { Canvas } from '@react-three/fiber';
+// import { OrbitControls } from '@react-three/drei';
+
+import './tailwind.css';
+import 'react-phone-input-2/lib/style.css';
+import Selector from "./Selector";
 
 import logo2 from '../Assets/logo2.png';
 import clear_icon from '../Assets/weather/clear.png';
@@ -24,6 +28,8 @@ import rain_icon from '../Assets/weather/rain.png';
 import snow_icon from '../Assets/weather/snow.png';
 import mist_icon from '../Assets/weather/fog.png';
 import thunderstorm_icon from '../Assets/weather/thunderstorm.png';
+
+import stdimg from '../Assets/stdimg.jpg';
 
 import SensorData from '../Assets/Data.csv';
 import SampleData from '../Assets/SGdata.csv';
@@ -1004,6 +1010,7 @@ useEffect(() => {
         setshowSensorDetails(false);
         setshowUser(false);    
         setshowModify(!showModify);
+        setshowBridgeDetails(true);
         setIsSelected4(!isSelected4);
         setshowaccelerometers(false);
         setshowstraingauges(false);
@@ -1031,235 +1038,6 @@ useEffect(() => {
         setshowBridgeDetails(false);
     }
 
-    const options = [
-        { value: 'code', label: 'Code', disabled: true },
-        { value: '+93', label: '(+93) Afghanistan' },
-        { value: '+355', label: '(+355) Albania' },
-        { value: '+213', label: '(+213) Algeria' },
-        { value: '+376', label: '(+376) Andorra' },
-        { value: '+244', label: '(+244) Angola' },
-        { value: '+1264', label: '(+1264) Anguilla' },
-        { value: '+1268', label: '(+1268) Antigua and Barbuda' },
-        { value: '+54', label: '(+54) Argentina' },
-        { value: '+374', label: '(+374) Armenia' },
-        { value: '+297', label: '(+297) Aruba' },
-        { value: '+61', label: '(+61) Australia' },
-        { value: '+43', label: '(+43) Austria' },
-        { value: '+994', label: '(+994) Azerbaijan' },
-        { value: '+1242', label: '(+1242) Bahamas' },
-        { value: '+973', label: '(+973) Bahrain' },
-        { value: '+880', label: '(+880) Bangladesh' },
-        { value: '+1246', label: '(+1246) Barbados' },
-        { value: '+375', label: '(+375) Belarus' },
-        { value: '+32', label: '(+32) Belgium' },
-        { value: '+501', label: '(+501) Belize' },
-        { value: '+229', label: '(+229) Benin' },
-        { value: '+1441', label: '(+1441) Bermuda' },
-        { value: '+975', label: '(+975) Bhutan' },
-        { value: '+591', label: '(+591) Bolivia' },
-        { value: '+387', label: '(+387) Bosnia and Herzegovina' },
-        { value: '+267', label: '(+267) Botswana' },
-        { value: '+55', label: '(+55) Brazil' },
-        { value: '+246', label: '(+246) British Indian Ocean Territory' },
-        { value: '+673', label: '(+673) Brunei Darussalam' },
-        { value: '+359', label: '(+359) Bulgaria' },
-        { value: '+226', label: '(+226) Burkina Faso' },
-        { value: '+257', label: '(+257) Burundi' },
-        { value: '+855', label: '(+855) Cambodia' },
-        { value: '+237', label: '(+237) Cameroon' },
-        { value: '+1', label: '(+1) Canada' },
-        { value: '+238', label: '(+238) Cape Verde' },
-        { value: '+1345', label: '(+1345) Cayman Islands' },
-        { value: '+236', label: '(+236) Central African Republic' },
-        { value: '+235', label: '(+235) Chad' },
-        { value: '+56', label: '(+56) Chile' },
-        { value: '+86', label: '(+86) China' },
-        { value: '+61', label: '(+61) Christmas Island' },
-        { value: '+672', label: '(+672) Cocos (Keeling) Islands' },
-        { value: '+57', label: '(+57) Colombia' },
-        { value: '+269', label: '(+269) Comoros' },
-        { value: '+242', label: '(+242) Congo' },
-        { value: '+243', label: '(+243) Congo, the Democratic Republic of the' },
-        { value: '+682', label: '(+682) Cook Islands' },
-        { value: '+506', label: '(+506) Costa Rica' },
-        { value: '+225', label: "(+225) Cote D'Ivoire" },
-        { value: '+385', label: '(+385) Croatia' },
-        { value: '+53', label: '(+53) Cuba' },
-        { value: '+357', label: '(+357) Cyprus' },
-        { value: '+420', label: '(+420) Czech Republic' },
-        { value: '+45', label: '(+45) Denmark' },
-        { value: '+253', label: '(+253) Djibouti' },
-        { value: '+1767', label: '(+1767) Dominica' },
-        { value: '+1809', label: '(+1809) Dominican Republic' },
-        { value: '+593', label: '(+593) Ecuador' },
-        { value: '+20', label: '(+20) Egypt' },
-        { value: '+503', label: '(+503) El Salvador' },
-        { value: '+240', label: '(+240) Equatorial Guinea' },
-        { value: '+291', label: '(+291) Eritrea' },
-        { value: '+372', label: '(+372) Estonia' },
-        { value: '+251', label: '(+251) Ethiopia' },
-        { value: '+500', label: '(+500) Falkland Islands (Malvinas)' },
-        { value: '+298', label: '(+298) Faroe Islands' },
-        { value: '+679', label: '(+679) Fiji' },
-        { value: '+358', label: '(+358) Finland' },
-        { value: '+33', label: '(+33) France' },
-        { value: '+594', label: '(+594) French Guiana' },
-        { value: '+689', label: '(+689) French Polynesia' },
-        { value: '+241', label: '(+241) Gabon' },
-        { value: '+220', label: '(+220) Gambia' },
-        { value: '+995', label: '(+995) Georgia' },
-        { value: '+49', label: '(+49) Germany' },
-        { value: '+233', label: '(+233) Ghana' },
-        { value: '+350', label: '(+350) Gibraltar' },
-        { value: '+30', label: '(+30) Greece' },
-        { value: '+299', label: '(+299) Greenland' },
-        { value: '+1473', label: '(+1473) Grenada' },
-        { value: '+590', label: '(+590) Guadeloupe' },
-        { value: '+1671', label: '(+1671) Guam' },
-        { value: '+502', label: '(+502) Guatemala' },
-        { value: '+224', label: '(+224) Guinea' },
-        { value: '+245', label: '(+245) Guinea-Bissau' },
-        { value: '+592', label: '(+592) Guyana' },
-        { value: '+509', label: '(+509) Haiti' },
-        { value: '+504', label: '(+504) Honduras' },
-        { value: '+852', label: '(+852) Hong Kong' },
-        { value: '+36', label: '(+36) Hungary' },
-        { value: '+354', label: '(+354) Iceland' },
-        { value: '+91', label: '(+91) India' },
-        { value: '+62', label: '(+62) Indonesia' },
-        { value: '+98', label: '(+98) Iran, Islamic Republic of' },
-        { value: '+964', label: '(+964) Iraq' },
-        { value: '+353', label: '(+353) Ireland' },
-        { value: '+972', label: '(+972) Israel' },
-        { value: '+39', label: '(+39) Italy' },
-        { value: '+1876', label: '(+1876) Jamaica' },
-        { value: '+81', label: '(+81) Japan' },
-        { value: '+962', label: '(+962) Jordan' },
-        { value: '+7', label: '(+7) Kazakhstan' },
-        { value: '+254', label: '(+254) Kenya' },
-        { value: '+686', label: '(+686) Kiribati' },
-        { value: '+850', label: "(+850) Korea, Democratic People's Republic of" },
-        { value: '+82', label: '(+82) Korea, Republic of' },
-        { value: '+965', label: '(+965) Kuwait' },
-        { value: '+996', label: '(+996) Kyrgyzstan' },
-        { value: '+856', label: "(+856) Lao People's Democratic Republic" },
-        { value: '+371', label: '(+371) Latvia' },
-        { value: '+961', label: '(+961) Lebanon' },
-        { value: '+266', label: '(+266) Lesotho' },
-        { value: '+231', label: '(+231) Liberia' },
-        { value: '+218', label: '(+218) Libya' },
-        { value: '+423', label: '(+423) Liechtenstein' },
-        { value: '+370', label: '(+370) Lithuania' },
-        { value: '+352', label: '(+352) Luxembourg' },
-        { value: '+853', label: '(+853) Macao' },
-        { value: '+389', label: '(+389) Macedonia, the Former Yugoslav Republic of' },
-        { value: '+261', label: '(+261) Madagascar' },
-        { value: '+265', label: '(+265) Malawi' },
-        { value: '+60', label: '(+60) Malaysia' },
-        { value: '+960', label: '(+960) Maldives' },
-        { value: '+223', label: '(+223) Mali' },
-        { value: '+356', label: '(+356) Malta' },
-        { value: '+692', label: '(+692) Marshall Islands' },
-        { value: '+596', label: '(+596) Martinique' },
-        { value: '+222', label: '(+222) Mauritania' },
-        { value: '+230', label: '(+230) Mauritius' },
-        { value: '+52', label: '(+52) Mexico' },
-        { value: '+691', label: '(+691) Micronesia, Federated States of' },
-        { value: '+373', label: '(+373) Moldova, Republic of' },
-        { value: '+377', label: '(+377) Monaco' },
-        { value: '+976', label: '(+976) Mongolia' },
-        { value: '+382', label: '(+382) Montenegro' },
-        { value: '+1664', label: '(+1664) Montserrat' },
-        { value: '+212', label: '(+212) Morocco' },
-        { value: '+258', label: '(+258) Mozambique' },
-        { value: '+95', label: '(+95) Myanmar' },
-        { value: '+264', label: '(+264) Namibia' },
-        { value: '+674', label: '(+674) Nauru' },
-        { value: '+977', label: '(+977) Nepal' },
-        { value: '+31', label: '(+31) Netherlands' },
-        { value: '+599', label: '(+599) Netherlands Antilles' },
-        { value: '+687', label: '(+687) New Caledonia' },
-        { value: '+64', label: '(+64) New Zealand' },
-        { value: '+505', label: '(+505) Nicaragua' },
-        { value: '+227', label: '(+227) Niger' },
-        { value: '+234', label: '(+234) Nigeria' },
-        { value: '+683', label: '(+683) Niue' },
-        { value: '+672', label: '(+672) Norfolk Island' },
-        { value: '+47', label: '(+47) Norway' },
-        { value: '+968', label: '(+968) Oman' },
-        { value: '+92', label: '(+92) Pakistan' },
-        { value: '+680', label: '(+680) Palau' },
-        { value: '+507', label: '(+507) Panama' },
-        { value: '+675', label: '(+675) Papua New Guinea' },
-        { value: '+595', label: '(+595) Paraguay' },
-        { value: '+51', label: '(+51) Peru' },
-        { value: '+63', label: '(+63) Philippines' },
-        { value: '+48', label: '(+48) Poland' },
-        { value: '+351', label: '(+351) Portugal' },
-        { value: '+974', label: '(+974) Qatar' },
-        { value: '+40', label: '(+40) Romania' },
-        { value: '+7', label: '(+7) Russian Federation' },
-        { value: '+250', label: '(+250) Rwanda' },
-        { value: '+1869', label: '(+1869) Saint Kitts and Nevis' },
-        { value: '+1758', label: '(+1758) Saint Lucia' },
-        { value: '+1784', label: '(+1784) Saint Vincent and the Grenadines' },
-        { value: '+684', label: '(+684) Samoa' },
-        { value: '+378', label: '(+378) San Marino' },
-        { value: '+239', label: '(+239) Sao Tome and Principe' },
-        { value: '+221', label: '(+221) Senegal' },
-        { value: '+381', label: '(+381) Serbia' },
-        { value: '+248', label: '(+248) Seychelles' },
-        { value: '+232', label: '(+232) Sierra Leone' },
-        { value: '+65', label: '(+65) Singapore' },
-        { value: '+421', label: '(+421) Slovakia' },
-        { value: '+386', label: '(+386) Slovenia' },
-        { value: '+677', label: '(+677) Solomon Islands' },
-        { value: '+252', label: '(+252) Somalia' },
-        { value: '+27', label: '(+27) South Africa' },
-        { value: '+34', label: '(+34) Spain' },
-        { value: '+94', label: '(+94) Sri Lanka' },
-        { value: '+249', label: '(+249) Sudan' },
-        { value: '+597', label: '(+597) Suriname' },
-        { value: '+268', label: '(+268) Swaziland' },
-        { value: '+46', label: '(+46) Sweden' },
-        { value: '+41', label: '(+41) Switzerland' },
-        { value: '+963', label: '(+963) Syrian Arab Republic' },
-        { value: '+886', label: '(+886) Taiwan, Province of China' },
-        { value: '+992', label: '(+992) Tajikistan' },
-        { value: '+255', label: '(+255) Tanzania, United Republic of' },
-        { value: '+66', label: '(+66) Thailand' },
-        { value: '+228', label: '(+228) Togo' },
-        { value: '+690', label: '(+690) Tokelau' },
-        { value: '+676', label: '(+676) Tonga' },
-        { value: '+1868', label: '(+1868) Trinidad and Tobago' },
-        { value: '+216', label: '(+216) Tunisia' },
-        { value: '+90', label: '(+90) Turkey' },
-        { value: '+993', label: '(+993) Turkmenistan' },
-        { value: '+688', label: '(+688) Tuvalu' },
-        { value: '+256', label: '(+256) Uganda' },
-        { value: '+380', label: '(+380) Ukraine' },
-        { value: '+971', label: '(+971) United Arab Emirates' },
-        { value: '+44', label: '(+44) United Kingdom' },
-        { value: '+1', label: '(+1) United States' },
-        { value: '+598', label: '(+598) Uruguay' },
-        { value: '+998', label: '(+998) Uzbekistan' },
-        { value: '+678', label: '(+678) Vanuatu' },
-        { value: '+58', label: '(+58) Venezuela' },
-        { value: '+84', label: '(+84) Vietnam' },
-        { value: '+1340', label: '(+1340) Virgin Islands, U.S.' },
-        { value: '+967', label: '(+967) Yemen' },
-        { value: '+260', label: '(+260) Zambia' },
-        { value: '+263', label: '(+263) Zimbabwe' },
-        { value: '+358', label: '(+358) Åland Islands' }
-      ];
-
-      const [searchTerm, setSearchTerm] = useState('');
-  
-      // Function to filter options based on search term
-      const filteredOptions = options.filter(option =>
-        option.label.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
     const Logout = async () => {
         try {
             const token = localStorage.getItem('authToken'); // Corrected key
@@ -1279,7 +1057,6 @@ useEffect(() => {
                 navigate('/');
             } else {
                 console.error('Failed to fetch data:', response.statusText);
-                setSearchTerm('');
             }
         } catch (error) {
             console.error('Failed to fetch data:', error.message);
@@ -1289,7 +1066,7 @@ useEffect(() => {
 
   return (
     <>
-      <div className="flex fixed z-10 w-full justify-center bg-gray-100 py-2 shadow-xl">
+      <div className="flex fixed z-50 w-full justify-center bg-gray-100 py-2 shadow-xl">
         <div className='w-1/2'>   
            <img className='h-10 pt-2 cursor-pointer px-5'  src={logo2} alt=""/>
         </div>
@@ -1314,7 +1091,7 @@ useEffect(() => {
             <hr /><hr />
             <button className='w-full py-3 hover:bg-gray-400'><ul><MdDescription style={{width: '100%', alignItems: 'center'}} size={40} />Report</ul></button>
             <hr /><hr />
-            <button className={`w-full py-3 ${isSelected4 ? 'bg-gray-400' : 'hover:bg-gray-400'}`} onClick={Modify}><ul><FaEdit style={{width: '100%', alignItems: 'center'}} size={40} />Edit</ul></button>
+            <button className={`w-full py-3 ${isSelected4 ? 'bg-gray-400' : 'hover:bg-gray-400'}`} onClick={Modify}><ul><FaEdit style={{width: '100%', alignItems: 'center'}} size={40} />Modify</ul></button>
             <hr /><hr />
             <button className='w-full py-3 hover:bg-gray-400' onClick={RedirectHome}><ul><FaBridge  style={{width: '100%', alignItems: 'center'}} size={40} />Bridge List</ul></button>
             <hr /><hr />
@@ -1325,7 +1102,7 @@ useEffect(() => {
 
 
       {showUserDetails && (
-        <div className="w-1/12 z-10 fixed top-14 right-2 bg-gray-100 border shadow-md">
+        <div className="w-1/12 z-50 fixed top-14 right-2 bg-gray-100 border shadow-md">
           <div className='p-2 text-center'>Name</div>
           <div className='flex cursor-pointer hover:bg-gray-200 p-2'><MdEdit size={24} style={{paddingTop: '3px'}}/>Edit Info</div>
           <div className='flex cursor-pointer hover:bg-gray-200 p-2' onClick={Logout}><MdLogout size={24} style={{paddingTop: '3px'}}/>Log-out</div>
@@ -1342,8 +1119,10 @@ useEffect(() => {
         <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Camera</button>
         </div>
 
+
+
         <div className='w-11/12 ml-24 p-6 text-white pt-4 flex w-1/2 mx-8'>
-            <div className='bg-indigo-800 w-2/5 text-center py-6 mx-8 overflow-hidden shadow-xl rounded-xl'>
+            <div className='bg-indigo-800 w-2/5 text-center py-6 overflow-hidden shadow-xl rounded-xl'>
                 { typeof Weather.main != "undefined" ? (
                 <div className='flex justify-center'>
                     <div className='w-1/4'>
@@ -1407,6 +1186,7 @@ useEffect(() => {
                 )}
             </div>
         </div>
+
         <div className='w-11/12 ml-24 p-6 flex bg-white'>
             <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
                 <h1 className='text-center font-bold'>Battery Voltage Monitoring</h1><br />
@@ -1665,19 +1445,17 @@ useEffect(() => {
 
 {showModify && (
     <>
-    <div className='w-11/12 ml-24 pt-14 bg-white'>
-    <nav className='flex fixed justify-center bg-pink-100 w-full z-10'>
-        <ul className= 'px-12 py-4 cursor-pointer hover:bg-pink-300' onClick={showBridgeInfo}>Bridge Information</ul>
-        <ul className='px-12 py-4 cursor-pointer hover:bg-pink-300' onClick={showSensorInfo}>Sensor Information</ul>
-        <ul className='px-12 py-4 cursor-pointer hover:bg-pink-300' onClick={showUserInfo}>User Information</ul>
-    </nav>
+    <div className='w-11/12 z-30 fixed bg-white ml-24 p-6 pt-20 flex w-1/2 mx-8'>
+        <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white text-lg' onClick={showBridgeInfo}>Bridge Information</button>
+        <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white text-lg' onClick={showSensorInfo}>Sensor Information</button>
+        <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white text-lg' onClick={showUserInfo}>User Information</button>
     </div>
     </>
 )}
 
 {showBridgeDetails && (
     <>
-        <div className='w-11/12 ml-24 p-6 pt-24 bg-white'>
+        <div className='w-11/12 ml-24 p-6 pt-40 bg-white'>
         <form>
         <h1 className='text-center text-3xl w-full font-semibold pb-12'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; Bridge Information &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
           <div className="flex w-full pl-16 py-6 justify-center bg-gray-100">
@@ -1733,7 +1511,7 @@ useEffect(() => {
         </div>
         </form>
         <div className='text-center'>
-            <button className='p-2 bg-pink-600 text-white px-6 mx-4 rounded-sm hover:bg-pink-900' onClick={updateData}>Save</button>
+            <button className='p-2 bg-pink-600 w-full text-white px- rounded-sm hover:bg-pink-900' onClick={updateData}>Save</button>
         </div> 
         </div>
     </>
@@ -1741,7 +1519,7 @@ useEffect(() => {
 
 {showSensorDetails && (
     <>
-        <div className='w-11/12 ml-24 p-6 pt-24 bg-white'>
+        <div className='w-11/12 ml-24 p-6 pt-40 bg-white'>
         {sensorDataList.length === 0 ? (
         <div className="text-center text-gray-700">No sensors found</div>
         ) : (
@@ -1786,160 +1564,100 @@ useEffect(() => {
 
 {showUser && ( 
     <>
-        <div className='w-11/12 ml-24 p-6 pt-24 bg-white'>
+        <div className='w-11/12 ml-24 p-6 pt-40 bg-white'>
         <h1 className='text-center text-3xl w-full font-semibold pb-12'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; User Information &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
         <div className='text-left text-gray-800'>
         <h3 className='font-semibold pb-6'>Added Admin(s):</h3>
         <div className='flex'>
-            <input id='adminName' value={userData.adminName} onChange={(e) => setUserData(prevData => ({...prevData, adminName: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Admin 1)'/>
-            <input id='adminEmail' value={userData.adminEmail} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.admin1countryCode} onChange={(e) => setUserData(prevData => ({...prevData, admin1countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-            </select>
-            <input id='adminPhone' value={userData.adminPhone} onChange={(e) => setUserData(prevData => ({...prevData, adminPhone: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <input id='adminName' value={userData.adminName} onChange={(e) => setUserData(prevData => ({...prevData, adminName: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 1)'/>
+            <input id='adminEmail' value={userData.adminEmail} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0 rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.adminPhone || ''} onChange={(value) => setUserData(prevData => ({ ...prevData, adminPhone: value }))} inputProps={{ required: true }} />
             <button className='w-1/6 mt-4' onClick={removeAdmin1}><FaTrash size={20}/></button>
         </div>
         <form action="submit">
         <div className='mt-5 flex'>
-            <input id='adminName2' value={userData.adminName2} onChange={(e) => setUserData(prevData => ({...prevData, adminName2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Admin 2)'/>
-            <input id='adminEmail2' value={userData.adminEmail2} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.admin2countryCode} onChange={(e) => setUserData(prevData => ({...prevData, admin2countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-                </select>
-            <input id='adminPhone2' value={userData.adminPhone2} onChange={(e) => setUserData(prevData => ({...prevData, adminPhone2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <input id='adminName2' value={userData.adminName2} onChange={(e) => setUserData(prevData => ({...prevData, adminName2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 2)'/>
+            <input id='adminEmail2' value={userData.adminEmail2} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.adminPhone2 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, adminPhone2: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6 mt-4' onClick={removeAdmin2}><FaTrash size={20}/></button>
         </div>
         <div className='mt-5 flex'>
-            <input id='adminName3' value={userData.adminName3} onChange={(e) => setUserData(prevData => ({...prevData, adminName3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Admin 3)'/>
-            <input id='adminEmail3' value={userData.adminEmail3} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.admin3countryCode} onChange={(e) => setUserData(prevData => ({...prevData, admin3countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-            </select>
-            <input id='adminPhone3' value={userData.adminPhone3} onChange={(e) => setUserData(prevData => ({...prevData, adminPhone3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
+            <input id='adminName3' value={userData.adminName3} onChange={(e) => setUserData(prevData => ({...prevData, adminName3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 3)'/>
+            <input id='adminEmail3' value={userData.adminEmail3} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.adminPhone3 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, adminPhone3: value }))} inputProps={{  required: true, }}/>
             <button className='w-1/6 mt-4' onClick={removeAdmin3}><FaTrash size={20}/></button>
         </div>
         </form>
 
         <br /><br /><br />
-        <h3 className='font-semibold pb-6'>Added Manager(s):</h3>
+        <h3 className='font-semibold pb-6 mx-4'>Added Manager(s):</h3>
         <div className='flex'>
-            <input id='managerName' value={userData.managerName} onChange={(e) => setUserData(prevData => ({...prevData, managerName: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Manager 1)'/>
-            <input id='managerEmail' value={userData.managerEmail} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.manager1countryCode} onChange={(e) => setUserData(prevData => ({...prevData, manager1countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-            </select>
-            <input id='managerPhone' value={userData.managerPhone} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            <button className='w-1/6 mt-4' onClick={removeManager1}><FaTrash size={20}/></button>
+            <input id='managerName' value={userData.managerName} onChange={(e) => setUserData(prevData => ({...prevData, managerName: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 1)'/>
+            <input id='managerEmail' value={userData.managerEmail} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone: value }))} inputProps={{  required: true, }}/>
+            <button className='w-1/6' onClick={removeManager1}><FaTrash size={20}/></button>
         </div>
 
         <form action="submit">
         <div className='mt-5 flex'>
-            <input id='managerName2' value={userData.managerName2} onChange={(e) => setUserData(prevData => ({...prevData, managerName2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Manager 2)'/>
-            <input id='managerEmail2' value={userData.managerEmail2} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.manager2countryCode} onChange={(e) => setUserData(prevData => ({...prevData, manager2countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-            </select>
-            <input id='managerPhone2' value={userData.managerPhone2} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            <button className='w-1/6 mt-4' onClick={removeManager2}><FaTrash size={20}/></button>
+            <input id='managerName2' value={userData.managerName2} onChange={(e) => setUserData(prevData => ({...prevData, managerName2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 2)'/>
+            <input id='managerEmail2' value={userData.managerEmail2} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone2 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone2: value }))} inputProps={{  required: true, }}/>
+            <button className='w-1/6' onClick={removeManager2}><FaTrash size={20}/></button>
         </div>
 
 
         <div className='mt-5 flex'>
-            <input id='managerName3' value={userData.managerName3} onChange={(e) => setUserData(prevData => ({...prevData, managerName3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Manager 3)'/>
-            <input id='managerEmail3' value={userData.managerEmail3} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.manager3countryCode} onChange={(e) => setUserData(prevData => ({...prevData, manager3countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-                </select>
-            <input id='managerPhone3' value={userData.managerPhone3} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            <button className='w-1/6 mt-4' onClick={removeManager3}><FaTrash size={20}/></button>
+            <input id='managerName3' value={userData.managerName3} onChange={(e) => setUserData(prevData => ({...prevData, managerName3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 3)'/>
+            <input id='managerEmail3' value={userData.managerEmail3} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone3 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone3: value }))} inputProps={{  required: true, }}/>
+            <button className='w-1/6' onClick={removeManager3}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
-            <input id='managerName4' value={userData.managerName4} onChange={(e) => setUserData(prevData => ({...prevData, managerName4: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Manager 4)'/>
-            <input id='managerEmail4' value={userData.managerEmail4} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail4: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.manager4countryCode} onChange={(e) => setUserData(prevData => ({...prevData, manager4countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-                </select>
-            <input id='managerPhone4' value={userData.managerPhone4} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone4: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            <button className='w-1/6 mt-4' onClick={removeManager4}><FaTrash size={20}/></button>
+            <input id='managerName4' value={userData.managerName4} onChange={(e) => setUserData(prevData => ({...prevData, managerName4: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 4)'/>
+            <input id='managerEmail4' value={userData.managerEmail4} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail4: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone4 || ''} onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone4: value }))} inputProps={{  required: true, }}/>
+            <button className='w-1/6' onClick={removeManager4}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
-            <input id='managerName5' value={userData.managerName5} onChange={(e) => setUserData(prevData => ({...prevData, managerName5: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Manager 5)'/>
-            <input id='managerEmail5' value={userData.managerEmail5} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail5: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.manager5countryCode} onChange={(e) => setUserData(prevData => ({...prevData, manager5countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-                </select>
-            <input id='managerPhone5' value={userData.managerPhone5} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone5: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            <button className='w-1/6 mt-4' onClick={removeManager5}><FaTrash size={20}/></button>
+            <input id='managerName5' value={userData.managerName5} onChange={(e) => setUserData(prevData => ({...prevData, managerName5: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 5)'/>
+            <input id='managerEmail5' value={userData.managerEmail5} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail5: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone5 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone5: value }))} inputProps={{  required: true, }}/>
+            <button className='w-1/6' onClick={removeManager5}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
-            <input id='managerName6' value={userData.managerName6} onChange={(e) => setUserData(prevData => ({...prevData, managerName6: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Manager 6)'/>
-            <input id='managerEmail6' value={userData.managerEmail6} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail6: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.manager6countryCode} onChange={(e) => setUserData(prevData => ({...prevData, manager6countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-                </select>
-            <input id='managerPhone6' value={userData.managerPhone6} onChange={(e) => setUserData(prevData => ({...prevData, managerPhone6: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            <button className='w-1/6 mt-4' onClick={removeManager6}><FaTrash size={20}/></button>
+            <input id='managerName6' value={userData.managerName6} onChange={(e) => setUserData(prevData => ({...prevData, managerName6: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Manager 6)'/>
+            <input id='managerEmail6' value={userData.managerEmail6} onChange={(e) => setUserData(prevData => ({...prevData, managerEmail6: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.managerPhone6 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, managerPhone6: value }))} inputProps={{  required: true, }}/>
+            <button className='w-1/6' onClick={removeManager6}><FaTrash size={20}/></button>
         </div>
         </form>
 
         <br /><br /><br />
         <h3 className='font-semibold pb-6'>Added Owner(s):</h3>
         <div className='flex'>
-            <input id='ownerName' value={userData.ownerName} onChange={(e) => setUserData(prevData => ({...prevData, ownerName: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Owner 1)'/>
-            <input id='ownerEmail' value={userData.ownerEmail} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.owner1countryCode} onChange={(e) => setUserData(prevData => ({...prevData, owner1countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-                </select>
-            <input id='ownerPhone' value={userData.ownerPhone} onChange={(e) => setUserData(prevData => ({...prevData, ownerPhone: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            <button className='w-1/6 mt-4' onClick={removeOwner1}><FaTrash size={20}/></button>
+            <input id='ownerName' value={userData.ownerName} onChange={(e) => setUserData(prevData => ({...prevData, ownerName: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Owner 1)'/>
+            <input id='ownerEmail' value={userData.ownerEmail} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.ownerPhone || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, ownerPhone: value }))} inputProps={{  required: true, }}/>
+            <button className='w-1/6' onClick={removeOwner1}><FaTrash size={20}/></button>
         </div>
 
         <form action="submit">
         <div className='mt-5 flex'>
-            <input id='ownerName2' value={userData.ownerName2} onChange={(e) => setUserData(prevData => ({...prevData, ownerName2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Owner 2)'/>
-            <input id='ownerEmail2' value={userData.ownerEmail2} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.owner2countryCode} onChange={(e) => setUserData(prevData => ({...prevData, owner2countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-                </select>
-            <input id='ownerPhone2' value={userData.ownerPhone2} onChange={(e) => setUserData(prevData => ({...prevData, ownerPhone2: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            <button className='w-1/6 mt-4' onClick={removeOwner2}><FaTrash size={20}/></button>
+            <input id='ownerName2' value={userData.ownerName2} onChange={(e) => setUserData(prevData => ({...prevData, ownerName2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Owner 2)'/>
+            <input id='ownerEmail2' value={userData.ownerEmail2} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.ownerPhone2 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, ownerPhone2: value }))} inputProps={{  required: true, }}/>
+            <button className='w-1/6' onClick={removeOwner2}><FaTrash size={20}/></button>
         </div>
 
         <div className='mt-5 flex'>
-            <input id='ownerName3' value={userData.ownerName3} onChange={(e) => setUserData(prevData => ({...prevData, ownerName3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Name (Owner 3)'/>
-            <input id='ownerEmail3' value={userData.ownerEmail3} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="email" placeholder='email'/>
-            <select name="countryCode" value={userData.owner3countryCode} onChange={(e) => setUserData(prevData => ({...prevData, owner3countryCode: e.target.value}))} className='border-b-2 border-gray-400 p-2 w-1/6 mr-2 cursor-pointer'>
-            {filteredOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>
-            ))}
-                </select>
-            <input id='ownerPhone3' value={userData.ownerPhone3} onChange={(e) => setUserData(prevData => ({...prevData, ownerPhone3: e.target.value}))} className="border-b-2 border-gray-400 p-2 w-full mr-8" type="text" placeholder='Mobile Number'/>
-            <button className='w-1/6 mt-4' onClick={removeOwner3}><FaTrash size={20}/></button>
+            <input id='ownerName3' value={userData.ownerName3} onChange={(e) => setUserData(prevData => ({...prevData, ownerName3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Owner 3)'/>
+            <input id='ownerEmail3' value={userData.ownerEmail3} onChange={(e) => setUserData(prevData => ({...prevData, ownerEmail3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
+            <PhoneInput className="border border-gray-300 outline-0  rounded overflow-hidden shadow-md mx-4" country={'us'} value={userData.ownerPhone3 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, ownerPhone3: value }))} inputProps={{  required: true, }}/>
+            <button className='w-1/6' onClick={removeOwner3}><FaTrash size={20}/></button>
         </div>
         </form>
         </div>
