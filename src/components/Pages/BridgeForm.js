@@ -21,7 +21,8 @@ const BridgeForm = ({onSubmit }) => {
   const [division, setDivision] = useState('');
   const [bridgeName, setBridgeName] = useState('');
   const [location, setlocation] = useState('');
-  const [nobridgespan, setnobridgespan] = useState('');
+  const [nobridgespan, setnobridgespan] = useState(1);
+  const [spans, setSpans] = useState([{ span: 1, girders: 1 }]);
   const [noofgirders, setnoofgirders] = useState('');
   const navigate = useNavigate();
 
@@ -59,6 +60,22 @@ const BridgeForm = ({onSubmit }) => {
     cityData && setCity(cityData[0]);
   }, [cityData]);
 
+  const handleSpanChange = (e) => {
+    const numSpans = parseInt(e.target.value);
+    setnobridgespan(numSpans);
+    const newSpans = [];
+    for (let i = 1; i <= numSpans; i++) {
+      newSpans.push({ span: i, girders: 1 });
+    }
+    setSpans(newSpans);
+  };
+
+  // Function to handle changing the number of girders for a specific span
+  const handleGirderChange = (e, spanIndex) => {
+    const newSpans = [...spans];
+    newSpans[spanIndex].girders = parseInt(e.target.value);
+    setSpans(newSpans);
+  };
   
   const[showUserForm, setShowUserForm] = useState(false);
   const[showBridgeForm, setShowBridgeForm] = useState(true);
@@ -607,126 +624,126 @@ const BridgeForm = ({onSubmit }) => {
 
         <h1 className='mt-12 mb-12 text-3xl text-center font-semibold'>Add User Details</h1>        
         <hr />          
-        <button className='text-black w-full hover:bg-pink-100 flex justify-center font-bold text-xl py-5' onClick={handleAddAdmin}>Add Admin(s): <IoIosArrowDown size={26}/></button><hr />
+        <button className='text-black w-full hover:bg-gray-200 flex justify-center font-bold text-xl py-5' onClick={handleAddAdmin}>Add Admin(s): <IoIosArrowDown size={26}/></button><hr />
         {showAdminForm && ( 
-        <form className='bg-blue-100 text-center pt-6 pb-12' action="submit">
+        <form className='bg-blue-50 text-center pt-6 pb-12' action="submit">
         <div className='flex justify-center'>
             <h1 className='text-lg font-semibold mt-1'>Admin 1: &nbsp;</h1>
-            <input id='adminName' value={adminName} onChange={(e) => setAdminName(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Admin 1)'/>
-            <input id='adminEmail' value={adminEmail} onChange={(e) => setAdminEmail(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+            <input id='adminName' value={adminName} onChange={(e) => setAdminName(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Admin 1)'/>
+            <input id='adminEmail' value={adminEmail} onChange={(e) => setAdminEmail(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 overflow-hidden shadow-md rounded-xl" country={'us'} value={adminPhone} onChange={(value) => setAdminPhone(value)} inputProps={{   required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+              <PhoneInput country={'us'} value={adminPhone} onChange={(value) => setAdminPhone(value)} inputProps={{   required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
         
         <div className='mt-5 flex justify-center'>
           <h1 className='text-lg font-semibold mt-1'>Admin 2: &nbsp;</h1>
-            <input id='adminName2' value={adminName2} onChange={(e) => setAdminName2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Admin 2)'/>
-            <input id='adminEmail2' value={adminEmail2} onChange={(e) => setAdminEmail2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+            <input id='adminName2' value={adminName2} onChange={(e) => setAdminName2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Admin 2)'/>
+            <input id='adminEmail2' value={adminEmail2} onChange={(e) => setAdminEmail2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={adminPhone2} onChange={(value) => setAdminPhone2(value)} inputProps={{   required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+              <PhoneInput country={'us'} value={adminPhone2} onChange={(value) => setAdminPhone2(value)} inputProps={{   required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
 
         <div className='mt-5 flex justify-center'>
             <h1 className='text-lg font-semibold mt-1'>Admin 3: &nbsp;</h1>
-            <input id='adminName3' value={adminName3} onChange={(e) => setAdminName3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Admin 3)'/>
-            <input id='adminEmail3' value={adminEmail3} onChange={(e) => setAdminEmail3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+            <input id='adminName3' value={adminName3} onChange={(e) => setAdminName3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Admin 3)'/>
+            <input id='adminEmail3' value={adminEmail3} onChange={(e) => setAdminEmail3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={adminPhone3} onChange={(value) => setAdminPhone3(value)} inputProps={{   required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+              <PhoneInput country={'us'} value={adminPhone3} onChange={(value) => setAdminPhone3(value)} inputProps={{   required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
         </form>
         )}
 
 
-        <button className='text-black w-full hover:bg-pink-100 flex justify-center font-bold text-xl py-5' onClick={handleAddManager}>Add Manager(s): <IoIosArrowDown size={26}/></button><hr />
+        <button className='text-black w-full hover:bg-gray-200 flex justify-center font-bold text-xl py-5' onClick={handleAddManager}>Add Manager(s): <IoIosArrowDown size={26}/></button><hr />
         {showManagerForm &&(
-        <form className='text-center bg-blue-100 pt-6 pb-12' action="submit">
+        <form className='text-center bg-blue-50 pt-6 pb-12' action="submit">
           <div className='flex justify-center'>
             <h1 className='text-lg font-semibold mt-1'>Manager 1: &nbsp;</h1>
-            <input id='managerName' value={managerName} onChange={(e) => setManagerName(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 1)'/>
-            <input id='managerEmail' value={managerEmail} onChange={(e) => setManagerEmail(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+            <input id='managerName' value={managerName} onChange={(e) => setManagerName(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Manager 1)'/>
+            <input id='managerEmail' value={managerEmail} onChange={(e) => setManagerEmail(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone} onChange={(value) => setManagerPhone(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+              <PhoneInput country={'us'} value={managerPhone} onChange={(value) => setManagerPhone(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
  
         <div className='mt-5 flex justify-center'>
             <h1 className='text-lg font-semibold mt-1'>Manager 2: &nbsp;</h1>
-            <input id='managerName2' value={managerName2} onChange={(e) => setManagerName2(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 2)'/>
-            <input id='managerEmail2' value={managerEmail2} onChange={(e) => setManagerEmail2(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+            <input id='managerName2' value={managerName2} onChange={(e) => setManagerName2(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Manager 2)'/>
+            <input id='managerEmail2' value={managerEmail2} onChange={(e) => setManagerEmail2(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone2} onChange={(value) => setManagerPhone2(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+              <PhoneInput country={'us'} value={managerPhone2} onChange={(value) => setManagerPhone2(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
 
 
         <div className='mt-5 flex justify-center'>
             <h1 className='text-lg font-semibold mt-1'>Manager 3: &nbsp;</h1>
-            <input id='managerName3' value={managerName3} onChange={(e) => setManagerName3(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 3)'/>
-            <input id='managerEmail3' value={managerEmail3} onChange={(e) => setManagerEmail3(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+            <input id='managerName3' value={managerName3} onChange={(e) => setManagerName3(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Manager 3)'/>
+            <input id='managerEmail3' value={managerEmail3} onChange={(e) => setManagerEmail3(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone3} onChange={(value) => setManagerPhone3(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+              <PhoneInput country={'us'} value={managerPhone3} onChange={(value) => setManagerPhone3(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
 
         <div className='mt-5 flex justify-center'>
             <h1 className='text-lg font-semibold mt-1'>Manager 4: &nbsp;</h1>
-            <input id='managerName4' value={managerName4} onChange={(e) => setManagerName4(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 4)'/>
-            <input id='managerEmail4' value={managerEmail4} onChange={(e) => setManagerEmail4(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+            <input id='managerName4' value={managerName4} onChange={(e) => setManagerName4(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Manager 4)'/>
+            <input id='managerEmail4' value={managerEmail4} onChange={(e) => setManagerEmail4(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone4} onChange={(value) => setManagerPhone4(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+              <PhoneInput country={'us'} value={managerPhone4} onChange={(value) => setManagerPhone4(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
 
         <div className='mt-5 flex justify-center'>
             <h1 className='text-lg font-semibold mt-1'>Manager 5: &nbsp;</h1>
-            <input id='managerName5' value={managerName5} onChange={(e) => setManagerName5(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 5)'/>
-            <input id='managerEmail5' value={managerEmail5} onChange={(e) => setManagerEmail5(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+            <input id='managerName5' value={managerName5} onChange={(e) => setManagerName5(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Manager 5)'/>
+            <input id='managerEmail5' value={managerEmail5} onChange={(e) => setManagerEmail5(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone5} onChange={(value) => setManagerPhone5(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+              <PhoneInput country={'us'} value={managerPhone5} onChange={(value) => setManagerPhone5(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
 
         <div className='mt-5 flex justify-center'>
             <h1 className='text-lg font-semibold mt-1'>Manager 6: &nbsp;</h1>
-            <input id='managerName6' value={managerName6} onChange={(e) => setManagerName6(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Manager 6)'/>
-            <input id='managerEmail6' value={managerEmail6} onChange={(e) => setManagerEmail6(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+            <input id='managerName6' value={managerName6} onChange={(e) => setManagerName6(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Manager 6)'/>
+            <input id='managerEmail6' value={managerEmail6} onChange={(e) => setManagerEmail6(e.target.value)} className="border border-gray-300 p-1 pl-3 w-1/6 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={managerPhone6} onChange={(value) => setManagerPhone6(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+              <PhoneInput country={'us'} value={managerPhone6} onChange={(value) => setManagerPhone6(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
         </div>
         </form>
         )}
 
-        <button className='text-black w-full hover:bg-pink-100 flex justify-center font-bold text-xl py-5' onClick={handleAddOwner}>Add Owner(s): <IoIosArrowDown size={26}/></button><hr />
+        <button className='text-black w-full hover:bg-gray-200 flex justify-center font-bold text-xl py-5' onClick={handleAddOwner}>Add Owner(s): <IoIosArrowDown size={26}/></button><hr />
         {showOwnerForm && (
-        <form className='text-center bg-blue-100 pt-6 pb-12' action="submit">
+        <form className='text-center bg-blue-50 pt-6 pb-12' action="submit">
           <div className='flex justify-center'>
             <h1 className='text-lg font-semibold mt-1'>Owner 1: &nbsp;</h1>
-            <input id='ownerName' value={ownerName} onChange={(e) => setOwnerName(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Owner 1)'/>
-            <input id='ownerEmail' value={ownerEmail} onChange={(e) => setOwnerEmail(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+            <input id='ownerName' value={ownerName} onChange={(e) => setOwnerName(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Owner 1)'/>
+            <input id='ownerEmail' value={ownerEmail} onChange={(e) => setOwnerEmail(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
             <div>
-              <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={ownerPhone} onChange={(value) => setOwnerPhone(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+              <PhoneInput country={'us'} value={ownerPhone} onChange={(value) => setOwnerPhone(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
             </div>
           </div>
 
         <div className='mt-5 flex justify-center'>
           <h1 className='text-lg font-semibold mt-1'>Owner 2: &nbsp;</h1>
-          <input id='ownerName2' value={ownerName2} onChange={(e) => setOwnerName2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Owner 2)'/>
-          <input id='ownerEmail2' value={ownerEmail2} onChange={(e) => setOwnerEmail2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+          <input id='ownerName2' value={ownerName2} onChange={(e) => setOwnerName2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Owner 2)'/>
+          <input id='ownerEmail2' value={ownerEmail2} onChange={(e) => setOwnerEmail2(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
           <div>
-            <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={ownerPhone2} onChange={(value) => setOwnerPhone2(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+            <PhoneInput country={'us'} value={ownerPhone2} onChange={(value) => setOwnerPhone2(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
           </div>
         </div>
             
         <div className='mt-5 flex justify-center'>
           <h1 className='text-lg font-semibold mt-1'>Owner 3: &nbsp;</h1>
-          <input id='ownerName3' value={ownerName3} onChange={(e) => setOwnerName3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="text" placeholder='Name (Owner 3)'/>
-          <input id='ownerEmail3' value={ownerEmail3} onChange={(e) => setOwnerEmail3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-2 rounded-lg overflow-hidden shadow-md" type="email" placeholder='email'/>
+          <input id='ownerName3' value={ownerName3} onChange={(e) => setOwnerName3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="text" placeholder='Name (Owner 3)'/>
+          <input id='ownerEmail3' value={ownerEmail3} onChange={(e) => setOwnerEmail3(e.target.value)} className="border border-gray-300 p-1 w-1/6 pl-3 mr-4 rounded overflow-hidden shadow-md outline-0" type="email" placeholder='email'/>
           <div>
-            <PhoneInput className="border border-gray-300 rounded-xl overflow-hidden shadow-md" country={'us'} value={ownerPhone3} onChange={(value) => setOwnerPhone3(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
+            <PhoneInput country={'us'} value={ownerPhone3} onChange={(value) => setOwnerPhone3(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-9 p-2 w-full',}}/>
           </div>
         </div>
       </form>
@@ -758,8 +775,8 @@ const BridgeForm = ({onSubmit }) => {
               <div className="mb-6">
             <label htmlFor="country" className="block text-gray-700">Country:</label>
             <div>
-            <Selector value={country} data={countryData} selected={country} setSelected={setCountry}/>
-          </div>
+              <Selector value={country} data={countryData} selected={country} setSelected={setCountry}/>
+            </div>
           </div>
           <div className="mb-6">
               <label htmlFor="division" className="block text-gray-700">Division:</label>
@@ -785,7 +802,7 @@ const BridgeForm = ({onSubmit }) => {
           </div>
           <div className="mb-6">
             <label htmlFor="nobridgespan" className="block text-gray-700">Total Number of Spans:</label>
-            <select id="nobridgespan" name="nobridgespan" onChange={(e) => setnobridgespan(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
+            <select id="nobridgespan" name="nobridgespan" onChange={handleSpanChange} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
               {[...Array(50).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
             </select>
           </div>
@@ -801,14 +818,20 @@ const BridgeForm = ({onSubmit }) => {
               <label htmlFor='bridgeName' className="block text-gray-700">Bridge Location:</label>
               <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
             </div>
-            <div className="mb-6">
-            <label htmlFor="noofgirders" className="block text-gray-700">Total Number of Girders:</label>
-            <select id="noofgirders" name="noofgirders" onChange={(e) => setnoofgirders(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
-              {[...Array(20).keys()].map((girder) => (<option key={girder + 1} value={girder + 1}>{girder + 1}</option>))}
-            </select>
           </div>
         </div>
-      </div>
+        <div className="bg-gray-100 grid grid-cols-2 overflow-hidden py-8 shadow-md mx-12 text-center mt-12 mb-12">
+            {spans.map((span, index) => (
+              <div className='mb-8' key={index}>
+                <label className='font-semibold' htmlFor={`girders_${span.span}`}>Number of Girders for Span {span.span}:</label>
+                <select className='w-1/3 text-center ml-5 p-1 rounded overflow-hidden shadow-md' id={`girders_${span.span}`} value={span.girders} onChange={(e) => handleGirderChange(e, index)} >
+                  {[...Array(20).keys()].map((value) => (
+                    <option key={value + 1} value={value + 1}>{value + 1}</option>
+                  ))}
+                </select>
+              </div>
+            ))}
+            </div>
           <div className='flex align-center justify-center text-center mt-12 mb-12'>
             <button type="submit" onClick={UserForm} className="bg-blue-600 px-6 mx-2 py-2 text-gray-100 rounded-sm hover:bg-blue-900">Next</button>
             <button onClick={Cancel} className="bg-black px-5 py-2 text-gray-100 rounded-sm hover:bg-white hover:text-black border border-black ml-2">Cancel</button>

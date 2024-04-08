@@ -1185,45 +1185,6 @@ useEffect(() => {
                 )}
             </div>
         </div>
-
-        <div className='w-11/12 ml-24 p-6 flex bg-white'>
-            <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
-                <h1 className='text-center font-bold'>Battery Voltage Monitoring</h1><br />
-                {chartData.labels && chartData.datasets && chartData.labels.length > 0 && chartData.datasets.length > 0 ? (
-                    <Line data={chartData}/>
-                    ) : (
-                    <h1>Loading...</h1>
-                )}
-            </div>
-
-            <div className="bg-gray-100 w-1/2 shadow-xl">
-            <h1 className='text-center font-bold'>Logger Temperature Monitoring</h1><br />
-            {chartData1.labels && chartData1.datasets && chartData1.labels.length > 0 && chartData1.datasets.length > 0 ? (
-                    <Line data={chartData1} />
-                    ) : (
-                    <h1>Loading...</h1>
-            )}
-            </div>
-        </div>
-            <div className='w-11/12 ml-24 p-6 flex'>
-              <div className="bg-gray-100 w-1/6 mx-6 shadow-2xl rounded-xl"><br />
-                <h2 className="text-lg font-semibold text-center text-gray-600">Avg Battery Voltage</h2><br />
-                <h1 className='text-center font-bold text-6xl text-gray-800'>{averageBatteryVoltage} </h1><br />
-              </div>
-
-              <div className="bg-gray-100 w-1/6 mx-6 shadow-2xl rounded-xl"><br />
-                <h2 className="text-lg font-semibold text-center text-gray-600">Avg Logger Temp</h2><br />
-                <h1 className='text-center font-bold text-6xl text-gray-800'>{averageLoggerTemp}</h1><br />
-              </div>
-
-              <div className="bg-pink-600 w-2/3 shadow-2xl mx-6 rounded-xl text-white p-3 pl-6">
-              <h1 className='text-2xl'>General Dashboard</h1> <hr /><br />
-              <p className='text-sm'>The dashboard displays real-time data on battery voltage and logger temperature, allowing 
-                users to monitor system health and performance. With intuitive visualizations, 
-                it provides insights into power supply stability and environmental conditions, facilitating 
-                informed decision-making and proactive maintenance.</p>
-              </div>
-            </div>
             </>
       )}
 
@@ -1438,6 +1399,43 @@ useEffect(() => {
             </div>
         </div>
 
+        <h1 className='w-11/12 ml-24 text-center p-6 pt-24 text-pink-600 text-4xl font-semibold'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; General Details &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
+        <div className='w-11/12 ml-24 p-6 flex bg-white'>
+            <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
+                <h1 className='text-center font-bold'>Battery Voltage Monitoring</h1><br />
+                {chartData.labels && chartData.datasets && chartData.labels.length > 0 && chartData.datasets.length > 0 ? (
+                    <Line data={chartData}/>
+                    ) : (
+                    <h1>Loading...</h1>
+                )}
+            </div>
+
+            <div className="bg-gray-100 w-1/2 shadow-xl">
+            <h1 className='text-center font-bold'>Logger Temperature Monitoring</h1><br />
+            {chartData1.labels && chartData1.datasets && chartData1.labels.length > 0 && chartData1.datasets.length > 0 ? (
+                    <Line data={chartData1} />
+                    ) : (
+                    <h1>Loading...</h1>
+            )}
+            </div>
+        </div>
+        <div className='w-11/12 ml-24 p-6 flex'>
+          <div className="bg-gray-100 w-1/6 mx-6 shadow-2xl rounded-xl"><br />
+            <h2 className="text-lg font-semibold text-center text-gray-600">Avg Battery Voltage</h2><br />
+            <h1 className='text-center font-bold text-6xl text-gray-800'>{averageBatteryVoltage} </h1><br />
+          </div>
+          <div className="bg-gray-100 w-1/6 mx-6 shadow-2xl rounded-xl"><br />
+            <h2 className="text-lg font-semibold text-center text-gray-600">Avg Logger Temp</h2><br />
+            <h1 className='text-center font-bold text-6xl text-gray-800'>{averageLoggerTemp}</h1><br />
+          </div>
+          <div className="bg-pink-600 w-2/3 shadow-2xl mx-6 rounded-xl text-white p-3 pl-6">
+          <h1 className='text-2xl'>General Dashboard</h1> <hr /><br />
+          <p className='text-sm'>The dashboard displays real-time data on battery voltage and logger temperature, allowing 
+            users to monitor system health and performance. With intuitive visualizations, 
+            it provides insights into power supply stability and environmental conditions, facilitating 
+            informed decision-making and proactive maintenance.</p>
+          </div>
+        </div>
         </>
       )}
       
