@@ -24,7 +24,6 @@ const SensorForm = () => {
   const [coordinates, setCoordinates] = useState('');
   const [bridgeLocation, setBridgeLocation] = useState('');
   const [bridgeName, setBridgeName] = useState('');
-  const [noofgirders, setnoofgirders] = useState('');
   const [nobridgespan, setnobridgespan] = useState('');
   
   const [spanno, setspanno] = useState(0);
@@ -54,7 +53,6 @@ const SensorForm = () => {
     const storedState = localStorage.getItem('state');
     const storedCity = localStorage.getItem('city');
     const storedBridgespan = localStorage.getItem('nobridgespan');
-    const storedGirders = localStorage.getItem('noofgirders');
     const storedDivision = localStorage.getItem('division');
     const storedCoordinates = localStorage.getItem('coordinates');
     const location = localStorage.getItem('location')
@@ -81,7 +79,6 @@ const SensorForm = () => {
     setState(storedState || '');
     setCity(storedCity || '');
     setnobridgespan(storedBridgespan || '');
-    setnoofgirders(storedGirders || '')
     setDivision(storedDivision || '');
     setCoordinates(storedCoordinates || '');
     setBridgeLocation(location || '');
