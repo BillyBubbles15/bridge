@@ -12,9 +12,7 @@ const SensorForm = () => {
   const [loading, setLoading] = useState(false);
   const [showAddSensor, setshowAddSensor] =useState(false);
   const [numSensors, setNumSensors] = useState('');
-  const [sensorLocations, setSensorLocations] = useState([]);
-  const [showAddLocation, setshowAddLocation] = useState(false);
-  const [showLocations, setshowLocations] = useState(false);
+  const [sensorInputs, setSensorInputs] = useState([]);
 
   const [sensortype, setsensortype]= useState('');
   const [country, setCountry] = useState('');
@@ -106,22 +104,19 @@ const SensorForm = () => {
   };
 
   const handleNumSensorsChange = (e) => {
-    e.preventDefault();
-    setshowLocations(!showLocations);
-    const newNumSensors = parseInt(e.target.value);
-    setNumSensors(newNumSensors);
-    const locations = Array.from({ length: newNumSensors }, (_, index) => ({
-      spanno: '',
-      girderno: '',
+    const count = parseInt(e.target.value);
+    setNumSensors(count);
+    const inputs = Array.from({ length: count }, (_, index) => ({
+      id: index,
+      value: ''
     }));
-    setshowAddLocation(!showAddLocation);
-    setSensorLocations(locations);
+    setSensorInputs(inputs);
   };
 
 
   const handleSubmit1 = async(e) => {
     e.preventDefault();
-    if(!sensortype){
+    if(!sensortype || !numSensors || !sensorInputs){
       enqueueSnackbar('Please fill all the fields!', { variant: 'error'});
     }
     else {
@@ -129,12 +124,10 @@ const SensorForm = () => {
     }
   };
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!sensortype || !numSensors) {
-      enqueueSnackbar('Please fill all the fields!', { variant: 'error'});
+    if (!sensortype || !numSensors || !sensorInputs) {
+      enqueueSnackbar('Please fill all the fields correctly!', { variant: 'error'});
       setshowAddSensor(false);
     }
     else {
@@ -143,7 +136,7 @@ const SensorForm = () => {
         const sensorData = [];
         
         // Loop through each sensor location and push sensor data to sensorData array
-        sensorLocations.forEach((location) => {
+        numSensors.forEach((location) => {
           sensorData.push({
             sensortype: sensortype,
             spanno: location.spanno,
@@ -170,6 +163,7 @@ const SensorForm = () => {
         setsensortype('');
         setspanno('');
         setgirderno('');
+        setSensorInputs([]);
       }
     }
   };
@@ -179,13 +173,14 @@ const SensorForm = () => {
     setsensortype('');
     setspanno('');
     setgirderno('');
-    setshowAddLocation(false);
+    setSensorInputs([]);
+    setNumSensors('');
   };
 
 const handleAddSensor = async (e) => {
   e.preventDefault();
-  if (!sensortype || !numSensors) {
-    enqueueSnackbar('Please fill all the fields!', { variant: 'error'});
+  if (!sensortype || !numSensors || !sensorInputs) {
+    enqueueSnackbar('Please fill all the fields correctly!', { variant: 'error'});
   }
   else {
     try {
@@ -193,7 +188,7 @@ const handleAddSensor = async (e) => {
       const sensorData = [];
       
       // Loop through each sensor location and push sensor data to sensorData array
-      sensorLocations.forEach((location) => {
+      numSensors.forEach((location) => {
         sensorData.push({
           sensortype: sensortype,
           spanno: location.spanno,
@@ -219,10 +214,19 @@ const handleAddSensor = async (e) => {
       setsensortype('');
       setspanno('');
       setgirderno('');
+      setSensorInputs([]);
     }
   }
 };
 
+const handleSensorInputChange = (id, value) => {
+  setSensorInputs(prevInputs => prevInputs.map(input => {
+    if (input.id === id) {
+      return { ...input, value };
+    }
+    return input;
+  }));
+};
 
   return (
     <>
@@ -233,6 +237,7 @@ const handleAddSensor = async (e) => {
       <h1 className='text-center text-3xl text-black font-sans font-semibold'>Add Sensor Details</h1><br /><hr /><hr />
       <form>
         <div className='justify-center text-left pt-8 mx-20 block'>
+          <h1 className='text-left px-5 font-semibold mb-4'>Add Sensor Location:</h1>
           <div className='flex w-full'>
           <div className="w-1/2 mb-4 px-5">
             <label htmlFor="nobridgespan" className="block text-gray-700">Span Number:</label>
@@ -261,11 +266,17 @@ const handleAddSensor = async (e) => {
             <div id='sensorform-pop1' className="mx-5 mb-4">
               <label htmlFor="numSensors" className="block text-gray-700">Number of Sensors:</label>
               <select id="numSensors" onChange={handleNumSensorsChange} value={numSensors} className="border border-gray-300 p-1 w-full pl-3 mr-2 rounded-lg overflow-hidden outline-0 shadow-md">
-                {Array.from({ length: 20 }, (_, index) => (
+                {Array.from({ length: 11 }, (_, index) => (
                   <option key={index} value={index}>{index}</option>
                 ))}
               </select>
             </div>
+            {sensorInputs.map(input => (
+              <div className="mx-5 mb-4" key={input.id}>
+                <label className="block text-gray-700" htmlFor={`sensorInput${input.id}`}>Sensor {input.id + 1} Location:</label>
+                <input className="border border-gray-300 p-1 w-full pl-3 mr-2 rounded-lg overflow-hidden outline-0 shadow-md" type="text" id={`sensorInput${input.id}`} placeholder='Ex: Center, Top Right' value={input.value} onChange={(e) => handleSensorInputChange(input.id, e.target.value)}/>
+              </div>
+            ))}
         </div>
 
 

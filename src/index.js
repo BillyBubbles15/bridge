@@ -17,7 +17,7 @@ import Addexcelfile from './components/Pages/Addexcelfile'
 import Forgotpw from './components/Pages/Forgotpw';
 import Bridges from './components/Pages/Bridges';
 import Sensorformexcel from './components/Pages/Sensorformexcel';
-import Selector from './components/Pages/Selector';
+// import Selector from './components/Pages/Selector';
 
 const root = createRoot(document.getElementById('root'));
 
@@ -42,7 +42,7 @@ root.render(
           <Route path="/home/dashboard" element={<Superuserhome />} />
           <Route path="/masterhome" element={<Masterhome />} />
           <Route path="/bridges" element={<Bridges />} />
-          <Route path="/wiefnnewofunwe" element={<Selector />} />
+          {/* <Route path="/wiefnnewofunwe" element={<Selector />} /> */}
         </Routes>
       </Router>
     </SnackbarProvider>

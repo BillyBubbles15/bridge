@@ -38,7 +38,7 @@ function Selector({ data, selected, setSelected }) {
                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                   Nothing found.
                 </div>
-              ) : (
+                ) : (
                 filteredPeople.map((person) => (
                   <Combobox.Option
                     key={person.id}

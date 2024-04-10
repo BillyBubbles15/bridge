@@ -770,18 +770,18 @@ const BridgeForm = ({onSubmit }) => {
 
         <form><hr />
           <h1 className='text-center text-3xl mt-8 mb-8 font-semibold'>Enter Bridge Details</h1><hr />
-          <div className="flex bg-gray-100 mt-16 mx-12 overflow-hidden shadow-md p-6 pt-12 pb-12">
+          <div className="flex bg-gray-100 mt-16 mx-12 shadow-md p-6 pt-12 pb-12">
             <div className='w-full mx-5'>
               <div className="mb-6">
-            <label htmlFor="country" className="block text-gray-700">Country:</label>
-            <div>
-              <Selector value={country} data={countryData} selected={country} setSelected={setCountry}/>
-            </div>
-          </div>
-          <div className="mb-6">
-              <label htmlFor="division" className="block text-gray-700">Division:</label>
-              <input type="text" id="division" placeholder='Enter Division' name="division" value={division} onChange={(e) => setDivision(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
-            </div>
+                <label htmlFor="country" className="block text-gray-700">Country:</label>
+                <div>
+                <Selector value={country} data={countryData} selected={country} setSelected={setCountry}/>
+                </div>
+              </div>
+              <div className="mb-6">
+                <label htmlFor="division" className="block text-gray-700">Division:</label>
+                <input type="text" id="division" placeholder='Enter Division' name="division" value={division} onChange={(e) => setDivision(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
+              </div>
           <div className="mb-6">
             <label htmlFor='bridgeName' className="block text-gray-700">Bridge Name:</label>
             <input type="text" id="name" placeholder='Enter Name' name="name" value={bridgeName} onChange={(e) => setBridgeName(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
@@ -819,8 +819,10 @@ const BridgeForm = ({onSubmit }) => {
               <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
             </div>
           </div>
-        </div>
-        <div className="bg-gray-100 grid grid-cols-2 overflow-hidden py-8 shadow-md mx-12 text-center mt-12 mb-12">
+        </div><br /><br /> <br />
+        <hr />
+        <h1 className='text-center text-3xl mt-8 mb-8 font-semibold'>Assign Girders to Individual Spans</h1><hr />
+        <div className="bg-gray-100 grid grid-cols-2 overflow-hidden py-8 pt-12 shadow-md mx-12 text-center mt-12 mb-12">
             {spans.map((span, index) => (
               <div className='mb-8' key={index}>
                 <label className='font-semibold' htmlFor={`girders_${span.span}`}>Number of Girders for Span {span.span}:</label>

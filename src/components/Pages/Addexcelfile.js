@@ -57,7 +57,7 @@ const Addexcelfile = () => {
         }
     };
 
-    const sample_csv = 'https://shm-frontserver.azurewebsites.net/sample.xlsx'
+    const sample_csv = 'http:///localhost:3000/sample.xlsx'
 
     const downloadFileAtURL = (url) => {
         const fileName = url.split("/").pop();
