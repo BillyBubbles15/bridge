@@ -23,7 +23,6 @@ const BridgeForm = ({onSubmit }) => {
   const [location, setlocation] = useState('');
   const [nobridgespan, setnobridgespan] = useState(1);
   const [spans, setSpans] = useState([{ span: 1, girders: 1 }]);
-  const [noofgirders, setnoofgirders] = useState('');
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -152,17 +151,41 @@ const BridgeForm = ({onSubmit }) => {
     setShowOwnerForm(false);
   };
 
-  const UserForm = async(e) => {
+  const UserForm = async (e) => {
     e.preventDefault();
-    if(!country || !state || !city || !coordinates || !division || !location || !bridgeName){
-      enqueueSnackbar('Please fill all the fields!', { variant: 'error'});
-    }
-    else{
-      enqueueSnackbar('Data entered successfully!', { variant: 'success'});
-      setShowUserForm(!showUserForm);
-      setShowBridgeForm(false);
+    if (!country || !state || !city || !coordinates || !division || !location || !bridgeName) {
+      enqueueSnackbar('Please fill all the fields!', { variant: 'error' });
+    } else {
+      try {
+        setLoading(true);
+        const spanData = [];
+        
+        // Loop through each span and push span data to spanData array
+        spans.forEach((span) => {
+          spanData.push({
+            spanno: span.span,
+            girderCount: span.girders
+          });
+        });
+  
+        // Post span data for each span separately
+        for (const data of spanData) {
+          const response = await axios.post(`http://localhost:9090/your-api-endpoint`, data);
+          if (response.status >= 200 && response.status < 300) {
+            enqueueSnackbar('Data entered successfully!', { variant: 'success' });
+            setShowUserForm(!showUserForm);
+            setShowBridgeForm(false);
+          }
+        }
+      } catch (error) {
+        console.error('Error submitting form: ', error);
+        enqueueSnackbar('Failed to submit form!', { variant: 'error' });
+      } finally {
+        setLoading(false);
+      }
     }
   };
+
 
   const Cancel = () => {
     CancelBridgeForm();
@@ -174,7 +197,6 @@ const BridgeForm = ({onSubmit }) => {
     setCountry('');
     setState('');
     setnobridgespan('');
-    setnoofgirders('');
     setDivision('');
     setCoordinates('');
     setBridgeName('');
@@ -448,7 +470,6 @@ const BridgeForm = ({onSubmit }) => {
             state:state,
             city: city,
             nobridgespan:nobridgespan,
-            noofgirders:noofgirders,
             division:division,
             coordinates:coordinates,
             bridgeName:bridgeName,
@@ -503,7 +524,6 @@ const BridgeForm = ({onSubmit }) => {
           localStorage.setItem('country', country);
           localStorage.setItem('state', state);
           localStorage.setItem('city', city);
-          localStorage.setItem('noofgirders', noofgirders);
           localStorage.setItem('nobridgespan', nobridgespan);
           localStorage.setItem('division', division);
           localStorage.setItem('coordinates', coordinates);
