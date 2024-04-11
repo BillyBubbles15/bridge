@@ -135,12 +135,13 @@ const SensorForm = () => {
         setLoading(true);
         const sensorData = [];
         
-        // Loop through each sensor location and push sensor data to sensorData array
-        numSensors.forEach((location) => {
+        sensorInputs.forEach((input) => {
+          const spanno = input.spanno;
+          const girderno = input.girderno;
           sensorData.push({
             sensortype: sensortype,
-            spanno: location.spanno,
-            girderno: location.girderno,
+            spanno: spanno,
+            girderno: girderno,
           });
         });
   
@@ -187,12 +188,13 @@ const handleAddSensor = async (e) => {
       setLoading(true);
       const sensorData = [];
       
-      // Loop through each sensor location and push sensor data to sensorData array
-      numSensors.forEach((location) => {
+      sensorInputs.forEach((input) => {
+        const spanno = input.spanno;
+        const girderno = input.girderno;
         sensorData.push({
           sensortype: sensortype,
-          spanno: location.spanno,
-          girderno: location.girderno,
+          spanno: spanno,
+          girderno: girderno,
         });
       });
 
