@@ -4,19 +4,17 @@ import { CheckIcon } from "@heroicons/react/20/solid";
 import { LuChevronsUpDown } from "react-icons/lu";
 
 function Selector({ data, selected, setSelected }) {
-  const parametersString = `data: ${JSON.stringify(data)}, selected: ${selected}, setSelected: ${setSelected}`;
-  console.log(parametersString);
   const [query, setQuery] = useState("");
 
   const filteredPeople =
-  query === ""
-    ? data.map(person => person.name)
-    : data.filter((person) =>
-        person.name
-          .toLowerCase()
-          .replace(/\s+/g, "")
-          .includes(query.toLowerCase().replace(/\s+/g, ""))
-      );
+    query === ""
+      ? data
+      : data.filter((person) =>
+          person.name
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, ""))
+        );
 
   return (
     <div className="w-full">
