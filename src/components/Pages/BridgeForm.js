@@ -67,14 +67,21 @@ const BridgeForm = ({onSubmit }) => {
       newSpans.push({ span: i, girders: 1 });
     }
     setSpans(newSpans);
+    localStorage.setItem('spans', JSON.stringify(newSpans));
+    localStorage.setItem('girderCount', numSpans);
   };
+  
 
-  // Function to handle changing the number of girders for a specific span
-  const handleGirderChange = (e, spanIndex) => {
-    const newSpans = [...spans];
-    newSpans[spanIndex].girders = parseInt(e.target.value);
-    setSpans(newSpans);
-  };
+const handleGirderChange = (e, spanIndex) => {
+  const newSpans = [...spans];
+  newSpans[spanIndex].girders = parseInt(e.target.value);
+  setSpans(newSpans);
+  localStorage.setItem('spans', JSON.stringify(newSpans)); 
+
+  // Create a separate array to store the number of girders for each span
+  const girderCounts = newSpans.map(span => span.girders);
+  localStorage.setItem('girderCounts', JSON.stringify(girderCounts));
+};
   
   const[showUserForm, setShowUserForm] = useState(false);
   const[showBridgeForm, setShowBridgeForm] = useState(true);
@@ -156,33 +163,9 @@ const BridgeForm = ({onSubmit }) => {
     if (!country || !state || !city || !coordinates || !division || !location || !bridgeName) {
       enqueueSnackbar('Please fill all the fields!', { variant: 'error' });
     } else {
-      try {
-        setLoading(true);
-        const spanData = [];
-        
-        // Loop through each span and push span data to spanData array
-        spans.forEach((span) => {
-          spanData.push({
-            spanno: span.span,
-            girderCount: span.girders
-          });
-        });
-  
-        // Post span data for each span separately
-        for (const data of spanData) {
-          const response = await axios.post(`http://localhost:9090/your-api-endpoint`, data);
-          if (response.status >= 200 && response.status < 300) {
-            enqueueSnackbar('Data entered successfully!', { variant: 'success' });
-            setShowUserForm(!showUserForm);
-            setShowBridgeForm(false);
-          }
-        }
-      } catch (error) {
-        console.error('Error submitting form: ', error);
-        enqueueSnackbar('Failed to submit form!', { variant: 'error' });
-      } finally {
-        setLoading(false);
-      }
+      enqueueSnackbar('Data entered successfully!', { variant: 'success' });
+      setShowUserForm(!showUserForm);
+      setShowBridgeForm(false);
     }
   };
 
@@ -843,16 +826,16 @@ const BridgeForm = ({onSubmit }) => {
         <hr />
         <h1 className='text-center text-3xl mt-8 mb-8 font-semibold'>Assign Girders to Individual Spans</h1><hr />
         <div className="bg-gray-100 grid grid-cols-2 overflow-hidden py-8 pt-12 shadow-md mx-12 text-center mt-12 mb-12">
-            {spans.map((span, index) => (
-              <div className='mb-8' key={index}>
-                <label className='font-semibold' htmlFor={`girders_${span.span}`}>Number of Girders for Span {span.span}:</label>
-                <select className='w-1/3 text-center ml-5 p-1 rounded overflow-hidden shadow-md' id={`girders_${span.span}`} value={span.girders} onChange={(e) => handleGirderChange(e, index)} >
-                  {[...Array(20).keys()].map((value) => (
-                    <option key={value + 1} value={value + 1}>{value + 1}</option>
-                  ))}
-                </select>
-              </div>
-            ))}
+        {spans.map((span, index) => (
+          <div className='mb-8' key={index}>
+            <label className='font-semibold' htmlFor={`girders_${span.span}`}>Number of Girders for Span {span.span}:</label>
+            <select className='w-1/3 text-center ml-5 p-1 rounded overflow-hidden shadow-md' id={`girders_${span.span}`} value={span.girders} onChange={(e) => handleGirderChange(e, index)} >
+              {[...Array(20).keys()].map((value) => (
+                <option key={value + 1} value={value + 1}>{value + 1}</option>
+              ))}
+            </select>
+          </div>
+        ))}
             </div>
           <div className='flex align-center justify-center text-center mt-12 mb-12'>
             <button type="submit" onClick={UserForm} className="bg-blue-600 px-6 mx-2 py-2 text-gray-100 rounded-sm hover:bg-blue-900">Next</button>

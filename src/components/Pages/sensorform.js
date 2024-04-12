@@ -22,7 +22,6 @@ const SensorForm = () => {
   const [coordinates, setCoordinates] = useState('');
   const [bridgeLocation, setBridgeLocation] = useState('');
   const [bridgeName, setBridgeName] = useState('');
-  const [nobridgespan, setnobridgespan] = useState('');
   
   const [spanno, setspanno] = useState(0);
   const [girderno, setgirderno] = useState(0);
@@ -41,6 +40,10 @@ const SensorForm = () => {
   const [ownerName, setOwnerName] = useState('');
   const [ownerName2, setOwnerName2] = useState('');
   const [ownerName3, setOwnerName3] = useState('');
+
+  const [spannos, setspannos] = useState('');
+  const [girderCount, setgirderCount] = useState('');
+
   const bid = localStorage.getItem('bid');
 
   const Navigate = useNavigate();
@@ -50,12 +53,14 @@ const SensorForm = () => {
     const storedCountry = localStorage.getItem('country');
     const storedState = localStorage.getItem('state');
     const storedCity = localStorage.getItem('city');
-    const storedBridgespan = localStorage.getItem('nobridgespan');
     const storedDivision = localStorage.getItem('division');
     const storedCoordinates = localStorage.getItem('coordinates');
-    const location = localStorage.getItem('location')
+    const location = localStorage.getItem('location');
     const storedbridgeName = localStorage.getItem('bridgeName');
-    
+
+    const storedSpans = localStorage.getItem('spans');
+    const storedGirders = localStorage.getItem('girderCount');
+
     const storedOwnerName = localStorage.getItem('ownerName');
     const storedOwnerName2 = localStorage.getItem('ownerName2');
     const storedOwnerName3 = localStorage.getItem('ownerName3');
@@ -76,11 +81,13 @@ const SensorForm = () => {
     setCountry(storedCountry || '');
     setState(storedState || '');
     setCity(storedCity || '');
-    setnobridgespan(storedBridgespan || '');
     setDivision(storedDivision || '');
     setCoordinates(storedCoordinates || '');
     setBridgeLocation(location || '');
     setBridgeName(storedbridgeName || '');
+
+    setspannos(storedSpans || '');
+    setgirderCount(storedGirders || '');
 
     setAdminName(storedAdminName || '');
     setAdminName2(storedAdminName2 || '');
@@ -345,9 +352,25 @@ const handleSensorInputChange = (id, value) => {
           <label htmlFor="sensorlocation" className="block text-gray-700">Bridge Name:</label>
           <input type="text" value={bridgeName} className="border border-gray-300 p-1 w-full pl-3 mr-2 rounded-lg bg-white overflow-hidden shadow-md" disabled/>
         </div>
-      <div className="mb-4 px-2 w-full">
-          <label htmlFor="nobridgespan" className="block text-gray-700">No of Spans:</label>
-          <input type="text" value={nobridgespan} className="border border-gray-300 p-1 w-full pl-3 mr-2 rounded-lg bg-white overflow-hidden shadow-md" disabled/>
+        <div className="mb-4 px-2 w-full">
+          <label htmlFor="nobridgespan" className="block text-gray-700">Span Number:</label>
+          <select id="nobridgespan" name="nobridgespan" value={spannos} onChange={(e) => setspanno(e.target.value)} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" >
+            <option value="" disabled>Select Span Number</option>
+            {/* Map through the fetched spans and display them as options */}
+            {Array.from({ length: spannos }, (_, index) => (
+              <option key={index + 1} value={index + 1}>{index + 1}</option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-4 px-2 w-full">
+          <label htmlFor="girderno" className="block text-gray-700">Girder Number:</label>
+          <select id="girderno" name="girderno" value={girderno} onChange={(e) => setgirderno(e.target.value)} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" >
+          <option value="" disabled>Select Girder Number</option>
+            {/* Map through the fetched girders and display them as options */}
+            {Array.from({ length: girderCount }, (_, index) => (
+            <option key={index + 1} value={index + 1}>{`Girder ${index + 1}`}</option>
+            ))}
+          </select>
         </div>
       </div>
       

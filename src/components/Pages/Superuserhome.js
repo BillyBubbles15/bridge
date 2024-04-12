@@ -1569,20 +1569,20 @@ useEffect(() => {
             <input id='adminName' value={userData.adminName || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminName: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 1)'/>
             <input id='adminEmail' value={userData.adminEmail || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput country={'us'} value={userData.adminPhone || ''} onChange={(value) => setUserData(prevData => ({ ...prevData, adminPhone: value }))} inputProps={{ required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-8 p-2 w-3/4',}} />
-            <button className='w-1/6 mt-4' onClick={removeAdmin1}><FaTrash size={20}/></button>
+            <button className='w-1/6' onClick={removeAdmin1}><FaTrash size={20}/></button>
         </div>
         <form action="submit">
         <div className='mt-5 flex'>
             <input id='adminName2' value={userData.adminName2 || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminName2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 2)'/>
             <input id='adminEmail2' value={userData.adminEmail2 || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail2: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput country={'us'} value={userData.adminPhone2 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, adminPhone2: value }))} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-8 p-2 w-3/4',}}/>
-            <button className='w-1/6 mt-4' onClick={removeAdmin2}><FaTrash size={20}/></button>
+            <button className='w-1/6' onClick={removeAdmin2}><FaTrash size={20}/></button>
         </div>
         <div className='mt-5 flex'>
             <input id='adminName3' value={userData.adminName3 || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminName3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="text" placeholder='Name (Admin 3)'/>
             <input id='adminEmail3' value={userData.adminEmail3 || ''} onChange={(e) => setUserData(prevData => ({...prevData, adminEmail3: e.target.value}))} className="border border-gray-300 rounded overflow-hidden shadow-md w-full mx-4 pl-3 p-1" type="email" placeholder='email'/>
             <PhoneInput country={'us'} value={userData.adminPhone3 || ''}  onChange={(value) => setUserData(prevData => ({ ...prevData, adminPhone3: value }))} inputProps={{  required: true, className: 'relative border border-gray-300 outline-0 rounded overflow-hidden shadow-md ml-8 p-2 w-3/4',}}/>
-            <button className='w-1/6 mt-4' onClick={removeAdmin3}><FaTrash size={20}/></button>
+            <button className='w-1/6' onClick={removeAdmin3}><FaTrash size={20}/></button>
         </div>
         </form>
 
