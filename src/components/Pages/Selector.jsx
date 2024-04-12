@@ -7,14 +7,14 @@ function Selector({ data, selected, setSelected }) {
   const [query, setQuery] = useState("");
 
   const filteredPeople =
-    query === ""
-      ? data
-      : data.filter((person) =>
-          person.name
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""))
-        );
+  query === ""
+    ? data.map(person => person.name)
+    : data.filter((person) =>
+        person.name
+          .toLowerCase()
+          .replace(/\s+/g, "")
+          .includes(query.toLowerCase().replace(/\s+/g, ""))
+      );
 
   return (
     <div className="w-full">
