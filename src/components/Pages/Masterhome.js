@@ -16,8 +16,6 @@ import loadingIcon from '../Assets/loading.gif';
 import logo2 from '../Assets/logo2.png';
 
 
-
-
 const Masterhome = () => {
 
   const [loading, setLoading] = useState(false);

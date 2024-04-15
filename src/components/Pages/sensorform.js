@@ -42,7 +42,7 @@ const SensorForm = () => {
   const [ownerName3, setOwnerName3] = useState('');
 
   const [spannos, setspannos] = useState('');
-  const [girderCount, setgirderCount] = useState('');
+  const [girderCounts, setgirderCounts] = useState('');
 
   const bid = localStorage.getItem('bid');
 
@@ -59,7 +59,7 @@ const SensorForm = () => {
     const storedbridgeName = localStorage.getItem('bridgeName');
 
     const storedSpans = localStorage.getItem('spans');
-    const storedGirders = localStorage.getItem('girderCount');
+    const storedGirders = localStorage.getItem('girderCounts');
 
     const storedOwnerName = localStorage.getItem('ownerName');
     const storedOwnerName2 = localStorage.getItem('ownerName2');
@@ -87,7 +87,7 @@ const SensorForm = () => {
     setBridgeName(storedbridgeName || '');
 
     setspannos(storedSpans || '');
-    setgirderCount(storedGirders || '');
+    setgirderCounts(storedGirders || '');
 
     setAdminName(storedAdminName || '');
     setAdminName2(storedAdminName2 || '');
@@ -367,7 +367,7 @@ const handleSensorInputChange = (id, value) => {
           <select id="girderno" name="girderno" value={girderno} onChange={(e) => setgirderno(e.target.value)} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" >
           <option value="" disabled>Select Girder Number</option>
             {/* Map through the fetched girders and display them as options */}
-            {Array.from({ length: girderCount }, (_, index) => (
+            {Array.from({ length: girderCounts }, (_, index) => (
             <option key={index + 1} value={index + 1}>{`Girder ${index + 1}`}</option>
             ))}
           </select>

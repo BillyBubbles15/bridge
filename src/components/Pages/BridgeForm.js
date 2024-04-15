@@ -38,17 +38,17 @@ const BridgeForm = ({onSubmit }) => {
   const [stateData, setStateData] = useState();
   const [cityData, setCityData] = useState();
 
-  const [country, setCountry] = useState(countryData[0]);
+  const [countries, setCountry] = useState(countryData[0]);
   const [state, setState] = useState();
   const [city, setCity] = useState();
 
   useEffect(() => {
-    setStateData(State.getStatesOfCountry(country?.isoCode));
-  }, [country]);
+    setStateData(State.getStatesOfCountry(countries?.isoCode));
+  }, [countries]);
 
   useEffect(() => {
-    setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
-  }, [country?.isoCode, state]);
+    setCityData(City.getCitiesOfState(countries?.isoCode, state?.isoCode));
+  }, [countries?.isoCode, state]);
   
 
   useEffect(() => {
@@ -160,7 +160,7 @@ const handleGirderChange = (e, spanIndex) => {
 
   const UserForm = async (e) => {
     e.preventDefault();
-    if (!country || !state || !city || !coordinates || !division || !location || !bridgeName) {
+    if (!countries || !state || !city || !coordinates || !division || !location || !bridgeName) {
       enqueueSnackbar('Please fill all the fields!', { variant: 'error' });
     } else {
       enqueueSnackbar('Data entered successfully!', { variant: 'success' });
@@ -449,7 +449,7 @@ const handleGirderChange = (e, spanIndex) => {
         try {
           setLoading(true);
           const response = await axios.post('http://localhost:9090/bridge/register', {
-            country:country,
+            countries:countries,
             state:state,
             city: city,
             nobridgespan:nobridgespan,
@@ -504,7 +504,7 @@ const handleGirderChange = (e, spanIndex) => {
 
           const bridgeId = response.data.id;
           localStorage.setItem('bid',bridgeId);
-          localStorage.setItem('country', country);
+          localStorage.setItem('country', countries);
           localStorage.setItem('state', state);
           localStorage.setItem('city', city);
           localStorage.setItem('nobridgespan', nobridgespan);
@@ -778,16 +778,16 @@ const handleGirderChange = (e, spanIndex) => {
               <div className="mb-6">
                 <label htmlFor="country" className="block text-gray-700">Country:</label>
                 <div>
-                <Selector value={country} data={countryData} selected={country} setSelected={setCountry}/>
+                <Selector value={countries} data={countryData} selected={countries} setSelected={setCountry}/>
                 </div>
               </div>
               <div className="mb-6">
                 <label htmlFor="division" className="block text-gray-700">Division:</label>
-                <input type="text" id="division" placeholder='Enter Division' name="division" value={division} onChange={(e) => setDivision(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
+                <input type="text" id="division" placeholder='Enter Division' name="division" value={division} onChange={(e) => setDivision(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
               </div>
           <div className="mb-6">
             <label htmlFor='bridgeName' className="block text-gray-700">Bridge Name:</label>
-            <input type="text" id="name" placeholder='Enter Name' name="name" value={bridgeName} onChange={(e) => setBridgeName(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
+            <input type="text" id="name" placeholder='Enter Name' name="name" value={bridgeName} onChange={(e) => setBridgeName(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
           </div>
         </div>
             <div className='w-full mx-5'>
@@ -801,11 +801,11 @@ const handleGirderChange = (e, spanIndex) => {
           </div>
           <div className="mb-6">
             <label htmlFor="coordinates" className="block text-gray-700">Bridge Coordinates:</label>
-            <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={coordinates} onChange={(e) => setCoordinates(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
+            <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={coordinates} onChange={(e) => setCoordinates(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
           </div>
           <div className="mb-6">
             <label htmlFor="nobridgespan" className="block text-gray-700">Total Number of Spans:</label>
-            <select id="nobridgespan" name="nobridgespan" onChange={handleSpanChange} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
+            <select id="nobridgespan" name="nobridgespan" onChange={handleSpanChange} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
               {[...Array(50).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
             </select>
           </div>
@@ -819,7 +819,7 @@ const handleGirderChange = (e, spanIndex) => {
           )}
             <div className="mb-6">
               <label htmlFor='bridgeName' className="block text-gray-700">Bridge Location:</label>
-              <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
+              <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
             </div>
           </div>
         </div><br /><br /> <br />
