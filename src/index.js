@@ -42,7 +42,6 @@ root.render(
           <Route path="/home/dashboard" element={<Superuserhome />} />
           <Route path="/masterhome" element={<Masterhome />} />
           <Route path="/bridges" element={<Bridges />} />
-          {/* <Route path="/wiefnnewofunwe" element={<Selector />} /> */}
         </Routes>
       </Router>
     </SnackbarProvider>

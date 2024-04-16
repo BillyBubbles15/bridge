@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { City, Country, State } from "country-state-city";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import './tailwind.css';
-import Selector from "./Selector";
 
 import loadingIcon from '../Assets/loading.gif';
 import logo from '../Assets/logo2.png';
@@ -17,6 +15,10 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 const BridgeForm = ({onSubmit }) => {
   
+  const [country, setCountry] = useState('')
+  const [state, setState] = useState('')
+  const [city, setCity] = useState('')
+  const [statesList, setStatesList] = useState([]);
   const [coordinates, setCoordinates] =useState('');
   const [division, setDivision] = useState('');
   const [bridgeName, setBridgeName] = useState('');
@@ -34,30 +36,29 @@ const BridgeForm = ({onSubmit }) => {
     setsuperadminId(storedSuperadminId || '');
   }
   
-  let countryData = Country.getAllCountries();
-  const [stateData, setStateData] = useState();
-  const [cityData, setCityData] = useState();
+  const handleCountryChange = (e) => {
+    const selectedCountry = e.target.value;
+    setCountry(selectedCountry);
 
-  const [countries, setCountry] = useState(countryData[0]);
-  const [state, setState] = useState();
-  const [city, setCity] = useState();
+    // Fetch states based on selected country
+    if (selectedCountry === 'USA') {
+      setStatesList([  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']);
+    } else if (selectedCountry === 'Australia') {
+      setStatesList([  'New South Wales', 'Victoria', 'Queensland', 'Western Australia', 'South Australia', 'Tasmania', 'Australian Capital Territory', 'Northern Territory']);
+    } else {
+      setStatesList([]);
+    }
+    
+    // Reset state selection
+    setState('');
+  };
 
-  useEffect(() => {
-    setStateData(State.getStatesOfCountry(countries?.isoCode));
-  }, [countries]);
+  const handleStateChange = (e) => {
+    const selectedState = e.target.value;
+    setState(selectedState);
+  };
 
-  useEffect(() => {
-    setCityData(City.getCitiesOfState(countries?.isoCode, state?.isoCode));
-  }, [countries?.isoCode, state]);
-  
 
-  useEffect(() => {
-    stateData && setState(stateData[0]);
-  }, [stateData]);
-
-  useEffect(() => {
-    cityData && setCity(cityData[0]);
-  }, [cityData]);
 
   const handleSpanChange = (e) => {
     const numSpans = parseInt(e.target.value);
@@ -160,7 +161,7 @@ const handleGirderChange = (e, spanIndex) => {
 
   const UserForm = async (e) => {
     e.preventDefault();
-    if (!countries || !state || !city || !coordinates || !division || !location || !bridgeName) {
+    if (!country || !state || !city || !coordinates || !division || !location || !bridgeName) {
       enqueueSnackbar('Please fill all the fields!', { variant: 'error' });
     } else {
       enqueueSnackbar('Data entered successfully!', { variant: 'success' });
@@ -449,7 +450,7 @@ const handleGirderChange = (e, spanIndex) => {
         try {
           setLoading(true);
           const response = await axios.post('http://localhost:9090/bridge/register', {
-            countries:countries,
+            country:country,
             state:state,
             city: city,
             nobridgespan:nobridgespan,
@@ -504,7 +505,7 @@ const handleGirderChange = (e, spanIndex) => {
 
           const bridgeId = response.data.id;
           localStorage.setItem('bid',bridgeId);
-          localStorage.setItem('country', countries);
+          localStorage.setItem('country', country);
           localStorage.setItem('state', state);
           localStorage.setItem('city', city);
           localStorage.setItem('nobridgespan', nobridgespan);
@@ -776,10 +777,13 @@ const handleGirderChange = (e, spanIndex) => {
           <div className="flex bg-gray-100 mt-16 mx-12 shadow-md p-6 pt-12 pb-12">
             <div className='w-full mx-5'>
               <div className="mb-6">
-                <label htmlFor="country" className="block text-gray-700">Country:</label>
-                <div>
-                <Selector value={countries} data={countryData} selected={countries} setSelected={setCountry}/>
-                </div>
+                <label htmlFor="country">Select Country:</label>
+                <select id="country" value={country} onChange={handleCountryChange} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
+                  <option value="">Select</option>
+                  <option value="USA">USA</option>
+                  <option value="Australia">Australia</option>
+                </select>
+
               </div>
               <div className="mb-6">
                 <label htmlFor="division" className="block text-gray-700">Division:</label>
@@ -792,12 +796,15 @@ const handleGirderChange = (e, spanIndex) => {
         </div>
             <div className='w-full mx-5'>
             <div className="mb-6">
-            {state && (
             <div>
-              <label htmlFor="state" className="block text-gray-700">State:</label>
-              <Selector value={state} data={stateData} selected={state} setSelected={setState} />
+              <label htmlFor="state" className="block text-gray-700">Select State:</label>
+              <select id="state" value={state} onChange={handleStateChange} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
+                <option value="">Select</option>
+                {statesList.map((stateName) => (
+                  <option key={stateName} value={stateName}>{stateName}</option>
+                ))}
+              </select>
             </div>
-          )}
           </div>
           <div className="mb-6">
             <label htmlFor="coordinates" className="block text-gray-700">Bridge Coordinates:</label>
@@ -811,12 +818,10 @@ const handleGirderChange = (e, spanIndex) => {
           </div>
         </div>
         <div className='w-full mx-5'>
-        {city && (
             <div className='mb-6'>
-              <label htmlFor="state" className="block text-gray-700">City:</label>
-              <Selector value={city} data={cityData} selected={city} setSelected={setCity} />
+              <label htmlFor="city" className="block text-gray-700">City:</label>
+              <input type="text" id="city" placeholder='Enter City / Area' name="city" value={city} onChange={(e) => setCity(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
             </div>
-          )}
             <div className="mb-6">
               <label htmlFor='bridgeName' className="block text-gray-700">Bridge Location:</label>
               <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
