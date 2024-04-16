@@ -115,7 +115,9 @@ const SensorForm = () => {
     setNumSensors(count);
     const inputs = Array.from({ length: count }, (_, index) => ({
       id: index,
-      value: ''
+      spanno: spanno, // Set the default value to the state
+      girderno: girderno, // Set the default value to the state
+      value: "",
     }));
     setSensorInputs(inputs);
   };
@@ -143,12 +145,10 @@ const SensorForm = () => {
         const sensorData = [];
         
         sensorInputs.forEach((input) => {
-          const spanno = input.spanno;
-          const girderno = input.girderno;
           sensorData.push({
             sensortype: sensortype,
-            spanno: spanno,
-            girderno: girderno,
+            spanno: input.spanno,
+            girderno: input.girderno,
             manualLocation: input.value,
           });
         });
@@ -197,12 +197,10 @@ const handleAddSensor = async (e) => {
       const sensorData = [];
       
       sensorInputs.forEach((input) => {
-        const spanno = input.spanno;
-        const girderno = input.girderno;
         sensorData.push({
           sensortype: sensortype,
-          spanno: spanno,
-          girderno: girderno,
+          spanno: input.spanno,
+          girderno: input.girderno,
           manualLocation: input.value,
         });
       });
@@ -230,13 +228,15 @@ const handleAddSensor = async (e) => {
   }
 };
 
-const handleSensorInputChange = (id, value) => {
-  setSensorInputs(prevInputs => prevInputs.map(input => {
-    if (input.id === id) {
-      return { ...input, value };
-    }
-    return input;
-  }));
+const handleSensorInputChange = (id, value, field) => {
+  setSensorInputs(prevInputs =>
+    prevInputs.map(input => {
+      if (input.id === id) {
+        return { ...input, [field]: value };
+      }
+      return input;
+    })
+  );
 };
 
   return (
@@ -253,13 +253,13 @@ const handleSensorInputChange = (id, value) => {
           <div className="w-1/2 mb-4 px-5">
             <label htmlFor="nobridgespan" className="block text-gray-700">Span Number:</label>
             <select id="nobridgespan" name="nobridgespan" onChange={(e) => setspanno(e.target.value)}  className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg">
-              {[...Array(50).keys()].map((span) => (<option key={span + 1} value={spanno + 1}>{span + 1}</option>))}
+              {[...Array(50).keys()].map((span) => (<option key={span + 1} value={spanno}>{span + 1}</option>))}
             </select>
           </div>
           <div className="w-1/2 mb-4 px-5">
             <label htmlFor="girderno" className="block text-gray-700">Girder Number:</label>
             <select id="girderno" name="girderno" onChange={(e) => setgirderno(e.target.value)}  className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg">
-              {[...Array(50).keys()].map((girder) => (<option key={girder + 1} value={girderno + 1}>{girder + 1}</option>))}
+              {[...Array(50).keys()].map((girder) => (<option key={girder + 1} value={girderno}>{girder + 1}</option>))}
             </select>
           </div>
           </div>
