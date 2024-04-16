@@ -149,6 +149,7 @@ const SensorForm = () => {
             sensortype: sensortype,
             spanno: spanno,
             girderno: girderno,
+            manualLocation: input.value,
           });
         });
   
@@ -202,6 +203,7 @@ const handleAddSensor = async (e) => {
           sensortype: sensortype,
           spanno: spanno,
           girderno: girderno,
+          manualLocation: input.value,
         });
       });
 
@@ -354,9 +356,8 @@ const handleSensorInputChange = (id, value) => {
         </div>
         <div className="mb-4 px-2 w-full">
           <label htmlFor="nobridgespan" className="block text-gray-700">Span Number:</label>
-          <select id="nobridgespan" name="nobridgespan" value={spannos} onChange={(e) => setspanno(e.target.value)} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" >
-            <option value="" disabled>Select Span Number</option>
-            {/* Map through the fetched spans and display them as options */}
+          <select id="nobridgespan" name="nobridgespan" value={spannos} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" >
+            <option value="" disabled></option>
             {Array.from({ length: spannos }, (_, index) => (
               <option key={index + 1} value={index + 1}>{index + 1}</option>
             ))}
@@ -364,9 +365,8 @@ const handleSensorInputChange = (id, value) => {
         </div>
         <div className="mb-4 px-2 w-full">
           <label htmlFor="girderno" className="block text-gray-700">Girder Number:</label>
-          <select id="girderno" name="girderno" value={girderno} onChange={(e) => setgirderno(e.target.value)} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" >
-          <option value="" disabled>Select Girder Number</option>
-            {/* Map through the fetched girders and display them as options */}
+          <select id="girderno" name="girderno" value={girderno} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" >
+          <option value="" disabled></option>
             {Array.from({ length: girderCounts }, (_, index) => (
             <option key={index + 1} value={index + 1}>{`Girder ${index + 1}`}</option>
             ))}
