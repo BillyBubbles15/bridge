@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import './tailwind.css';
 import loadingIcon from '../Assets/loading.gif';
 import logo from '../Assets/logo2.png';
 
-import { IoIosArrowDown, IoIosWarning } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 
@@ -58,8 +58,6 @@ const BridgeForm = ({onSubmit }) => {
     setState(selectedState);
   };
 
-
-
   const handleSpanChange = (e) => {
     const numSpans = parseInt(e.target.value);
     setnobridgespan(numSpans);
@@ -90,8 +88,6 @@ const handleGirderChange = (e, spanIndex) => {
   const [showAdminForm, setShowAdminForm] = useState(false);
   const [showManagerForm, setShowManagerForm] = useState(false);
   const [showOwnerForm, setShowOwnerForm] = useState(false); 
-
-  const [showBackendError,setBackendError]=useState(false);
   
   const [adminEmail, setAdminEmail] = useState('');
   const [adminName, setAdminName] = useState('');
@@ -530,11 +526,8 @@ const handleGirderChange = (e, spanIndex) => {
           localStorage.setItem('adminName3', adminName3);
           console.log(response.data.message);
 
-         if (response.data.message.includes('User details do not match.')) {
-            setBackendError(true);
-            setTimeout(() => {
-              setBackendError(false);
-          }, 5000);
+        if (response.data.message.includes('User details do not match.')) {
+          enqueueSnackbar('User details do not match!', { variant: 'error'});
         } else {
             navigate('/home/bridgeform/sensorform');
             if (onSubmit) {
@@ -619,11 +612,6 @@ const handleGirderChange = (e, spanIndex) => {
           <button type="submit" onClick={PrevFrom} className="inline-flex underline mt-4 p-2 hover:text-blue-700"><IoArrowBackCircleSharp size={32}/>Back</button>
         <div className='text-center justify-center flex'>
           <img className='' src={logo} alt="" />
-          {showBackendError && (
-            <div className='absolute text-center w-full flex justify-center items-center'>
-            <h1 className='p-4 px-6 border flex border-black rounded-sm shadow-2xl bg-yellow-200 font-semibold'><IoIosWarning size={24}/>Existing Users Details Not Matched! </h1>
-          </div>
-          )}
         </div>
 
         <h1 className='mt-12 mb-12 text-3xl text-center font-semibold'>Add User Details</h1>        
@@ -841,7 +829,7 @@ const handleGirderChange = (e, spanIndex) => {
             </select>
           </div>
         ))}
-            </div>
+        </div>
           <div className='flex align-center justify-center text-center mt-12 mb-12'>
             <button type="submit" onClick={UserForm} className="bg-blue-600 px-6 mx-2 py-2 text-gray-100 rounded-sm hover:bg-blue-900">Next</button>
             <button onClick={Cancel} className="bg-black px-5 py-2 text-gray-100 rounded-sm hover:bg-white hover:text-black border border-black ml-2">Cancel</button>

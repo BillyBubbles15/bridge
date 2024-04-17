@@ -58,8 +58,8 @@ const SensorForm = () => {
     const location = localStorage.getItem('location');
     const storedbridgeName = localStorage.getItem('bridgeName');
 
-    const storedSpans = localStorage.getItem('spans');
-    const storedGirders = localStorage.getItem('girderCounts');
+    const storedSpans = JSON.parse(localStorage.getItem('spans'));
+    const storedGirders = JSON.parse(localStorage.getItem('girderCounts'));
 
     const storedOwnerName = localStorage.getItem('ownerName');
     const storedOwnerName2 = localStorage.getItem('ownerName2');
@@ -285,7 +285,7 @@ const handleSensorInputChange = (id, value, field) => {
             {sensorInputs.map(input => (
               <div className="mx-5 mb-4" key={input.id}>
                 <label className="block text-gray-700" htmlFor={`sensorInput${input.id}`}>Sensor {input.id + 1} Location:</label>
-                <input className="border border-gray-300 p-1 w-full pl-3 mr-2 rounded-lg overflow-hidden outline-0 shadow-md" type="text" id={`sensorInput${input.id}`} placeholder='Ex: Center, Top Right' value={input.value} onChange={(e) => handleSensorInputChange(input.id, e.target.value)}/>
+                <input className="border border-gray-300 p-1 w-full pl-3 mr-2 rounded-lg overflow-hidden outline-0 shadow-md" type="text" id={`sensorInput${input.id}`} placeholder='Ex: Center, Top Right' value={input.value} onChange={(e) => handleSensorInputChange(input.id, e.target.value, "value")}/>
               </div>
             ))}
         </div>
@@ -356,20 +356,14 @@ const handleSensorInputChange = (id, value, field) => {
         </div>
         <div className="mb-4 px-2 w-full">
           <label htmlFor="nobridgespan" className="block text-gray-700">Span Number:</label>
-          <select id="nobridgespan" name="nobridgespan" value={spannos} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" >
-            <option value="" disabled></option>
-            {Array.from({ length: spannos }, (_, index) => (
-              <option key={index + 1} value={index + 1}>{index + 1}</option>
-            ))}
+          <select id="nobridgespan" name="nobridgespan" value={spannos} onChange={(e) => setspanno(e.target.value)} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" disabled>
+            {[...Array(50).keys()].map((span) => (<option key={span + 1} value={span}>{span + 1}</option>))}
           </select>
         </div>
         <div className="mb-4 px-2 w-full">
           <label htmlFor="girderno" className="block text-gray-700">Girder Number:</label>
-          <select id="girderno" name="girderno" value={girderno} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" >
-          <option value="" disabled></option>
-            {Array.from({ length: girderCounts }, (_, index) => (
-            <option key={index + 1} value={index + 1}>{`Girder ${index + 1}`}</option>
-            ))}
+          <select id="girderno" name="girderno" value={girderCounts} onChange={(e) => setgirderno(e.target.value)} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" disabled>
+            {[...Array(50).keys()].map((girder) => (<option key={girder + 1} value={girder}>{girder + 1}</option>))}
           </select>
         </div>
       </div>
