@@ -75,7 +75,7 @@ const SensorForm = () => {
     const storedCoordinates = localStorage.getItem('coordinates');
     const location = localStorage.getItem('location');
     const storedbridgeName = localStorage.getItem('bridgeName');
-    const storednobridgespan = localStorage.getItem('nobridgespan')
+    const storednobridgespan = JSON.parse(localStorage.getItem('nobridgespan'));
 
     const storedSpans = JSON.parse(localStorage.getItem('spans'));
     const storedGirders = JSON.parse(localStorage.getItem('girderCounts'));
