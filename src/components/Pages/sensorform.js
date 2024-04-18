@@ -135,47 +135,63 @@ const SensorForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!sensortype || !numSensors || !sensorInputs) {
-      enqueueSnackbar('Please fill all the fields correctly!', { variant: 'error'});
-      setshowAddSensor(false);
+    if (!sensortype || !numSensors || !sensorInputs || !spannos || !girderCounts) {
+      enqueueSnackbar('Please fill all the fields correctly!', { variant: 'error' });
+      return; // Exit the function early if any required field is missing
     }
-    else {
-      try {
-        setLoading(true);
-        const sensorData = [];
-        
-        sensorInputs.forEach((input) => {
-          sensorData.push({
-            sensortype: sensortype,
-            spanno: input.spanno,
-            girderno: input.girderno,
-            manualLocation: input.value,
-          });
-        });
   
-        // Post sensor data for each location separately
-        for (const data of sensorData) {
-          const response = await axios.post(`http://localhost:9090/bridge/addSensorData/${bid}`, [data]);
-          if (response.status >= 200 && response.status < 300) {
-            console.log('Sensor Added Successfully:', data);
-            enqueueSnackbar('Sensor(s) Added Successfully!', { variant: 'success'});
-            Navigate('../home');
-          }
+    try {
+      setLoading(true);
+      const sensorData = [];
+      const totalSpans = parseInt(spannos);
+      const totalGirders = parseInt(girderCounts);
+  
+      for (let span = 1; span <= totalSpans; span++) {
+        for (let girder = 1; girder <= totalGirders; girder++) {
+          sensorInputs.forEach((input) => {
+            sensorData.push({
+              sensortype: sensortype,
+              spanno: span,
+              girderno: girder,
+              manualLocation: input.value,
+            });
+          });
         }
-      } catch (error) {
-        console.error('Error submitting form: ', error);
-        enqueueSnackbar('Failed to submit form!', { variant: 'error'});
-      } finally {
-        setLoading(false);
-        setshowAddSensor(false);
-        setNumSensors('');
-        setsensortype('');
-        setspanno('');
-        setgirderno('');
-        setSensorInputs([]);
       }
+  
+      // Post sensor data for each location separately to the first endpoint
+      for (const data of sensorData) {
+        const { spanno, girderno, ...postData } = data; // Destructure spanno and girderno, and take the rest
+        const response = await axios.post(`http://localhost:9090/bridge/addSensorData/${bid}`, [postData]);
+        if (response.status >= 200 && response.status < 300) {
+          console.log('Sensor Added Successfully to /bridge/addSensorData:', postData);
+          enqueueSnackbar('Sensor(s) Added Successfully to /bridge/addSensorData!', { variant: 'success' });
+        }
+      }
+  
+      // Post spanno and girderCount to the second endpoint
+      const spanGirderData = { spanno: totalSpans, girderCount: totalGirders };
+      const response2 = await axios.post(`http://localhost:9090/spangirder/savespangirder/${bid}`, spanGirderData);
+      if (response2.status >= 200 && response2.status < 300) {
+        console.log('Span and Girder Counts Added Successfully to /spangirder/savespangirder:', spanGirderData);
+        enqueueSnackbar('Span and Girder Counts Added Successfully to /spangirder/savespangirder!', { variant: 'success' });
+      }
+      
+      // If all requests succeed, navigate to home
+      Navigate('../home');
+    } catch (error) {
+      console.error('Error submitting form: ', error);
+      enqueueSnackbar('Failed to submit form!', { variant: 'error' });
+    } finally {
+      setLoading(false);
+      setshowAddSensor(false);
+      setNumSensors('');
+      setsensortype('');
+      setspanno('');
+      setgirderno('');
+      setSensorInputs([]);
     }
-  };
+  };  
 
 
   const handleCancel = () => {
