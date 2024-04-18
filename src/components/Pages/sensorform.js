@@ -13,6 +13,7 @@ const SensorForm = () => {
   const [showAddSensor, setshowAddSensor] =useState(false);
   const [numSensors, setNumSensors] = useState('');
   const [sensorInputs, setSensorInputs] = useState([]);
+  const [girdersData, setGirdersData] = useState({});
 
   const [sensortype, setsensortype]= useState('');
   const [country, setCountry] = useState('');
@@ -48,6 +49,21 @@ const SensorForm = () => {
 
   const Navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+
+  const handleSpanChange = (e) => {
+    const selectedSpan = parseInt(e.target.value);
+    setspanno(selectedSpan);
+    // Retrieve previously entered girders for the selected span
+    const prevGirders = girdersData[selectedSpan] || [];
+    // Set the girderno state and update sensor inputs with previously entered girders
+    setgirderno(prevGirders.length + 1);
+    setSensorInputs(prevGirders.map((girder, index) => ({
+      id: index,
+      spanno: selectedSpan,
+      girderno: index + 1,
+      value: girder,
+    })));
+  };
 
   useEffect(() => {
     const storedCountry = localStorage.getItem('country');
@@ -143,21 +159,24 @@ const SensorForm = () => {
     try {
       setLoading(true);
       const sensorData = [];
-      const totalSpans = parseInt(spannos);
-      const totalGirders = parseInt(girderCounts);
-  
-      for (let span = 1; span <= totalSpans; span++) {
-        for (let girder = 1; girder <= totalGirders; girder++) {
-          sensorInputs.forEach((input) => {
-            sensorData.push({
-              sensortype: sensortype,
-              spanno: span,
-              girderno: girder,
-              manualLocation: input.value,
-            });
-          });
+      const newGirdersData = { ...girdersData }; // Create a copy of the girders data
+
+      sensorInputs.forEach((input) => {
+        sensorData.push({
+          sensortype: sensortype,
+          spanno: input.spanno,
+          girderno: input.girderno,
+          manualLocation: input.value,
+        });
+        // Update girders data for the corresponding span
+        if (!newGirdersData[input.spanno]) {
+          newGirdersData[input.spanno] = [];
         }
-      }
+        newGirdersData[input.spanno].push(input.value);
+      });
+
+      // Update the girders data state
+      setGirdersData(newGirdersData);
   
       // Post sensor data for each location separately to the first endpoint
       for (const data of sensorData) {
@@ -165,20 +184,10 @@ const SensorForm = () => {
         const response = await axios.post(`http://localhost:9090/bridge/addSensorData/${bid}`, [postData]);
         if (response.status >= 200 && response.status < 300) {
           console.log('Sensor Added Successfully to /bridge/addSensorData:', postData);
-          enqueueSnackbar('Sensor(s) Added Successfully to /bridge/addSensorData!', { variant: 'success' });
+          enqueueSnackbar('Sensor Added Successfully!', { variant: 'success' });
+          Navigate('/home');
         }
       }
-  
-      // Post spanno and girderCount to the second endpoint
-      const spanGirderData = { spanno: totalSpans, girderCount: totalGirders };
-      const response2 = await axios.post(`http://localhost:9090/spangirder/savespangirder/${bid}`, spanGirderData);
-      if (response2.status >= 200 && response2.status < 300) {
-        console.log('Span and Girder Counts Added Successfully to /spangirder/savespangirder:', spanGirderData);
-        enqueueSnackbar('Span and Girder Counts Added Successfully to /spangirder/savespangirder!', { variant: 'success' });
-      }
-      
-      // If all requests succeed, navigate to home
-      Navigate('../home');
     } catch (error) {
       console.error('Error submitting form: ', error);
       enqueueSnackbar('Failed to submit form!', { variant: 'error' });
@@ -202,47 +211,56 @@ const SensorForm = () => {
     setNumSensors('');
   };
 
-const handleAddSensor = async (e) => {
-  e.preventDefault();
-  if (!sensortype || !numSensors || !sensorInputs) {
-    enqueueSnackbar('Please fill all the fields correctly!', { variant: 'error'});
-  }
-  else {
-    try {
-      setLoading(true);
-      const sensorData = [];
-      
-      sensorInputs.forEach((input) => {
-        sensorData.push({
-          sensortype: sensortype,
-          spanno: input.spanno,
-          girderno: input.girderno,
-          manualLocation: input.value,
-        });
-      });
-
-      // Post sensor data for each location separately
-      for (const data of sensorData) {
-        const response = await axios.post(`http://localhost:9090/bridge/addSensorData/${bid}`, [data]);
-        if (response.status >= 200 && response.status < 300) {
-          console.log('Sensor Added Successfully:', data);
-          enqueueSnackbar('Sensor(s) Added Successfully!', { variant: 'success'});
-        }
-      }
-    } catch (error) {
-      console.error('Error submitting form: ', error);
-      enqueueSnackbar('Failed to submit form!', { variant: 'error'});
-    } finally {
-      setLoading(false);
-      setshowAddSensor(false);
-      setNumSensors('');
-      setsensortype('');
-      setspanno('');
-      setgirderno('');
-      setSensorInputs([]);
+  const handleAddSensor = async (e) => {
+    e.preventDefault();
+    if (!sensortype || !numSensors || !sensorInputs) {
+      enqueueSnackbar('Please fill all the fields correctly!', { variant: 'error'});
     }
-  }
-};
+    else {
+      try {
+        setLoading(true);
+        const sensorData = [];
+        const newGirdersData = { ...girdersData }; // Create a copy of the girders data
+  
+        sensorInputs.forEach((input) => {
+          sensorData.push({
+            sensortype: sensortype,
+            spanno: input.spanno,
+            girderno: input.girderno,
+            manualLocation: input.value,
+          });
+          // Update girders data for the corresponding span
+          if (!newGirdersData[input.spanno]) {
+            newGirdersData[input.spanno] = [];
+          }
+          newGirdersData[input.spanno].push(input.value);
+        });
+  
+        // Update the girders data state
+        setGirdersData(newGirdersData);
+  
+        // Post sensor data for each location separately
+        for (const data of sensorData) {
+          const response = await axios.post(`http://localhost:9090/bridge/addSensorData/${bid}`, [data]);
+          if (response.status >= 200 && response.status < 300) {
+            console.log('Sensor Added Successfully:', data);
+            enqueueSnackbar('Sensor(s) Added Successfully!', { variant: 'success'});
+          }
+        }
+      } catch (error) {
+        console.error('Error submitting form: ', error);
+        enqueueSnackbar('Failed to submit form!', { variant: 'error'});
+      } finally {
+        setLoading(false);
+        setshowAddSensor(false);
+        setNumSensors('');
+        setsensortype('');
+        setspanno('');
+        setgirderno('');
+        setSensorInputs([]);
+      }
+    }
+  };
 
 const handleSensorInputChange = (id, value, field) => {
   setSensorInputs(prevInputs =>
@@ -268,9 +286,11 @@ const handleSensorInputChange = (id, value, field) => {
           <div className='flex w-full'>
           <div className="w-1/2 mb-4 px-5">
             <label htmlFor="nobridgespan" className="block text-gray-700">Span Number:</label>
-            <select id="nobridgespan" name="nobridgespan" onChange={(e) => setspanno(e.target.value)}  className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg">
-              {[...Array(50).keys()].map((span) => (<option key={span + 1} value={spanno}>{span + 1}</option>))}
-            </select>
+            <select id="nobridgespan" name="nobridgespan" onChange={handleSpanChange} value={spanno} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg">
+            {[...Array(50).keys()].map((span) => (
+              <option key={span + 1} value={span + 1}>{span + 1}</option>
+            ))}
+          </select>
           </div>
           <div className="w-1/2 mb-4 px-5">
             <label htmlFor="girderno" className="block text-gray-700">Girder Number:</label>
