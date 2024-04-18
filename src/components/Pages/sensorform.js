@@ -23,6 +23,7 @@ const SensorForm = () => {
   const [coordinates, setCoordinates] = useState('');
   const [bridgeLocation, setBridgeLocation] = useState('');
   const [bridgeName, setBridgeName] = useState('');
+  const [nobridgespan, setnobridgespan] = useState('');
   
   const [spanno, setspanno] = useState(0);
   const [girderno, setgirderno] = useState(0);
@@ -53,16 +54,17 @@ const SensorForm = () => {
   const handleSpanChange = (e) => {
     const selectedSpan = parseInt(e.target.value);
     setspanno(selectedSpan);
-    // Retrieve previously entered girders for the selected span
-    const prevGirders = girdersData[selectedSpan] || [];
-    // Set the girderno state and update sensor inputs with previously entered girders
-    setgirderno(prevGirders.length + 1);
-    setSensorInputs(prevGirders.map((girder, index) => ({
-      id: index,
-      spanno: selectedSpan,
-      girderno: index + 1,
-      value: girder,
-    })));
+    // Retrieve previously entered girders for the selected span from localStorage
+    const spanData = JSON.parse(localStorage.getItem('spanData'));
+    if (spanData && spanData[selectedSpan]) {
+      // Set the girdersData state with the retrieved girders for the selected span
+      setGirdersData({ ...girdersData, [selectedSpan]: spanData[selectedSpan] });
+      // Set the girderno state to the length of the retrieved girders + 1
+      setgirderno(spanData[selectedSpan].length + 1);
+    } else {
+      // If no girders are retrieved for the selected span, set girderno state to 1
+      setgirderno(1);
+    }
   };
 
   useEffect(() => {
@@ -73,6 +75,7 @@ const SensorForm = () => {
     const storedCoordinates = localStorage.getItem('coordinates');
     const location = localStorage.getItem('location');
     const storedbridgeName = localStorage.getItem('bridgeName');
+    const storednobridgespan = localStorage.getItem('nobridgespan')
 
     const storedSpans = JSON.parse(localStorage.getItem('spans'));
     const storedGirders = JSON.parse(localStorage.getItem('girderCounts'));
@@ -101,6 +104,7 @@ const SensorForm = () => {
     setCoordinates(storedCoordinates || '');
     setBridgeLocation(location || '');
     setBridgeName(storedbridgeName || '');
+    setnobridgespan(storednobridgespan || '');
 
     setspannos(storedSpans || '');
     setgirderCounts(storedGirders || '');
@@ -273,6 +277,8 @@ const handleSensorInputChange = (id, value, field) => {
   );
 };
 
+console.log("nobridgespan:", nobridgespan);
+
   return (
     <>
     <div className="">
@@ -286,18 +292,36 @@ const handleSensorInputChange = (id, value, field) => {
           <div className='flex w-full'>
           <div className="w-1/2 mb-4 px-5">
             <label htmlFor="nobridgespan" className="block text-gray-700">Span Number:</label>
-            <select id="nobridgespan" name="nobridgespan" onChange={handleSpanChange} value={spanno} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg">
-            {[...Array(50).keys()].map((span) => (
-              <option key={span + 1} value={span + 1}>{span + 1}</option>
-            ))}
-          </select>
+            <select
+  id="nobridgespan"
+  name="nobridgespan"
+  onChange={handleSpanChange}
+  value={spanno}
+  className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg"
+>
+  {[...Array(parseInt(nobridgespan)).keys()].map((span) => (
+    <option key={span + 1} value={span + 1}>
+      {span + 1}
+    </option>
+  ))}
+</select>
           </div>
           <div className="w-1/2 mb-4 px-5">
-            <label htmlFor="girderno" className="block text-gray-700">Girder Number:</label>
-            <select id="girderno" name="girderno" onChange={(e) => setgirderno(e.target.value)}  className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg">
-              {[...Array(50).keys()].map((girder) => (<option key={girder + 1} value={girderno}>{girder + 1}</option>))}
-            </select>
-          </div>
+  <label htmlFor="girderno" className="block text-gray-700">Girder Number:</label>
+  <select
+    id="girderno"
+    name="girderno"
+    onChange={(e) => setgirderno(e.target.value)}
+    value={girderno}
+    className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg"
+  >
+    {girdersData[spanno] && girdersData[spanno].map((girder, index) => (
+      <option key={index + 1} value={index + 1}>
+        {girder}
+      </option>
+    ))}
+  </select>
+</div>
           </div>
 
           <div className="mb-4 px-5">
@@ -379,10 +403,7 @@ const handleSensorInputChange = (id, value, field) => {
           <label htmlFor="sensorlocation" className="block text-gray-700">Coordinates:</label>
           <input type="text" value={coordinates} className="border border-gray-300 p-1 w-full pl-3 mr-2 rounded-lg bg-white overflow-hidden shadow-md" disabled/>
         </div>
-        <div className="mb-4 px-2 w-full">
-          <label htmlFor="sensorlocation" className="block text-gray-700">Bridge Location:</label>
-          <input type="text" value={bridgeLocation} className="border border-gray-300 p-1 w-full pl-3 mr-2 rounded-lg bg-white overflow-hidden shadow-md" disabled/>
-        </div>
+
       </div>
 
       <div className='flex'>
@@ -391,16 +412,8 @@ const handleSensorInputChange = (id, value, field) => {
           <input type="text" value={bridgeName} className="border border-gray-300 p-1 w-full pl-3 mr-2 rounded-lg bg-white overflow-hidden shadow-md" disabled/>
         </div>
         <div className="mb-4 px-2 w-full">
-          <label htmlFor="nobridgespan" className="block text-gray-700">Span Number:</label>
-          <select id="nobridgespan" name="nobridgespan" value={spannos} onChange={(e) => setspanno(e.target.value)} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" disabled>
-            {[...Array(50).keys()].map((span) => (<option key={span + 1} value={span}>{span + 1}</option>))}
-          </select>
-        </div>
-        <div className="mb-4 px-2 w-full">
-          <label htmlFor="girderno" className="block text-gray-700">Girder Number:</label>
-          <select id="girderno" name="girderno" value={girderCounts} onChange={(e) => setgirderno(e.target.value)} className="border border-gray-300 p-1 w-full pl-3 mr-2 overflow-hidden shadow-md outline-0 rounded-lg" disabled>
-            {[...Array(50).keys()].map((girder) => (<option key={girder + 1} value={girder}>{girder + 1}</option>))}
-          </select>
+          <label htmlFor="sensorlocation" className="block text-gray-700">Bridge Location:</label>
+          <input type="text" value={bridgeLocation} className="border border-gray-300 p-1 w-full pl-3 mr-2 rounded-lg bg-white overflow-hidden shadow-md" disabled/>
         </div>
       </div>
       

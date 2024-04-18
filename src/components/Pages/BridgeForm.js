@@ -24,7 +24,6 @@ const BridgeForm = ({onSubmit }) => {
   const [bridgeName, setBridgeName] = useState('');
   const [location, setlocation] = useState('');
   const [nobridgespan, setnobridgespan] = useState(1);
-  const [spans, setSpans] = useState([{ span: 1, girders: 1 }]);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -59,28 +58,8 @@ const BridgeForm = ({onSubmit }) => {
   };
 
   const handleSpanChange = (e) => {
-    const numSpans = parseInt(e.target.value);
-    setnobridgespan(numSpans);
-    const newSpans = [];
-    for (let i = 1; i <= numSpans; i++) {
-      newSpans.push({ span: i, girders: 1 });
-    }
-    setSpans(newSpans);
-    localStorage.setItem('spans', JSON.stringify(newSpans));
-    localStorage.setItem('girderCount', numSpans);
+    setnobridgespan(parseInt(e.target.value)); // Update number of spans
   };
-  
-
-const handleGirderChange = (e, spanIndex) => {
-  const newSpans = [...spans];
-  newSpans[spanIndex].girders = parseInt(e.target.value);
-  setSpans(newSpans);
-  localStorage.setItem('spans', JSON.stringify(newSpans)); 
-
-  // Create a separate array to store the number of girders for each span
-  const girderCounts = newSpans.map(span => span.girders);
-  localStorage.setItem('girderCounts', JSON.stringify(girderCounts));
-};
   
   const[showUserForm, setShowUserForm] = useState(false);
   const[showBridgeForm, setShowBridgeForm] = useState(true);
@@ -130,6 +109,16 @@ const handleGirderChange = (e, spanIndex) => {
   const [managerEmail6, setManagerEmail6] = useState('');
   const [managerName6, setManagerName6] = useState('');
   const [managerPhone6, setManagerPhone6] = useState('');
+  const [selectedOptions, setSelectedOptions] = useState(Array.from({ length: nobridgespan }, () => ''));
+  
+  const handleDropdownChange = (index, value) => {
+    setSelectedOptions(prevOptions => {
+      const newOptions = [...prevOptions];
+      newOptions[index] = value;
+      return newOptions;
+    });
+  };
+
 
   const handleAddAdmin = () => {
     setShowAdminForm(!showAdminForm);
@@ -524,6 +513,7 @@ const handleGirderChange = (e, spanIndex) => {
           localStorage.setItem('adminName', adminName);
           localStorage.setItem('adminName2', adminName2);
           localStorage.setItem('adminName3', adminName3);
+          localStorage.setItem('spanData', JSON.stringify(selectedOptions));
           console.log(response.data.message);
 
         if (response.data.message.includes('User details do not match.')) {
@@ -799,11 +789,11 @@ const handleGirderChange = (e, spanIndex) => {
             <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={coordinates} onChange={(e) => setCoordinates(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
           </div>
           <div className="mb-6">
-            <label htmlFor="nobridgespan" className="block text-gray-700">Total Number of Spans:</label>
-            <select id="nobridgespan" name="nobridgespan" onChange={handleSpanChange} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
-              {[...Array(50).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
-            </select>
-          </div>
+        <label htmlFor="nobridgespan" className="block text-gray-700">Total Number of Spans:</label>
+        <select id="nobridgespan" name="nobridgespan" value={nobridgespan} onChange={handleSpanChange} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
+          {[...Array(50).keys()].map((span) => (<option key={span + 1} value={span + 1}>{span + 1}</option>))}
+        </select>
+      </div>
         </div>
         <div className='w-full mx-5'>
             <div className='mb-6'>
@@ -819,16 +809,24 @@ const handleGirderChange = (e, spanIndex) => {
         <hr />
         <h1 className='text-center text-3xl mt-8 mb-8 font-semibold'>Assign Girders to Individual Spans</h1><hr />
         <div className="bg-gray-100 grid grid-cols-2 overflow-hidden py-8 pt-12 shadow-md mx-12 text-center mt-12 mb-12">
-        {spans.map((span, index) => (
-          <div className='mb-8' key={index}>
-            <label className='font-semibold' htmlFor={`girders_${span.span}`}>Number of Girders for Span {span.span}:</label>
-            <select className='w-1/3 text-center ml-5 p-1 rounded overflow-hidden shadow-md' id={`girders_${span.span}`} value={span.girders} onChange={(e) => handleGirderChange(e, index)} >
-              {[...Array(20).keys()].map((value) => (
-                <option key={value + 1} value={value + 1}>{value + 1}</option>
-              ))}
-            </select>
-          </div>
-        ))}
+        {Array.from({ length: nobridgespan }).map((_, index) => (
+        <div key={index} className="mb-6">
+          <label htmlFor={`spanDropdown${index + 1}`} className="block text-gray-700">{`Span ${index + 1}:`}</label>
+          <select 
+            id={`spanDropdown${index + 1}`} 
+            name={`spanDropdown${index + 1}`} 
+            className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"
+            value={selectedOptions[index]}
+            onChange={(e) => handleDropdownChange(index, e.target.value)}
+          >
+            {/* Add your options for each dropdown here */}
+            {/* Example: */}
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+          </select>
+        </div>
+      ))}
         </div>
           <div className='flex align-center justify-center text-center mt-12 mb-12'>
             <button type="submit" onClick={UserForm} className="bg-blue-600 px-6 mx-2 py-2 text-gray-100 rounded-sm hover:bg-blue-900">Next</button>
