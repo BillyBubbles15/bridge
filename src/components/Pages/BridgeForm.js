@@ -23,7 +23,7 @@ const BridgeForm = ({onSubmit }) => {
   const [division, setDivision] = useState('');
   const [bridgeName, setBridgeName] = useState('');
   const [location, setlocation] = useState('');
-  const [nobridgespan, setnobridgespan] = useState(1);
+  const [nobridgespan, setnobridgespan] = useState([1]);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -493,7 +493,7 @@ const BridgeForm = ({onSubmit }) => {
           localStorage.setItem('country', country);
           localStorage.setItem('state', state);
           localStorage.setItem('city', city);
-          localStorage.setItem('nobridgespan', nobridgespan);
+          localStorage.setItem('nobridgespan', JSON.stringify(nobridgespan));
           localStorage.setItem('division', division);
           localStorage.setItem('coordinates', coordinates);
           localStorage.setItem('location', location);
@@ -811,7 +811,7 @@ const BridgeForm = ({onSubmit }) => {
         <div className="bg-gray-100 grid grid-cols-2 overflow-hidden py-8 pt-12 shadow-md mx-12 text-center mt-12 mb-12">
         {Array.from({ length: nobridgespan }).map((_, index) => (
         <div key={index} className="mb-6">
-          <label htmlFor={`spanDropdown${index + 1}`} className="block text-gray-700">{`Span ${index + 1}:`}</label>
+          <label htmlFor={`spanDropdown${index + 1}`} className="block text-gray-700">{`Number of Girders per Span ${index + 1}:`}</label>
           <select 
             id={`spanDropdown${index + 1}`} 
             name={`spanDropdown${index + 1}`} 
@@ -819,11 +819,9 @@ const BridgeForm = ({onSubmit }) => {
             value={selectedOptions[index]}
             onChange={(e) => handleDropdownChange(index, e.target.value)}
           >
-            {/* Add your options for each dropdown here */}
-            {/* Example: */}
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
+            <option value="option1">1</option>
+            <option value="option2">2</option>
+            <option value="option3">3</option>
           </select>
         </div>
       ))}
