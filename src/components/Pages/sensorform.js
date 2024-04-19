@@ -10,7 +10,7 @@ import loadingIcon from '../Assets/loading.gif';
 
 import { MdCancel } from "react-icons/md";
 
-const SensorForm = () => {
+const Sensorform = () => {
   const [loading, setLoading] = useState(false);
   const [showAddSensor, setshowAddSensor] =useState(false);
   const [numSensors, setNumSensors] = useState('');
@@ -29,6 +29,7 @@ const SensorForm = () => {
   const [bridgeLocation, setBridgeLocation] = useState('');
   const [bridgeName, setBridgeName] = useState('');
   const [nobridgespan, setnobridgespan] = useState('');
+  const [noofgirders, setnoofgirders] = useState('');
   
   const [spanno, setspanno] = useState(0);
   const [girderno, setgirderno] = useState(0);
@@ -49,7 +50,6 @@ const SensorForm = () => {
   const [ownerName3, setOwnerName3] = useState('');
 
   const bid = localStorage.getItem('bid');
-  const noofgirders = useState('');
 
   const Navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -95,7 +95,8 @@ const SensorForm = () => {
     const storedCoordinates = localStorage.getItem('coordinates');
     const location = localStorage.getItem('location');
     const storedbridgeName = localStorage.getItem('bridgeName');
-    const storednobridgespan = JSON.parse(localStorage.getItem('nobridgespan'));
+    const storednobridgespan = localStorage.getItem('nobridgespan');
+    const storedgirders = localStorage.getItem('noofgirders');
 
     const storedOwnerName = localStorage.getItem('ownerName');
     const storedOwnerName2 = localStorage.getItem('ownerName2');
@@ -120,6 +121,7 @@ const SensorForm = () => {
     setBridgeLocation(location || '');
     setBridgeName(storedbridgeName || '');
     setnobridgespan(storednobridgespan || '');
+    setnoofgirders(storedgirders || '');
 
     setAdminName(storedAdminName || '');
     setAdminName2(storedAdminName2 || '');
@@ -425,4 +427,4 @@ const SensorForm = () => {
 );
 }
 
-export default SensorForm;
+export default Sensorform;

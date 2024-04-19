@@ -24,6 +24,7 @@ const BridgeForm = ({onSubmit }) => {
   const [bridgeName, setBridgeName] = useState('');
   const [location, setlocation] = useState('');
   const [nobridgespan, setnobridgespan] = useState([1]);
+  const [noofgirders, setnoofgirders] = useState([1]);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -439,6 +440,7 @@ const BridgeForm = ({onSubmit }) => {
             state:state,
             city: city,
             nobridgespan:nobridgespan,
+            noofgirders:noofgirders,
             division:division,
             coordinates:coordinates,
             bridgeName:bridgeName,
@@ -493,7 +495,8 @@ const BridgeForm = ({onSubmit }) => {
           localStorage.setItem('country', country);
           localStorage.setItem('state', state);
           localStorage.setItem('city', city);
-          localStorage.setItem('nobridgespan', JSON.stringify(nobridgespan));
+          localStorage.setItem('nobridgespan', nobridgespan);
+          localStorage.setItem('noofgirders', noofgirders);
           localStorage.setItem('division', division);
           localStorage.setItem('coordinates', coordinates);
           localStorage.setItem('location', location);
@@ -803,6 +806,12 @@ const BridgeForm = ({onSubmit }) => {
             <div className="mb-6">
               <label htmlFor='bridgeName' className="block text-gray-700">Bridge Location:</label>
               <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
+            </div>
+            <div className="mb-6">
+              <label htmlFor="noofgirders" className="block text-gray-700">Total Number of Girders:</label>
+              <select id="noofgirders" name="noofgirders" value={noofgirders} onChange={(e) => setnoofgirders(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
+                {[...Array(50).keys()].map((girder) => (<option key={girder + 1} value={girder + 1}>{girder + 1}</option>))}
+              </select>
             </div>
           </div>
         </div><br /><br /> <br />
