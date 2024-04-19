@@ -10,7 +10,7 @@ import loadingIcon from '../Assets/loading.gif';
 
 import { MdCancel } from "react-icons/md";
 
-const Sensorformexcel = () => {
+const SensorForm = () => {
   const [loading, setLoading] = useState(false);
   const [showAddSensor, setshowAddSensor] =useState(false);
   const [numSensors, setNumSensors] = useState('');
@@ -425,4 +425,4 @@ const Sensorformexcel = () => {
 );
 }
 
-export default Sensorformexcel;
+export default SensorForm;
