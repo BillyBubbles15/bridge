@@ -73,7 +73,7 @@ const Sensorform = () => {
 
   const handleSubmit1 = async(e) => {
     e.preventDefault();
-    if(!sensortype || !numSensors){
+    if(!sensortype || !numSensors ){
       enqueueSnackbar('Please fill all the fields!', { variant: 'error' });
     }
     else {

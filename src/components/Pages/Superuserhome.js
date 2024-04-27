@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { City, Country, State } from "country-state-city";
 import { useSnackbar } from 'notistack';
 import PhoneInput from 'react-phone-input-2';
 import axios from 'axios';
@@ -13,12 +12,9 @@ import {MdHome, MdSettings, MdPerson, MdSearch, MdNotifications, MdDashboard, Md
 import { PiWind } from "react-icons/pi";
 import { WiHumidity } from "react-icons/wi";
 import { GiSpeedometer } from "react-icons/gi";
-// import { Canvas } from '@react-three/fiber';
-// import { OrbitControls } from '@react-three/drei';
 
 import './tailwind.css';
 import 'react-phone-input-2/lib/style.css';
-import Selector from "./Selector";
 
 import logo2 from '../Assets/logo2.png';
 import clear_icon from '../Assets/weather/clear.png';
@@ -299,7 +295,7 @@ const Superuserhome = () => {
 
     const accelerometerbtn = (e) => {
         e.preventDefault();
-        setIsSelected(!isSelected);
+        setIsSelected(false);
         setshowaccelerometers(true);
         setshowstraingauges(false);
         setshowDashboard(false);
@@ -312,7 +308,7 @@ const Superuserhome = () => {
 
     const straingaugebtn = (e) => {
         e.preventDefault();
-        setIsSelected(!isSelected);
+        setIsSelected(false);
         setshowaccelerometers(false);
         setshowstraingauges(true);
         setshowDashboard(false);
@@ -524,31 +520,30 @@ const Superuserhome = () => {
 //MODIFY SECTION
 const [id,setId]=useState('');
 const bridgeName = localStorage.getItem('bridgeName');
-  
-let countryData = Country.getAllCountries();
-const [stateData, setStateData] = useState();
-const [cityData, setCityData] = useState();
 
-const [country, setCountry] = useState(countryData[0]);
-const [state, setState] = useState();
-const [city, setCity] = useState();
+const [statesList, setStatesList] = useState([]);
 
-useEffect(() => {
-  setStateData(State.getStatesOfCountry(country?.isoCode));
-}, [country]);
+const handleCountryChange = (e) => {
+    const selectedCountry = e.target.value;
+    setUserData(prevData => ({ ...prevData, country: selectedCountry }));
 
-useEffect(() => {
-  setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
-}, [country?.isoCode, state]);
+    // Fetch states based on selected country
+    if (selectedCountry === 'USA') {
+      setStatesList([  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']);
+    } else if (selectedCountry === 'Australia') {
+      setStatesList([  'New South Wales', 'Victoria', 'Queensland', 'Western Australia', 'South Australia', 'Tasmania', 'Australian Capital Territory', 'Northern Territory']);
+    } else {
+      setStatesList([]);
+    }
+    
+    // Reset state selection
+    setUserData(prevData => ({ ...prevData, state: '' }));
+  };
 
-
-useEffect(() => {
-  stateData && setState(stateData[0]);
-}, [stateData]);
-
-useEffect(() => {
-  cityData && setCity(cityData[0]);
-}, [cityData]);
+  const handleStateChange = (e) => {
+    const selectedState = e.target.value;
+    setUserData(prevData => ({ ...prevData, state: selectedState }));
+  };
 
 
     // console.log(bridgeName);
@@ -831,6 +826,8 @@ useEffect(() => {
         }
       };
 
+
+
     const weatherapi = {
         key: "ce6e8efc9563bba968f6c6284d0253df",
         base: "https://api.openweathermap.org/data/2.5/",
@@ -840,7 +837,7 @@ useEffect(() => {
 
     useEffect(() => {
         // Fetch weather data for 'Pune' when component mounts
-        fetch(`${weatherapi.base}weather?q=Pune&units=metric&APPID=${weatherapi.key}`)
+        fetch(`${weatherapi.base}weather?q=${userData.city}&units=metric&APPID=${weatherapi.key}`)
             .then((res) => res.json())
             .then((result) => {
                 setWeather(result);
@@ -850,6 +847,9 @@ useEffect(() => {
                 console.error('Error fetching weather data:', error);
             });
     }, [weatherapi.base, weatherapi.key, userData.city]);
+
+
+
 
     const removeAdmin1 = (e) => {
         e.preventDefault();
@@ -1111,7 +1111,7 @@ useEffect(() => {
 
       {showDashboard && (
         <>
-        <div className='w-11/12 ml-32 p-6 pt-20 flex w-1/2'>
+        <div className='w-11/12 ml-32 p-6 pt-20 flex'>
             <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Accelerometer</button>
             <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={straingaugebtn}>Strain Gauge</button>
             <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Deflection Gauge</button>
@@ -1120,7 +1120,7 @@ useEffect(() => {
 
 
 
-        <div className='w-11/12 ml-32 p-6 text-white pt-4 flex w-1/2'>
+        <div className='w-11/12 ml-32 p-6 text-white pt-4 flex'>
             <div className='bg-indigo-800 w-2/5 text-center py-6 overflow-hidden shadow-xl rounded-xl'>
                 { typeof Weather.main != "undefined" ? (
                 <div className='flex justify-center'>
@@ -1191,7 +1191,13 @@ useEffect(() => {
 
     {showaccelerometers && (
         <>
-        <div className='w-11/12 ml-24 p-6 pt-24 flex bg-white'>
+        <div className='w-11/12 ml-32 p-6 pt-20 flex'>
+            <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Accelerometer</button>
+            <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={straingaugebtn}>Strain Gauge</button>
+            <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Deflection Gauge</button>
+            <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Camera</button>
+        </div>
+        <div className='w-11/12 ml-24 p-6 pt-12 flex bg-white'>
             <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
                 <h1 className='text-center font-bold'>Accelerometer 1</h1><br />
                 {SampleChartData3.labels && SampleChartData3.datasets && SampleChartData3.labels.length > 0 && SampleChartData3.datasets.length > 0 ? (
@@ -1234,7 +1240,13 @@ useEffect(() => {
 
     {showstraingauges && (
         <>
-                <div className='w-11/12 ml-24 p-6 pt-24 flex bg-white'>
+        <div className='w-11/12 ml-32 p-6 pt-20 flex'>
+            <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Accelerometer</button>
+            <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={straingaugebtn}>Strain Gauge</button>
+            <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Deflection Gauge</button>
+            <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Camera</button>
+        </div>
+            <div className='w-11/12 ml-24 p-6 pt-12 flex bg-white'>
             <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
                 <h1 className='text-center font-bold'>Strain Gauge 1</h1><br />
                 {SampleChartData.labels && SampleChartData.datasets && SampleChartData.labels.length > 0 && SampleChartData.datasets.length > 0 ? (
@@ -1277,7 +1289,7 @@ useEffect(() => {
 
       {showSensorDashboard && (
         <>
-        <h1 className='w-11/12 ml-24 text-center p-6 pt-24 text-pink-600 text-4xl font-semibold'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; Sensor 1 Dashboard &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
+        <h1 className='w-11/12 ml-24 text-center p-6 pt-24 text-pink-600 text-4xl font-semibold'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; Sensor 1 &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
         <div className='w-11/12 ml-24 p-6 pt-6 flex'>
             <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
                 <br />
@@ -1339,7 +1351,7 @@ useEffect(() => {
         <hr />
         
         {/* Sensor 2 */}
-        <h1 className='w-11/12 ml-24 text-center p-6 pt-24 text-pink-600 text-4xl font-semibold'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; Sensor 2 Dashboard &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
+        <h1 className='w-11/12 ml-24 text-center p-6 pt-24 text-pink-600 text-4xl font-semibold'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; Sensor 2 &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
         <div className='w-11/12 ml-24 p-6 pt-6 flex'>
             <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
                 <br />
@@ -1442,7 +1454,7 @@ useEffect(() => {
 
 {showModify && (
     <>
-    <div className='w-11/12 z-30 fixed bg-white ml-24 p-6 pt-20 flex w-1/2 mx-8'>
+    <div className='w-11/12 z-30 fixed bg-white ml-24 p-6 pt-20 flex mx-8'>
         <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white text-lg' onClick={showBridgeInfo}>Bridge Information</button>
         <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white text-lg' onClick={showSensorInfo}>Sensor Information</button>
         <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white text-lg' onClick={showUserInfo}>User Information</button>
@@ -1458,10 +1470,14 @@ useEffect(() => {
           <div className="flex w-full pl-16 py-6 justify-center bg-gray-100">
 
             <div className='w-1/3 px-2 justify-center'>
-                <div className="mb-6">
-                    <label htmlFor="country" className="block text-gray-700">Country:</label>
-                    <Selector value={userData.country} data={countryData} selected={country} setSelected={setCountry}/>
-                </div>
+            <div className="mb-6">
+                <label htmlFor="country">Select Country:</label>
+                <select id="country" value={userData.country} onChange={handleCountryChange} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
+                  <option value="">Select</option>
+                  <option value="USA">USA</option>
+                  <option value="Australia">Australia</option>
+                </select>
+              </div>
                 <div className="mb-6">
                     <label htmlFor="division" className="block text-gray-700">Division:</label>
                     <input type="text" id="division" placeholder='Enter Division' name="division" value={userData.division} onChange={(e) => setUserData(prevData => ({...prevData, division: e.target.value}))} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
@@ -1474,9 +1490,14 @@ useEffect(() => {
 
             <div className="w-1/3 px-2 justify-center">
             <div className="mb-6">
-                    <label htmlFor="state" className="block text-gray-700">State:</label>
-                    <Selector value={userData.state} data={stateData} selected={state} setSelected={setState} />
-                </div>
+              <label htmlFor="state" className="block text-gray-700">Select State:</label>
+              <select id="state" value={userData.state} onChange={handleStateChange} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
+                <option value="">Select</option>
+                {statesList.map((stateName) => (
+                  <option key={stateName} value={stateName}>{stateName}</option>
+                ))}
+              </select>
+            </div>
                 <div className="mb-6">
                     <label htmlFor='bridgeName' className="block text-gray-700">Bridge Location:</label>
                     <input type="text" id="location" placeholder='Enter Location' name="location" value={userData.location} onChange={(e) => setUserData(prevData => ({...prevData, location: e.target.value}))} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg" />
@@ -1490,10 +1511,10 @@ useEffect(() => {
             </div>
 
             <div className='w-1/3 px-2 justify-center'>
-                <div className="mb-6">
-                    <label htmlFor="division" className="block text-gray-700">City:</label>
-                    <Selector value={userData.city} data={cityData} selected={city} setSelected={setCity} />
-                </div>
+            <div className='mb-6'>
+              <label htmlFor="city" className="block text-gray-700">City:</label>
+              <input type="text" id="city" placeholder='Enter City / Area' name="city" value={userData.city} onChange={(e) => setUserData(prevData => ({...prevData, city: e.target.value}))} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
+            </div>
                 <div className="mb-6">
                     <label htmlFor="coordinates" className="block text-gray-700">Bridge Coordinates:</label>
                     <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={userData.coordinates} onChange={(e) => setUserData(prevData => ({...prevData, coordinates: e.target.value}))} className="p-2 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
