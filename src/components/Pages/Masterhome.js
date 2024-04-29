@@ -244,26 +244,20 @@ const Masterhome = () => {
         }
     };
 
+
+
+
+
     const [bridges, setBridges] = useState([]);
-    const [superadminID, setSuperadminID] = useState(null);
+    const [superAdminId, setSuperAdminId] = useState(null);
+    const [superAdminName, setSuperAdminName] = useState('');
     const [emaill, setemaill] = useState(null);
   
     useEffect(() => {
       const fetchBridges = async () => {
         try {
           const response = await axios.get('http://localhost:9090/bridge/getallbridge');
-          const extractedBridges = response.data.map(bridge => ({
-            superadminID: bridge.superadminID,
-            userID: bridge.userID,
-            emaill: bridge.email,
-          }));
-          setBridges(extractedBridges);
-          console.log(extractedBridges);
-  
-          // Extract superadminID from the first API call and store it in state
-          const firstBridge = response.data[0]; // Assuming you want to get the superadminID from the first bridge
-          setSuperadminID(firstBridge.superadminID);
-          setemaill(firstBridge.email);
+          console.log(response.data);
         } catch (error) {
           console.error('Error fetching bridges:', error);
         }
@@ -272,24 +266,33 @@ const Masterhome = () => {
       fetchBridges();
     }, []);
 
+    useEffect(() => {
+      const fetchAllUserData = async () => {
+        try {
+          const response = await axios.get('http://localhost:9090/masterhome/getuserdata');
+          console.log(response.data);
+        } catch (error) {
+          console.error('Error fetching bridges:', error);
+        }
+      };
+  
+      fetchAllUserData();
+    }, []);
 
-    const [superuserName, setSuperuserName] = useState('');
     useEffect(() => {
       const fetchSuperAdmin = async () => {
         try {
-          if (!superadminID) return;
-          const superAdminResponse = await axios.get(`http://localhost:9090/getdata/byrole?role=SUPERADMIN/${superadminID}`);
-          const superAdminData = superAdminResponse.data;
-          const superuserName = superAdminData.name;
-          
-          setSuperuserName(superuserName);
+          const superAdminResponse = await axios.get('http://localhost:9090/getdata/byrole?role=SUPERADMIN');
+          console.log(superAdminResponse.data);
+          setSuperAdminId(superAdminResponse.data.id);
+          setSuperAdminId(superAdminResponse.data.name);
         } catch (error) {
           console.error('Error fetching superadmin:', error);
         }
       };
-  
+    
       fetchSuperAdmin();
-    }, [superadminID]);
+    }, []);
 
 
     const [userId, setUserId] = useState('');
@@ -331,25 +334,28 @@ const Masterhome = () => {
     const demotion = async (e) => {
       e.preventDefault();
       try {
-        const response = await axios.post(`http://localhost:9090/masterhome/removeSuperadmin/${superadminID}`);
+        const response = await axios.post(`http://localhost:9090/masterhome/removeSuperadmin/${superAdminId}`);
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data);
           enqueueSnackbar('Superadmin Removed successfully!', { variant: 'success'});
-        }
-        else{
+        } else {
           console.log(response.data);
-          enqueueSnackbar('Vishay', { variant: 'error'});
+          enqueueSnackbar('Error removing superadmin', { variant: 'error'});
         }
       } catch (error) {
-        console.error('Vishay:', error);
+        console.error('Error removing superadmin:', error);
+        enqueueSnackbar('Error removing superadmin', { variant: 'error'});
       }
     };
+
+
+
   
     const filteredData = bridges.filter((bridge) =>
-    bridge.bridgeName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-    bridge.country.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-    bridge.state.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-    bridge.division.toLowerCase().includes(searchKeyword.toLowerCase())
+    (bridge.bridgeName?.toLowerCase().includes(searchKeyword.toLowerCase()) || false) ||
+    (bridge.country?.toLowerCase().includes(searchKeyword.toLowerCase()) || false) ||
+    (bridge.state?.toLowerCase().includes(searchKeyword.toLowerCase()) || false) ||
+    (bridge.division?.toLowerCase().includes(searchKeyword.toLowerCase()) || false)
   );
 
   const [showopt, setshowopt] = useState('');
@@ -427,7 +433,7 @@ const Masterhome = () => {
 
               <div className='grid w-full px-14'>
                 <label htmlFor="phonenumber">Mobile Number: </label>
-                <div>
+              <div>
                   <PhoneInput country={'us'} value={phonenumber} onChange={(value) => setphonenumber(value)} inputProps={{  required: true, }}/>
                 </div>
                 <label className='' htmlFor="Role">Role:</label>
@@ -490,7 +496,7 @@ const Masterhome = () => {
                   <tr key={index} className="text-center border border-gray-300">
                     <td className="border px-3 py-3">{bridge.id}</td>
                     <td className="border px-16 py-3">{bridge.bridgeName}</td>
-                    <td className="border px-8 py-3" onMouseOver={showoption1}>{superuserName}</td>
+                    <td className="border px-8 py-3" onMouseOver={showoption1}>{superAdminName}</td>
                     <td className="border px-10 py-3">
                       <select id="adminName" className="ouline-0 p-1 w-full rounded">
                         <option value={bridge.adminName} onMouseOver={showoption}>{bridge.adminName}</option>
