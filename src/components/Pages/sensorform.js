@@ -351,7 +351,7 @@ const Sensorform = () => {
     </div>
   </div>
 )}
-        <div className="box-border shadow-2xl w-1/2 p-6 bg-gray-100 mx-5 mr-10 my-8 justify-center text-left">
+        <div className="box-border hidden shadow-2xl w-1/2 p-6 bg-gray-100 mx-5 mr-10 my-8 justify-center text-left">
           <h1 className='text-center font-semibold text-3xl text-black'>Previously Entered Details</h1><br /><hr /><hr />
           <div className='flex pt-8'>
             <div className="mb-4 px-2 w-full">
