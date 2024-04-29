@@ -191,6 +191,7 @@ const Sensorform = () => {
     setsensortype('');
     setspanno('');
     setgirderno('');
+    setManualLocation('');
   };
 
   const handleAddSensor = async (e) => {
@@ -249,8 +250,12 @@ const Sensorform = () => {
     setshowAddLocation(false);
   };
 
-  const handleManualLocationChange = (e) => {
-    setManualLocation(e.target.value);
+  const handleManualLocationChange = (e, index) => {
+    if (e.target) {
+      const updatedLocations = [...sensorLocations];
+      updatedLocations[index].manualLocation = e.target.value;
+      setSensorLocations(updatedLocations);
+    }
   };
 
   return (
@@ -336,7 +341,7 @@ const Sensorform = () => {
         </div>
         <div className="mb-2 w-full px-5">
           <label htmlFor={`manualLocation-${index}`} className="block text-gray-700">Manual Location:</label>
-          <input id={`manualLocation-${index}`} name={`manualLocation-${index}`} value={location.manualLocation} onChange={(e) => handleManualLocationChange(index, e.target.value)} placeholder="Ex: Top-Right, Bottom Left, etc" className="border pl-3 border-gray-300 p-1 w-full rounded overflow-hidden shadow-md outline-none" />
+          <input id={`manualLocation-${index}`} name={`manualLocation-${index}`} value={location.manualLocation} onChange={(e) => handleManualLocationChange(e, index)} placeholder="Ex: Top-Right, Bottom Left, etc" className="border pl-3 border-gray-300 p-1 w-full rounded overflow-hidden shadow-md outline-none" />
         </div>
       </div>
     ))}
