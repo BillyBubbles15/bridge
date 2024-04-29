@@ -250,7 +250,6 @@ const Masterhome = () => {
 
     const [bridges, setBridges] = useState([]);
     const [superAdminId, setSuperAdminId] = useState(null);
-    const [superAdminName, setSuperAdminName] = useState('');
     const [emaill, setemaill] = useState(null);
   
     useEffect(() => {
@@ -258,6 +257,7 @@ const Masterhome = () => {
         try {
           const response = await axios.get('http://localhost:9090/bridge/getallbridge');
           console.log(response.data);
+          setBridges(response.data);
         } catch (error) {
           console.error('Error fetching bridges:', error);
         }
@@ -282,9 +282,8 @@ const Masterhome = () => {
     useEffect(() => {
       const fetchSuperAdmin = async () => {
         try {
-          const superAdminResponse = await axios.get('http://localhost:9090/getdata/byrole?role=SUPERADMIN');
+          const superAdminResponse = await axios.get(`http://localhost:9090/getdata/byrole?role=SUPERADMIN`);
           console.log(superAdminResponse.data);
-          setSuperAdminId(superAdminResponse.data.id);
           setSuperAdminId(superAdminResponse.data.name);
         } catch (error) {
           console.error('Error fetching superadmin:', error);
@@ -304,6 +303,7 @@ const Masterhome = () => {
           const useremailResponse = await axios.get(`http://localhost:9090/masterhome/findUser/${emaill}`);
           const useremailData = useremailResponse.data;
           const userId = useremailData.userId;
+          setemaill(useremailResponse.data);
           
           setUserId(userId);
         } catch (error) {
@@ -496,7 +496,6 @@ const Masterhome = () => {
                   <tr key={index} className="text-center border border-gray-300">
                     <td className="border px-3 py-3">{bridge.id}</td>
                     <td className="border px-16 py-3">{bridge.bridgeName}</td>
-                    <td className="border px-8 py-3" onMouseOver={showoption1}>{superAdminName}</td>
                     <td className="border px-10 py-3">
                       <select id="adminName" className="ouline-0 p-1 w-full rounded">
                         <option value={bridge.adminName} onMouseOver={showoption}>{bridge.adminName}</option>
