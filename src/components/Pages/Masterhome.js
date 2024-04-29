@@ -244,43 +244,132 @@ const Masterhome = () => {
         }
     };
 
-    const [bridges, setBridges] = useState([]);
 
+
+
+
+    const [bridges, setBridges] = useState([]);
+    const [superAdminId, setSuperAdminId] = useState(null);
+    const [emaill, setemaill] = useState(null);
+  
     useEffect(() => {
       const fetchBridges = async () => {
         try {
           const response = await axios.get('http://localhost:9090/bridge/getallbridge');
+          console.log(response.data);
           setBridges(response.data);
+        } catch (error) {
+          console.error('Error fetching bridges:', error);
+        }
+      };
+  
+      fetchBridges();
+    }, []);
+
+    useEffect(() => {
+      const fetchAllUserData = async () => {
+        try {
+          const response = await axios.get('http://localhost:9090/masterhome/getuserdata');
           console.log(response.data);
         } catch (error) {
           console.error('Error fetching bridges:', error);
         }
       };
-      fetchBridges();
-    }, []);
   
-    const filteredData = bridges.filter((bridge) =>
-    bridge.bridgeName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-    bridge.country.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-    bridge.state.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-    bridge.division.toLowerCase().includes(searchKeyword.toLowerCase())
-  );
+      fetchAllUserData();
+    }, []);
+
+    useEffect(() => {
+      const fetchSuperAdmin = async () => {
+        try {
+          const superAdminResponse = await axios.get(`http://localhost:9090/masterhome/getdata/byrole?role=SUPERADMIN`);
+          console.log(superAdminResponse.data);
+          setSuperAdminId(superAdminResponse.data.name);
+        } catch (error) {
+          console.error('Error fetching superadmin:', error);
+        }
+      };
+    
+      fetchSuperAdmin();
+    }, []);
 
 
-  const [alluserdata, setalluserdata] = useState([]);
+    const [userId, setUserId] = useState('');
 
-  useEffect(() => {
-    const fetchuserdata = async () => {
+    useEffect(() => {
+      const fetchUserEmail = async () => {
+        try {
+          if (!emaill) return;
+          const useremailResponse = await axios.get(`http://localhost:9090/masterhome/findUser/${emaill}`);
+          const useremailData = useremailResponse.data;
+          const userId = useremailData.userId;
+          setemaill(useremailResponse.data);
+          
+          setUserId(userId);
+        } catch (error) {
+          console.error('Error fetching user email:', error);
+        }
+      };
+  
+      fetchUserEmail();
+    }, [emaill]);
+
+    const promotion = async (e) => {
+      e.preventDefault();
       try {
-        const response = await axios.get('http://localhost:9090/masterhome/getuserdata');
-        setalluserdata(response.data);
-        console.log(response.data);
+        const response = await axios.post(`http://localhost:9090/masterhome/addSuperadmin/${userId}`);
+        if (response.status >= 200 && response.status < 300) {
+          console.log(response.data);
+          enqueueSnackbar('User Promoted to SuperAdmin!', { variant: 'success'});
+        }
+        else{
+          console.log(response.data);
+          enqueueSnackbar('Vishay', { variant: 'error'});
+        }
       } catch (error) {
-        console.error('Error fetching bridges:', error);
+        console.error('Vishay:', error);
       }
     };
-    fetchuserdata();
-  }, []);
+
+    const demotion = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await axios.post(`http://localhost:9090/masterhome/removeSuperadmin/${superAdminId}`);
+        if (response.status >= 200 && response.status < 300) {
+          console.log(response.data);
+          enqueueSnackbar('Superadmin Removed successfully!', { variant: 'success'});
+        } else {
+          console.log(response.data);
+          enqueueSnackbar('Error removing superadmin', { variant: 'error'});
+        }
+      } catch (error) {
+        console.error('Error removing superadmin:', error);
+        enqueueSnackbar('Error removing superadmin', { variant: 'error'});
+      }
+    };
+
+
+
+  
+    const filteredData = bridges.filter((bridge) =>
+    (bridge.bridgeName?.toLowerCase().includes(searchKeyword.toLowerCase()) || false) ||
+    (bridge.country?.toLowerCase().includes(searchKeyword.toLowerCase()) || false) ||
+    (bridge.state?.toLowerCase().includes(searchKeyword.toLowerCase()) || false) ||
+    (bridge.division?.toLowerCase().includes(searchKeyword.toLowerCase()) || false)
+  );
+
+  const [showopt, setshowopt] = useState('');
+  const showoption = (e) => {
+    e.preventDefault();
+    setshowopt(!showopt);
+  }
+
+  const [showopt1, setshowopt1] = useState('');
+  const showoption1 = (e) => {
+    e.preventDefault();
+    setshowopt1(!showopt1);
+  }
+  
   
   return (
     <>
@@ -320,6 +409,7 @@ const Masterhome = () => {
         </div>
       )}
 
+
       {showHome && (
         <>
           <form onSubmit={submitForm}>
@@ -343,7 +433,7 @@ const Masterhome = () => {
 
               <div className='grid w-full px-14'>
                 <label htmlFor="phonenumber">Mobile Number: </label>
-                <div>
+              <div>
                   <PhoneInput country={'us'} value={phonenumber} onChange={(value) => setphonenumber(value)} inputProps={{  required: true, }}/>
                 </div>
                 <label className='' htmlFor="Role">Role:</label>
@@ -406,29 +496,29 @@ const Masterhome = () => {
                   <tr key={index} className="text-center border border-gray-300">
                     <td className="border px-3 py-3">{bridge.id}</td>
                     <td className="border px-16 py-3">{bridge.bridgeName}</td>
-                    <td className="border px-8 py-3">{bridge.superadminname}</td>
                     <td className="border px-10 py-3">
                       <select id="adminName" className="ouline-0 p-1 w-full rounded">
-                        <option value={bridge.adminName}>{bridge.adminName}</option>
-                        {bridge.adminName2 ? <option value={bridge.adminName2}>{bridge.adminName2}</option> : <option value="">Admin 2</option>}
-                        {bridge.adminName3 ? <option value={bridge.adminName3}>{bridge.adminName3}</option> : <option value="">Admin 3</option>}
+                        <option value={bridge.adminName} onMouseOver={showoption}>{bridge.adminName}</option>
+                        {bridge.adminName2 ? <option value={bridge.adminName2} onMouseOver={showoption}>{bridge.adminName2}</option> : <option value="">Admin 2</option>}
+                        {bridge.adminName3 ? <option value={bridge.adminName3} onMouseOver={showoption}>{bridge.adminName3}</option> : <option value="">Admin 3</option>}
                       </select>
                     </td>
                     <td className="border px-8 py-3">
                       <select id="adminName" className="ouline-0 p-1 w-full rounded">
-                        <option value={bridge.managerName}>{bridge.managerName}</option>
-                        {bridge.managerName2 ? <option value={bridge.managerName2}>{bridge.managerName2}</option>: <option value="">Manager 2</option>}
-                        {bridge.managerName3 ? <option value={bridge.managerName3}>{bridge.managerName3}</option>: <option value="">Manager 3</option>}
-                        {bridge.managerName4 ? <option value={bridge.managerName4}>{bridge.managerName4}</option>: <option value="">Manager 4</option>}
-                        {bridge.managerName5 ? <option value={bridge.managerName5}>{bridge.managerName5}</option>: <option value="">Manager 5</option>}
-                        {bridge.managerName6 ? <option value={bridge.managerName6}>{bridge.managerName6}</option>: <option value="">Manager 6</option>}
+                        <option value={bridge.managerName} onMouseOver={showoption}>{bridge.managerName}</option>
+                        {bridge.managerName2 ? <option value={bridge.managerName2} onMouseOver={showoption}>{bridge.managerName2}</option>: <option value="">Manager 2</option>}
+                        {bridge.managerName3 ? <option value={bridge.managerName3} onMouseOver={showoption}>{bridge.managerName3}</option>: <option value="">Manager 3</option>}
+                        {bridge.managerName4 ? <option value={bridge.managerName4} onMouseOver={showoption}>{bridge.managerName4}</option>: <option value="">Manager 4</option>}
+                        {bridge.managerName5 ? <option value={bridge.managerName5} onMouseOver={showoption}>{bridge.managerName5}</option>: <option value="">Manager 5</option>}
+                        {bridge.managerName6 ? <option value={bridge.managerName6} onMouseOver={showoption}>{bridge.managerName6}</option>: <option value="">Manager 6</option>}
                       </select>
                     </td>
+                    
                     <td className="border px-8 py-3">
                       <select id="adminName" className="ouline-0 p-1 w-full rounded" readOnly>
-                        <option value={bridge.ownerName}>{bridge.ownerName}</option>:
-                        {bridge.ownerName2 ? <option value={bridge.ownerName2}>{bridge.ownerName2}</option>: <option value="">Owner 2</option>}
-                        {bridge.ownerName3 ? <option value={bridge.ownerName3}>{bridge.ownerName3}</option>: <option value="">Owner 3</option>}
+                        <option value={bridge.ownerName} onMouseOver={showoption}>{bridge.ownerName}</option>:
+                        {bridge.ownerName2 ? <option value={bridge.ownerName2} onMouseOver={showoption}>{bridge.ownerName2}</option>: <option value="">Owner 2</option>}
+                        {bridge.ownerName3 ? <option value={bridge.ownerName3} onMouseOver={showoption}>{bridge.ownerName3}</option>: <option value="">Owner 3</option>}
                       </select>
                     </td>
                     <td className="border px-2 py-3">
@@ -442,17 +532,39 @@ const Masterhome = () => {
                     </td>
                     <td className="border px-3 py-3 cursor-pointer"><button onClick={DelBridge}><FaTrash size={20}/></button></td>
                   </tr>
+                  
                 ))
                 ) : (
+                  
                 <tr>
                   <td colSpan="8" className="py-3 text-center text-lg">
-                    No bridges found
+                    <h1 onMouseOver={showoption}>No bridges found</h1>
                   </td>
                 </tr>
               )}
+            { showopt && (
+              <>
+                <div className='w-10/12 absolute z-50 '>
+                  <div className='flex w-full justify-center'>
+                  <h1 onClick={promotion} className='text-center w-full bg-pink-600'>Make Superadmin</h1>
+                  </div>
+                </div>
+              </>
+            )}
+            { showopt1 && (
+              <>
+                <div className='w-10/12 absolute z-50 '>
+                  <div className='flex w-full justify-center'>
+                  <h1 onClick={demotion} className='text-center w-full bg-pink-600'>Remove Superadmin</h1>
+                  </div>
+                </div>
+              </>
+            )}
             </tbody>
           </table>
+          
         </div>
+
         {data.length > 0 && (
             <table className='hidden text-left'>
                 <thead>
