@@ -27,7 +27,7 @@ const BridgeForm = ({onSubmit }) => {
   const [noofgirders, setnoofgirders] = useState([1]);
   const navigate = useNavigate();
 
-  const Name = localStorage.getItem('name');
+  const superadminname = localStorage.getItem('name');
 
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -438,7 +438,7 @@ const BridgeForm = ({onSubmit }) => {
         try {
           setLoading(true);
           const response = await axios.post('http://localhost:9090/bridge/register', {
-            Name: Name,
+            superadminname: superadminname,
             country:country,
             state:state,
             city: city,
