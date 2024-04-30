@@ -43,7 +43,9 @@ const Login = () => {
           enqueueSnackbar('Logged in successfully!', { variant: 'success'});
           setLoading(false);
           
-          const { token, superadminId, dashboardUrl } = response.data.id;
+          const dashboardUrl = response.data.dashboardUrl;
+          const superadminId = response.data.superadminId;
+          const token = response.data.token;
           const name = response.data.name;
           
           localStorage.setItem('authToken', token);
