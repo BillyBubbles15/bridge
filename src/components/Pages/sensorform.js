@@ -141,7 +141,7 @@ const Sensorform = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!sensortype|| !numSensors || !girderno  || !spanno) {
+    if (!sensortype|| !numSensors) {
       enqueueSnackbar('Please fill all the fields!', { variant: 'error' });
       setshowAddSensor(false);
     } else {
@@ -196,7 +196,7 @@ const Sensorform = () => {
 
   const handleAddSensor = async (e) => {
     e.preventDefault();
-    if (sensortype === '' || numSensors === '' || girderno === '' || spanno === '') {
+    if (sensortype === '' || numSensors === '') {
       enqueueSnackbar('Please fill all the fields!', { variant: 'error' });
       setshowAddSensor(false);
     } else {
@@ -281,7 +281,7 @@ const Sensorform = () => {
                     <label htmlFor="numSensors" className="block text-gray-700">Number of Sensors:</label>
                     <select id="numSensors" onChange={handleNumSensorsChange} value={numSensors} className="border border-gray-300 p-1 w-full rounded overflow-hidden shadow-md outline-none">
                       {Array.from({ length: 21 }, (_, index) => (
-                        <option key={index} value={index}>{index}</option>
+                        <option key={index + 1} value={index + 1}>{index + 1}</option>
                       ))}
                     </select>
                   </div>
@@ -327,7 +327,7 @@ const Sensorform = () => {
           <label htmlFor={`spanno-${index}`} className="block text-gray-700">Span Number:</label>
           <select id={`spanno-${index}`} name={`spanno-${index}`} value={location.spanno} onChange={(e) => handleLocationChange(index, 'spanno', e.target.value)} className="border border-gray-300 p-1 w-full rounded overflow-hidden shadow-md pl-3 outline-none">
             {Array.from({ length: parseInt(nobridgespan) }, (_, i) => (
-              <option key={`span-${i + 1}`} value={i}>{i}</option>
+              <option key={`span-${i + 1}`} value={i + 1}>{i + 1}</option>
             ))}
           </select>
         </div>
@@ -335,7 +335,7 @@ const Sensorform = () => {
           <label htmlFor={`girderno-${index}`} className="block text-gray-700">Girder Number:</label>
           <select id={`girderno-${index}`} name={`girderno-${index}`} value={location.girderno} onChange={(e) => handleLocationChange(index, 'girderno', e.target.value)} className="border border-gray-300 p-1 w-full rounded overflow-hidden shadow-md pl-3 outline-none">
             {Array.from({ length: parseInt(noofgirders) }, (_, i) => (
-              <option key={`girder-${i + 1}`} value={i}>{i}</option>
+              <option key={`girder-${i + 1}`} value={i + 1}>{i + 1}</option>
             ))}
           </select>
         </div>
