@@ -166,8 +166,7 @@ const handleRowClick = (bridge) => {
 
   return (
     <>
-        <button onClick={showAddBridge} className='justify-center absolute mb-16 py-4 z-40 font-semibold text-2xl w-full bg-pink-600 hover:bg-pink-900 flex cursor-pointer text-white'>Click here to add a new bridge &nbsp;
-        {isExpanded ? <FaChevronUp size={30} style={{marginTop:'2px'}} /> : <FaChevronDown size={30} style={{marginTop:'2px'}} />}</button>
+        <button onClick={showAddBridge} className='justify-center absolute mb-16 py-4 z-40 font-semibold text-2xl w-full bg-indigo-600 hover:bg-indigo-900 flex cursor-pointer overflow-hidden shadow-md text-white'>Click here to add a new bridge &nbsp; {isExpanded ? <FaChevronUp size={30} style={{marginTop:'2px'}} /> : <FaChevronDown size={30} style={{marginTop:'2px'}} />}</button>
         {showBridge && (
           <div className="absolute w-full mt-16 pb-24 pt-20 bg-gray-200 shadow-2xl text-center border border-gray-300 rounded-sm">
           <div className="w-full flex justify-center">
@@ -179,9 +178,9 @@ const handleRowClick = (bridge) => {
           </div>
           <br /><br />
           <div className="w-full justify-center">
-            <button onClick={addbridge} className="bg-blue-600 w-1/3 py-4 text-2xl font-semibold text-gray-100 rounded-sm hover:bg-blue-900">Add Manually</button>
+            <button onClick={addbridge} className="bg-blue-600 w-1/3 py-4 text-2xl font-semibold text-gray-100 rounded-lg overflow-hidden shadow-xl hover:bg-blue-900">Add Manually</button>
             <br /><br /><br />
-            <button onClick={addcsv} className="bg-blue-600 py-4 w-1/3 text-2xl font-semibold text-gray-100 rounded-sm hover:bg-blue-900">Upload Excel</button>
+            <button onClick={addcsv} className="bg-blue-600 py-4 w-1/3 text-2xl font-semibold text-gray-100 rounded-lg overflow-hidden shadow-xl hover:bg-blue-900">Upload Excel</button>
           </div>
           </div>
         )}
@@ -214,7 +213,7 @@ const handleRowClick = (bridge) => {
         )}
 
       <div className="w-full pt-16">
-        <div className='flex py-5 px-6 bg-gray-200 border border-gray-300 shadow-2xl'>
+        <div className='flex py-3 px-6 bg-gray-200 border border-gray-300 overflow-hidden shadow-xl'>
           <div className="w-full justify-left">
             <img src={logo} alt="" />
           </div>
@@ -227,7 +226,7 @@ const handleRowClick = (bridge) => {
           </div>
         </div>
         <br />
-        <div className="mt-4 bg-gray-100 border border-gray-200 rounded-sm shadow-2xl">
+        <div className="mt-4 bg-gray-100 border border-gray-200 rounded-sm overflow-hidden shadow-xl mx-6">
           <table className="table-auto w-full border-collapse border">
             <thead>
               <tr>
@@ -238,28 +237,24 @@ const handleRowClick = (bridge) => {
                 <th className="border bg-black text-lg text-white px-8 py-4 font-bold">City</th>
                 <th className="border bg-black text-lg text-white px-4 py-4 font-bold">Division</th>
                 <th className="border bg-black text-lg text-white py-4 font-bold">Coordinates</th>
-                <th className="border bg-black text-lg text-white px-2 py-4 font-bold">Spans</th>
-                <th className="border bg-black text-lg text-white py-4 font-bold">Girders</th>
               </tr>
             </thead>
             <tbody>
   {filteredData.length > 0 ? (
     filteredData.map((bridge, index) => (
-      <tr key={index} onClick={() => handleRowClick(bridge)} className="hover:bg-gray-300 text-center cursor-pointer border border-gray-300">
-        <td className="border px-2 py-3">{bridge.id}</td>
-        <td className="border px-12 py-3">{bridge.bridgeName}</td>
-        <td className="border px-4 py-3">{bridge.country}</td>
-        <td className="border px-8 py-3">{bridge.state}</td>
-        <td className="border px-8 py-3">{bridge.city}</td>
-        <td className="border px-4 py-3">{bridge.division}</td>
-        <td className="border py-4">{bridge.coordinates}</td>
-        <td className="border px-2 py-3">{bridge.nobridgespan}</td>
-        <td className="border py-3">{bridge.noofgirders}</td>
+      <tr key={index} onClick={() => handleRowClick(bridge)} className="hover:bg-stone-400 text-center cursor-pointer border border-gray-300">
+        <td className="px-2 py-2">{bridge.id}</td>
+        <td className="px-12 py-2">{bridge.bridgeName}</td>
+        <td className="px-4 py-2">{bridge.country}</td>
+        <td className="px-8 py-2">{bridge.state}</td>
+        <td className="px-8 py-2">{bridge.city}</td>
+        <td className="px-4 py-2">{bridge.division}</td>
+        <td className="py-2">{bridge.coordinates}</td>
       </tr>
     ))
   ) : (
     <tr>
-      <td colSpan="9" className="py-3 text-center text-lg hover:bg-gray-200 cursor-pointer">
+      <td colSpan="9" className="py-2 text-center text-lg hover:bg-stone-400 cursor-pointer">
         No bridges found
       </td>
     </tr>

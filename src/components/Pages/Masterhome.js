@@ -418,26 +418,26 @@ const Masterhome = () => {
               <div className='w-full flex px-24 py-12 shadow-xl bg-gray-100'>
                 <div className=' grid w-full px-14'>
                   <label htmlFor="name">Name:</label>
-                  <input  className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' placeholder='Enter Name' type="text" value={Name} onChange={(e) => setName(e.target.value)} name="name" required />
+                  <input  className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 outline-none rounded mb-4' placeholder='Enter Name' type="text" value={Name} onChange={(e) => setName(e.target.value)} name="name" required />
                   <label htmlFor="designation">Designation:</label>
-                  <input className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' placeholder='Enter Designation' type="text" value={designation} onChange={(e) => setDesignation(e.target.value)} name="designation" required />
+                  <input className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 outline-none rounded mb-4' placeholder='Enter Designation' type="text" value={designation} onChange={(e) => setDesignation(e.target.value)} name="designation" required />
                 </div>
 
                 <div className='grid w-full px-14'>
                   <label htmlFor="companyName">Company Name:</label>
-                  <input  className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' placeholder='Enter Company' type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} name="companyName" required />
+                  <input  className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 outline-none rounded mb-4' placeholder='Enter Company' type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} name="companyName" required />
                   <label  htmlFor="email">Email id:</label>
-                  <input className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' placeholder='Enter Email' type="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" required />
+                  <input className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 outline-none rounded mb-4' placeholder='Enter Email' type="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" required />
                 </div>
                 
 
               <div className='grid w-full px-14'>
                 <label htmlFor="phonenumber">Mobile Number: </label>
-              <div>
-                  <PhoneInput country={'us'} value={phonenumber} onChange={(value) => setphonenumber(value)} inputProps={{  required: true, }}/>
+                <div>
+                  <PhoneInput country={'us'} value={phonenumber} onChange={(value) => setphonenumber(value)} inputProps={{  required: true, className: 'relative border border-gray-300 outline-none rounded overflow-hidden shadow-md ml-9 p-1 w-5/6',}}/>
                 </div>
                 <label className='' htmlFor="Role">Role:</label>
-                <input type="text" className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 rounded mb-4' value={role} name="superadmin" readOnly/>
+                <input type="text" className='border border-gray-300 overflow-hidden shadow-md pl-3 p-1 mr-2 outline-none rounded mb-4' value={role} name="superadmin" readOnly/>
               </div>
             </div>
             <div className='text-center mt-6'>
@@ -496,6 +496,7 @@ const Masterhome = () => {
                   <tr key={index} className="text-center border border-gray-300">
                     <td className="border px-3 py-3">{bridge.id}</td>
                     <td className="border px-16 py-3">{bridge.bridgeName}</td>
+                    <td className="border px-16 py-3">{bridge.superadminName}</td>
                     <td className="border px-10 py-3">
                       <select id="adminName" className="ouline-0 p-1 w-full rounded">
                         <option value={bridge.adminName} onMouseOver={showoption}>{bridge.adminName}</option>

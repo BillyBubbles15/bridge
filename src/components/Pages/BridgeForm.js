@@ -15,9 +15,9 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 const BridgeForm = ({onSubmit }) => {
   
-  const [country, setCountry] = useState('')
-  const [state, setState] = useState('')
-  const [city, setCity] = useState('')
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
   const [statesList, setStatesList] = useState([]);
   const [coordinates, setCoordinates] =useState('');
   const [division, setDivision] = useState('');
@@ -26,6 +26,8 @@ const BridgeForm = ({onSubmit }) => {
   const [nobridgespan, setnobridgespan] = useState([1]);
   const [noofgirders, setnoofgirders] = useState([1]);
   const navigate = useNavigate();
+
+  const Name = localStorage.getItem('name');
 
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -436,6 +438,7 @@ const BridgeForm = ({onSubmit }) => {
         try {
           setLoading(true);
           const response = await axios.post('http://localhost:9090/bridge/register', {
+            Name: Name,
             country:country,
             state:state,
             city: city,
@@ -764,7 +767,6 @@ const BridgeForm = ({onSubmit }) => {
                   <option value="USA">USA</option>
                   <option value="Australia">Australia</option>
                 </select>
-
               </div>
               <div className="mb-6">
                 <label htmlFor="division" className="block text-gray-700">Division:</label>

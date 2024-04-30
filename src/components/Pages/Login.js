@@ -44,8 +44,10 @@ const Login = () => {
           setLoading(false);
           
           const { token, superadminId, dashboardUrl } = response.data.id;
+          const name = response.data.name;
           
           localStorage.setItem('authToken', token);
+          localStorage.setItem('name', name);
           localStorage.setItem('superadminId', superadminId);
           console.log(superadminId);
           localStorage.setItem('dashboardUrl', dashboardUrl);          
