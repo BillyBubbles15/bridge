@@ -555,8 +555,8 @@ const Masterhome = () => {
             { showopt && (
               <>
                 <div className='w-10/12 absolute z-50 '>
-                  <div className='flex w-full absolute justify-center'>
-                  <h1 className='text-center w-full bg-pink-600'>Make Superadmin</h1>
+                  <div className='flex w-full min-h-screen bg-white absolute justify-center'>
+                  <h1 className='text-center w-full bg-pink-600'>Make Superadmin?</h1>
                   <button onClick={promotion}>Yes</button>
                   <button onClick={hidePromo}>No</button>
                   </div>
@@ -566,8 +566,8 @@ const Masterhome = () => {
             { showopt1 && (
               <>
                 <div className='w-10/12 absolute z-50 '>
-                  <div className='flex w-full justify-center'>
-                  <h1 className='text-center w-full bg-pink-600'>Remove Superadmin</h1>
+                  <div className='flex w-full min-h-screen bg-white justify-center'>
+                  <h1 className='text-center w-full'>Remove Superadmin?</h1>
                   <button onClick={demotion}>Yes</button>
                   <button onClick={hideDemo}>No</button>
                   </div>
