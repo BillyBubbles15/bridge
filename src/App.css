@@ -1,7 +1,7 @@
 .App {
   text-align: center;
 }
-
+/* @import "@arcgis/core/assets/esri/themes/light/main.css"; */
 .App-logo {
   height: 40vmin;
   pointer-events: none;

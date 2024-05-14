@@ -321,6 +321,7 @@ const Masterhome = () => {
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data);
           enqueueSnackbar('User Promoted to SuperAdmin!', { variant: 'success'});
+          setshowopt1(false);
         }
         else{
           console.log(response.data);
@@ -338,6 +339,7 @@ const Masterhome = () => {
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data);
           enqueueSnackbar('Superadmin Removed successfully!', { variant: 'success'});
+          setshowopt1(false); 
         } else {
           console.log(response.data);
           enqueueSnackbar('Error removing superadmin', { variant: 'error'});
@@ -348,6 +350,13 @@ const Masterhome = () => {
       }
     };
 
+    const hideDemo = () => {
+      setshowopt1(false);
+    };
+
+    const hidePromo = () => {
+      setshowopt(false);
+    };
 
 
   
@@ -496,30 +505,30 @@ const Masterhome = () => {
                   <tr key={index} className="text-center border border-gray-300">
                     <td className="border px-3 py-3">{bridge.id}</td>
                     <td className="border px-16 py-3">{bridge.bridgeName}</td>
-                    <td className="border px-16 py-3">{bridge.superadminName}</td>
+                    <td className="border px-16 py-3">{bridge.superadminname}</td>
                     <td className="border px-10 py-3">
                       <select id="adminName" className="ouline-0 p-1 w-full rounded">
-                        <option value={bridge.adminName} onMouseOver={showoption}>{bridge.adminName}</option>
-                        {bridge.adminName2 ? <option value={bridge.adminName2} onMouseOver={showoption}>{bridge.adminName2}</option> : <option value="">Admin 2</option>}
-                        {bridge.adminName3 ? <option value={bridge.adminName3} onMouseOver={showoption}>{bridge.adminName3}</option> : <option value="">Admin 3</option>}
+                        <option value={bridge.adminName} onClick={showoption}>{bridge.adminName}</option>
+                        {bridge.adminName2 ? <option value={bridge.adminName2} onClick={showoption}>{bridge.adminName2}</option> : <option value="">Admin 2</option>}
+                        {bridge.adminName3 ? <option value={bridge.adminName3} onClick={showoption}>{bridge.adminName3}</option> : <option value="">Admin 3</option>}
                       </select>
                     </td>
                     <td className="border px-8 py-3">
                       <select id="adminName" className="ouline-0 p-1 w-full rounded">
-                        <option value={bridge.managerName} onMouseOver={showoption}>{bridge.managerName}</option>
-                        {bridge.managerName2 ? <option value={bridge.managerName2} onMouseOver={showoption}>{bridge.managerName2}</option>: <option value="">Manager 2</option>}
-                        {bridge.managerName3 ? <option value={bridge.managerName3} onMouseOver={showoption}>{bridge.managerName3}</option>: <option value="">Manager 3</option>}
-                        {bridge.managerName4 ? <option value={bridge.managerName4} onMouseOver={showoption}>{bridge.managerName4}</option>: <option value="">Manager 4</option>}
-                        {bridge.managerName5 ? <option value={bridge.managerName5} onMouseOver={showoption}>{bridge.managerName5}</option>: <option value="">Manager 5</option>}
-                        {bridge.managerName6 ? <option value={bridge.managerName6} onMouseOver={showoption}>{bridge.managerName6}</option>: <option value="">Manager 6</option>}
+                        <option value={bridge.managerName} onClick={showoption}>{bridge.managerName}</option>
+                        {bridge.managerName2 ? <option value={bridge.managerName2} onClick={showoption}>{bridge.managerName2}</option>: <option value="">Manager 2</option>}
+                        {bridge.managerName3 ? <option value={bridge.managerName3} onClick={showoption}>{bridge.managerName3}</option>: <option value="">Manager 3</option>}
+                        {bridge.managerName4 ? <option value={bridge.managerName4} onClick={showoption}>{bridge.managerName4}</option>: <option value="">Manager 4</option>}
+                        {bridge.managerName5 ? <option value={bridge.managerName5} onClick={showoption}>{bridge.managerName5}</option>: <option value="">Manager 5</option>}
+                        {bridge.managerName6 ? <option value={bridge.managerName6} onClick={showoption}>{bridge.managerName6}</option>: <option value="">Manager 6</option>}
                       </select>
                     </td>
                     
                     <td className="border px-8 py-3">
                       <select id="adminName" className="ouline-0 p-1 w-full rounded" readOnly>
-                        <option value={bridge.ownerName} onMouseOver={showoption}>{bridge.ownerName}</option>:
-                        {bridge.ownerName2 ? <option value={bridge.ownerName2} onMouseOver={showoption}>{bridge.ownerName2}</option>: <option value="">Owner 2</option>}
-                        {bridge.ownerName3 ? <option value={bridge.ownerName3} onMouseOver={showoption}>{bridge.ownerName3}</option>: <option value="">Owner 3</option>}
+                        <option value={bridge.ownerName} onClick={showoption}>{bridge.ownerName}</option>:
+                        {bridge.ownerName2 ? <option value={bridge.ownerName2} onClick={showoption}>{bridge.ownerName2}</option>: <option value="">Owner 2</option>}
+                        {bridge.ownerName3 ? <option value={bridge.ownerName3} onClick={showoption}>{bridge.ownerName3}</option>: <option value="">Owner 3</option>}
                       </select>
                     </td>
                     <td className="border px-2 py-3">
@@ -539,15 +548,17 @@ const Masterhome = () => {
                   
                 <tr>
                   <td colSpan="8" className="py-3 text-center text-lg">
-                    <h1 onMouseOver={showoption}>No bridges found</h1>
+                    <h1 onClick={showoption}>No bridges found</h1>
                   </td>
                 </tr>
               )}
             { showopt && (
               <>
                 <div className='w-10/12 absolute z-50 '>
-                  <div className='flex w-full justify-center'>
-                  <h1 onClick={promotion} className='text-center w-full bg-pink-600'>Make Superadmin</h1>
+                  <div className='flex w-full absolute justify-center'>
+                  <h1 className='text-center w-full bg-pink-600'>Make Superadmin</h1>
+                  <button onClick={promotion}>Yes</button>
+                  <button onClick={hidePromo}>No</button>
                   </div>
                 </div>
               </>
@@ -556,7 +567,9 @@ const Masterhome = () => {
               <>
                 <div className='w-10/12 absolute z-50 '>
                   <div className='flex w-full justify-center'>
-                  <h1 onClick={demotion} className='text-center w-full bg-pink-600'>Remove Superadmin</h1>
+                  <h1 className='text-center w-full bg-pink-600'>Remove Superadmin</h1>
+                  <button onClick={demotion}>Yes</button>
+                  <button onClick={hideDemo}>No</button>
                   </div>
                 </div>
               </>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import PhoneInput from 'react-phone-input-2';
@@ -12,6 +12,10 @@ import {MdHome, MdSettings, MdPerson, MdSearch, MdNotifications, MdDashboard, Md
 import { PiWind } from "react-icons/pi";
 import { WiHumidity } from "react-icons/wi";
 import { GiSpeedometer } from "react-icons/gi";
+import MapView from "@arcgis/core/views/MapView"
+import Map from "@arcgis/core/Map"
+import "@arcgis/core/assets/esri/themes/light/main.css";
+import '@arcgis/core/assets/esri/css/main.css';
 
 import './tailwind.css';
 import 'react-phone-input-2/lib/style.css';
@@ -826,6 +830,37 @@ const handleCountryChange = (e) => {
         }
       };
 
+      const mapRef = useRef(null);
+
+      useEffect(() => {
+        if (!mapRef?.current) return;
+    
+        const map = new Map({
+          basemap: 'osm',
+        });
+        const view = new MapView({
+          map: map,
+          container: mapRef.current,
+          center: [55, 25],
+          zoom: 13,
+        });
+    
+        // Ensure the map is resized when the window resizes
+        window.addEventListener('resize', () => {
+          if (view) {
+            view.container = null;
+            view.container = mapRef.current;
+            view.when(() => {
+              view.goTo(view.center);
+            });
+          }
+        });
+    
+        return () => {
+          view && view.destroy();
+        };
+      }, []);
+
 
 
     const weatherapi = {
@@ -841,7 +876,6 @@ const handleCountryChange = (e) => {
             .then((res) => res.json())
             .then((result) => {
                 setWeather(result);
-                console.log(result);
             })
             .catch(error => {
                 console.error('Error fetching weather data:', error);
@@ -1184,8 +1218,12 @@ const handleCountryChange = (e) => {
                 <div>No weather report could be found for {userData.city}. <br />Edit the city name to check if the area's weather gets shown. <br /> Source: https://openweathermap.org/</div>
                 )}
             </div>
+            <div className='viewDiv' ref={mapRef}>
+
+            </div>
         </div>
-            </>
+
+        </>
       )}
 
 

@@ -44,13 +44,12 @@ const BridgeForm = ({onSubmit }) => {
 
     // Fetch states based on selected country
     if (selectedCountry === 'USA') {
-      setStatesList([  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']);
-    } else if (selectedCountry === 'Australia') {
-      setStatesList([  'New South Wales', 'Victoria', 'Queensland', 'Western Australia', 'South Australia', 'Tasmania', 'Australian Capital Territory', 'Northern Territory']);
+      setStatesList([ 'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']);
+    } else if (selectedCountry === 'India') {
+      setStatesList([ 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal']);
     } else {
       setStatesList([]);
     }
-    
     // Reset state selection
     setState('');
   };
@@ -765,7 +764,7 @@ const BridgeForm = ({onSubmit }) => {
                 <select id="country" value={country} onChange={handleCountryChange} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
                   <option value="">Select</option>
                   <option value="USA">USA</option>
-                  <option value="Australia">Australia</option>
+                  <option value="India">India</option>
                 </select>
               </div>
               <div className="mb-6">
@@ -782,7 +781,7 @@ const BridgeForm = ({onSubmit }) => {
             <div>
               <label htmlFor="state" className="block text-gray-700">Select State:</label>
               <select id="state" value={state} onChange={handleStateChange} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
-                <option value="">Select</option>
+                <option value="" disabled>Select</option>
                 {statesList.map((stateName) => (
                   <option key={stateName} value={stateName}>{stateName}</option>
                 ))}
@@ -791,7 +790,7 @@ const BridgeForm = ({onSubmit }) => {
           </div>
           <div className="mb-6">
             <label htmlFor="coordinates" className="block text-gray-700">Bridge Coordinates:</label>
-            <input type="text" id="coordinates" placeholder='Enter Coordinates' name="coordinates" value={coordinates} onChange={(e) => setCoordinates(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
+            <input type="text" id="coordinates" placeholder='Ex. 15.5026534°N 73.83713255°E' name="coordinates" value={coordinates} onChange={(e) => setCoordinates(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
           </div>
           <div className="mb-6">
         <label htmlFor="nobridgespan" className="block text-gray-700">Total Number of Spans:</label>

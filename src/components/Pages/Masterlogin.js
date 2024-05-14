@@ -87,11 +87,11 @@ const Masterlogin = () => {
             <div className="">
               <div className="pb-6 flex justify-center">
                 <FaUser style={{ alignItems: 'center', marginTop: '1%' }} size={28}/>
-                <input className="border border-gray-400 bg-gray-100 p-3 w-1/3 ml-3 pl-3 mr-2 rounded" type="email" placeholder="Enter Email" value={email} onChange={(e) => setemail(e.target.value)}/>
+                <input className="border border-gray-300 bg-gray-50 overflow-hidden shadow-md outline-none p-3 w-1/3 ml-3 pl-3 mr-2 rounded-lg" type="email" placeholder="Enter Email" value={email} onChange={(e) => setemail(e.target.value)}/>
               </div>
               <div className="pb-6 flex justify-center">
               <FaLock style={{ alignItems: 'center', marginTop: '1%' }} size={28}/>
-              <input className="border bg-gray-100 border-gray-400 p-3 w-1/3 ml-3 pl-3 mr-2 rounded" type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown}/>
+              <input className="border bg-gray-50 border-gray-300 overflow-hidden shadow-md outline-none p-3 w-1/3 ml-3 pl-3 mr-2 rounded-lg" type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown}/>
           </div>
         </div>
             <div className="pt-16">
@@ -99,7 +99,7 @@ const Masterlogin = () => {
               {loading ? (
                   <img id='Licon-login' className='absolute' src={loadingIcon} alt="Loading" />
                 ) : (
-                  <button onClick={handleLogin} className='p-2 mb-2 bg-blue-600 hover:bg-blue-900 text-white rounded-sm px-8'>Login</button>
+                  <button onClick={handleLogin} className='p-2 mb-2 bg-blue-600 hover:bg-blue-900 overflow-hidden shadow-md text-white rounded-sm px-8'>Login</button>
                 )}
                 <p className='underline text-m text-blue-800'><a href="./forgotpassword">Forgot Password?</a></p>
               </div>
