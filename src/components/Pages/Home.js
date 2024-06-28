@@ -53,10 +53,10 @@ const [showexcelfile, setshowexcelfile] = useState(false);
         //     enqueueSnackbar('Please Login to Navigate!', { variant: 'error'});
         //     return;
         // }
-        if (!superadminId) {
-          enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error' });
-          navigate('/');
-        }
+        // if (!superadminId) {
+        //   enqueueSnackbar('Selected user is not a Superadmin!', { variant: 'error' });
+        //   navigate('/');
+        // }
         const response = await axios.get(`http://localhost:9090/bridge/superbridges?superadminId=${superadminId}`);
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data);
@@ -230,26 +230,28 @@ const handleRowClick = (bridge) => {
           <table className="table-auto w-full border-collapse border">
             <thead>
               <tr>
-                <th className="border bg-black text-lg text-white px-2 py-4 font-bold">#</th>
-                <th className="border bg-black text-lg text-white px-12 py-4 font-bold">Name</th>
-                <th className="border bg-black text-lg text-white px-4 py-4 font-bold">Country</th>
-                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">State</th>
-                <th className="border bg-black text-lg text-white px-8 py-4 font-bold">City</th>
-                <th className="border bg-black text-lg text-white px-4 py-4 font-bold">Division</th>
-                <th className="border bg-black text-lg text-white py-4 font-bold">Coordinates</th>
+                <th className="bg-black text-lg text-white px-4 py-2 font-bold">#</th>
+                <th className="bg-black text-lg text-white px-4 py-2 font-bold">Bridge Name</th>
+                <th className="bg-black text-lg text-white px-4 py-2 font-bold">Country</th>
+                <th className="bg-black text-lg text-white px-4 py-2 font-bold">State</th>
+                <th className="bg-black text-lg text-white px-4 py-2 font-bold">City</th>
+                <th className="bg-black text-lg text-white px-4 py-2 font-bold">Division</th>
+                <th className="bg-black text-lg text-white px-4 py-2 font-bold">ZIP Code</th>
+                <th className="bg-black text-lg text-white py-2 px-4 font-bold">Spans</th>
               </tr>
             </thead>
             <tbody>
   {filteredData.length > 0 ? (
     filteredData.map((bridge, index) => (
       <tr key={index} onClick={() => handleRowClick(bridge)} className="hover:bg-stone-400 text-center cursor-pointer border border-gray-300">
-        <td className="px-2 py-2">{bridge.id}</td>
-        <td className="px-12 py-2">{bridge.bridgeName}</td>
-        <td className="px-4 py-2">{bridge.country}</td>
-        <td className="px-8 py-2">{bridge.state}</td>
-        <td className="px-8 py-2">{bridge.city}</td>
-        <td className="px-4 py-2">{bridge.division}</td>
-        <td className="py-2">{bridge.coordinates}</td>
+        <td className="px-4 py-1">{bridge.id}</td>
+        <td className="px-4 py-1">{bridge.bridgeName}</td>
+        <td className="px-4 py-1">{bridge.country}</td>
+        <td className="px-4 py-1">{bridge.state}</td>
+        <td className="px-4 py-1">{bridge.city}</td>
+        <td className="px-4 py-1">{bridge.division}</td>
+        <td className="px-4 py-1">{bridge.location}</td>
+        <td className="py-1 px-4">{bridge.nobridgespan}</td>
       </tr>
     ))
   ) : (

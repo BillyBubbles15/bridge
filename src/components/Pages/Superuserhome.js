@@ -8,7 +8,7 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend, LineElement } from 'chart.js';
 import { FaBridge, FaTrash } from "react-icons/fa6";
 import { FaArrowCircleRight, FaEdit } from "react-icons/fa";
-import {MdHome, MdSettings, MdPerson, MdSearch, MdNotifications, MdDashboard, MdSensors, MdDescription, MdLogout, MdEdit } from 'react-icons/md';
+import { MdSettings, MdPerson, MdSearch, MdNotifications, MdDashboard, MdSensors, MdDescription, MdLogout, MdEdit } from 'react-icons/md';
 import { PiWind } from "react-icons/pi";
 import { WiHumidity } from "react-icons/wi";
 import { GiSpeedometer } from "react-icons/gi";
@@ -16,7 +16,6 @@ import MapView from "@arcgis/core/views/MapView"
 import Map from "@arcgis/core/Map"
 import "@arcgis/core/assets/esri/themes/light/main.css";
 import '@arcgis/core/assets/esri/css/main.css';
-
 import './tailwind.css';
 import 'react-phone-input-2/lib/style.css';
 
@@ -534,8 +533,8 @@ const handleCountryChange = (e) => {
     // Fetch states based on selected country
     if (selectedCountry === 'USA') {
       setStatesList([  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']);
-    } else if (selectedCountry === 'Australia') {
-      setStatesList([  'New South Wales', 'Victoria', 'Queensland', 'Western Australia', 'South Australia', 'Tasmania', 'Australian Capital Territory', 'Northern Territory']);
+    } else if (selectedCountry === 'India') {
+      setStatesList([  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal']);
     } else {
       setStatesList([]);
     }
@@ -832,33 +831,19 @@ const handleCountryChange = (e) => {
 
       const mapRef = useRef(null);
 
-      useEffect(() => {
-        if (!mapRef?.current) return;
-    
-        const map = new Map({
-          basemap: 'osm',
-        });
-        const view = new MapView({
-          map: map,
-          container: mapRef.current,
-          center: [55, 25],
-          zoom: 13,
-        });
-    
-        // Ensure the map is resized when the window resizes
-        window.addEventListener('resize', () => {
-          if (view) {
-            view.container = null;
-            view.container = mapRef.current;
-            view.when(() => {
-              view.goTo(view.center);
-            });
-          }
-        });
-    
-        return () => {
-          view && view.destroy();
-        };
+      useEffect (() => {
+          if (!mapRef?.current) return;
+  
+          const map = new Map({
+              basemap: "osm",
+          });
+          const view = new MapView({
+              map: map,
+              container: mapRef.current,
+              center: [55, 25],
+              zoom: 13,
+          });
+          return () => view && view.destroy();
       }, []);
 
 
@@ -1116,11 +1101,9 @@ const handleCountryChange = (e) => {
 
       <nav className='w-24 bg-gray-300 fixed mt-14'>
         <div className='text-center'>
-            <button className={`w-full py-3 ${isSelected ? 'bg-gray-400' : 'hover:bg-gray-400'}`} onClick={Dashboard}><ul><MdDashboard style={{width: '100%', alignItems: 'center'}} size={40} />Home</ul></button>
+            <button className={`w-full py-3 ${isSelected ? 'bg-gray-400' : 'hover:bg-gray-400'}`} onClick={Dashboard}><ul><MdDashboard style={{width: '100%', alignItems: 'center'}} size={40} />Dashboard</ul></button>
             <hr /><hr />
-            <button className={`w-full py-3 ${isSelected1 ? 'bg-gray-400' : 'hover:bg-gray-400'}`} onClick={SensorDashboard}><ul><MdSensors style={{width: '100%', alignItems: 'center'}} size={40} />Sensors</ul></button>
-            <hr /><hr />
-            <button className='w-full py-3 hover:bg-gray-400'><ul><MdHome style={{width: '100%', alignItems: 'center'}} size={40} />Bridge</ul></button>
+            <button className={`w-full py-3 ${isSelected1 ? 'bg-gray-400' : 'hover:bg-gray-400'}`} onClick={SensorDashboard}><ul><MdSensors style={{width: '100%', alignItems: 'center'}} size={40} />Sensor Data</ul></button>
             <hr /><hr />
             <button className='w-full py-3 hover:bg-gray-400'><ul><MdDescription style={{width: '100%', alignItems: 'center'}} size={40} />Report</ul></button>
             <hr /><hr />
@@ -1219,10 +1202,9 @@ const handleCountryChange = (e) => {
                 )}
             </div>
             <div className='viewDiv' ref={mapRef}>
-
+                    
             </div>
         </div>
-
         </>
       )}
 
@@ -1327,7 +1309,7 @@ const handleCountryChange = (e) => {
 
       {showSensorDashboard && (
         <>
-        <h1 className='w-11/12 ml-24 text-center p-6 pt-24 text-pink-600 text-4xl font-semibold'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; Sensor 1 &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
+        <h1 className='w-11/12 ml-24 text-center p-6 pt-24 text-pink-600 text-4xl font-semibold'>Sensor 1</h1><hr />
         <div className='w-11/12 ml-24 p-6 pt-6 flex'>
             <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
                 <br />
@@ -1385,11 +1367,10 @@ const handleCountryChange = (e) => {
                   </div>
             </div>
         </div>
-        <br />
+        <br /><br />
         <hr />
-        
         {/* Sensor 2 */}
-        <h1 className='w-11/12 ml-24 text-center p-6 pt-24 text-pink-600 text-4xl font-semibold'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; Sensor 2 &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
+        <h1 className='w-11/12 ml-24 text-center p-6 text-pink-600 text-4xl font-semibold'>Sensor 2</h1><hr />
         <div className='w-11/12 ml-24 p-6 pt-6 flex'>
             <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
                 <br />
@@ -1448,8 +1429,9 @@ const handleCountryChange = (e) => {
                   </div>
             </div>
         </div>
-
-        <h1 className='w-11/12 ml-24 text-center p-6 pt-24 text-pink-600 text-4xl font-semibold'>&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash; General Details &ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</h1>
+        <br /><br />
+        <hr />
+        <h1 className='w-11/12 ml-24 text-center p-6 text-pink-600 text-4xl font-semibold'>General Details</h1><hr />
         <div className='w-11/12 ml-24 p-6 flex bg-white'>
             <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
                 <h1 className='text-center font-bold'>Battery Voltage Monitoring</h1><br />
@@ -1513,7 +1495,7 @@ const handleCountryChange = (e) => {
                 <select id="country" value={userData.country} onChange={handleCountryChange} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
                   <option value="">Select</option>
                   <option value="USA">USA</option>
-                  <option value="Australia">Australia</option>
+                  <option value="Australia">India</option>
                 </select>
               </div>
                 <div className="mb-6">

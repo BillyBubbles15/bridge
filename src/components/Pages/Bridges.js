@@ -83,7 +83,6 @@ const Home = () => {
                 <th className="border bg-black text-lg text-white px-10 py-4 font-bold">State</th>
                 <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Division</th>
                 <th className="border bg-black text-lg text-white px-8 py-4 font-bold">Coordinates</th>
-                <th className="border bg-black text-lg text-white px-2 py-4 font-bold">Girders</th>
                 <th className="border bg-black text-lg text-white px-2 py-4 font-bold">Spans</th>
               </tr>
             </thead>
@@ -97,7 +96,6 @@ const Home = () => {
                       <td className="border px-10 py-3">{data.bridge.state}</td>
                       <td className="border px-8 py-3">{data.bridge.division}</td>
                       <td className="border px-8 py-3">{data.bridge.coordinates}</td>
-                      <td className="border px-2 py-3">{data.bridge.noofgirders}</td>
                       <td className="border px-2 py-3">{data.bridge.nobridgespan}</td>
                     </tr>
                   ))

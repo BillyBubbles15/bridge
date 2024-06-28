@@ -24,7 +24,6 @@ const BridgeForm = ({onSubmit }) => {
   const [bridgeName, setBridgeName] = useState('');
   const [location, setlocation] = useState('');
   const [nobridgespan, setnobridgespan] = useState([1]);
-  const [noofgirders, setnoofgirders] = useState([1]);
   const navigate = useNavigate();
 
   const superadminname = localStorage.getItem('name');
@@ -442,7 +441,6 @@ const BridgeForm = ({onSubmit }) => {
             state:state,
             city: city,
             nobridgespan:nobridgespan,
-            noofgirders:noofgirders,
             division:division,
             coordinates:coordinates,
             bridgeName:bridgeName,
@@ -498,7 +496,6 @@ const BridgeForm = ({onSubmit }) => {
           localStorage.setItem('state', state);
           localStorage.setItem('city', city);
           localStorage.setItem('nobridgespan', nobridgespan);
-          localStorage.setItem('noofgirders', noofgirders);
           localStorage.setItem('division', division);
           localStorage.setItem('coordinates', coordinates);
           localStorage.setItem('location', location);
@@ -805,15 +802,15 @@ const BridgeForm = ({onSubmit }) => {
               <input type="text" id="city" placeholder='Enter City / Area' name="city" value={city} onChange={(e) => setCity(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
             </div>
             <div className="mb-6">
-              <label htmlFor='bridgeName' className="block text-gray-700">Bridge Location:</label>
-              <input type="text" id="location" placeholder='Enter Location' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
+              <label htmlFor='bridgeName' className="block text-gray-700">ZIP Code:</label>
+              <input type="text" id="location" placeholder='Enter ZIP Code' name="location" value={location} onChange={(e) => setlocation(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"/>
             </div>
-            <div className="mb-6">
+            {/* <div className="mb-6">
               <label htmlFor="noofgirders" className="block text-gray-700">Total Number of Girders:</label>
               <select id="noofgirders" name="noofgirders" value={noofgirders} onChange={(e) => setnoofgirders(e.target.value)} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg">
                 {[...Array(50).keys()].map((girder) => (<option key={girder + 1} value={girder + 1}>{girder + 1}</option>))}
               </select>
-            </div>
+            </div> */}
           </div>
         </div><br /><br /> <br />
         <hr />
@@ -822,16 +819,17 @@ const BridgeForm = ({onSubmit }) => {
         {Array.from({ length: nobridgespan }).map((_, index) => (
         <div key={index} className="mb-6">
           <label htmlFor={`spanDropdown${index + 1}`} className="block text-gray-700">{`Number of Girders per Span ${index + 1}:`}</label>
-          <select 
-            id={`spanDropdown${index + 1}`} 
-            name={`spanDropdown${index + 1}`} 
-            className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"
-            value={selectedOptions[index]}
-            onChange={(e) => handleDropdownChange(index, e.target.value)}
-          >
+          <select id={`spanDropdown${index + 1}`} name={`spanDropdown${index + 1}`} className="p-2 pl-4 w-3/4 overflow-hidden shadow-md outline-0 rounded-lg"value={selectedOptions[index]}onChange={(e) => handleDropdownChange(index, e.target.value)}>
             <option value="option1">1</option>
             <option value="option2">2</option>
             <option value="option3">3</option>
+            <option value="option4">4</option>
+            <option value="option5">5</option>
+            <option value="option6">6</option>
+            <option value="option7">7</option>
+            <option value="option8">8</option>
+            <option value="option9">9</option>
+            <option value="option10">10</option>
           </select>
         </div>
       ))}
