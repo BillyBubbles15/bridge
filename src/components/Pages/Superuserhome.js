@@ -32,6 +32,7 @@ import thunderstorm_icon from '../Assets/weather/thunderstorm.png';
 
 import SensorData from '../Assets/Data.csv';
 import SampleData from '../Assets/SGdata.csv';
+import AccelerometerData from '../Assets/accelerometer.csv';
 
 ChartJS.register( CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend)
 
@@ -53,8 +54,6 @@ const Superuserhome = () => {
     const [SampleChartData0, setSampleChartData0] = useState({});
     const [SampleChartData1, setSampleChartData1] = useState({});
     const [SampleChartData2, setSampleChartData2] = useState({});
-    const [SampleChartData3, setSampleChartData3] = useState({});
-    const [SampleChartData4, setSampleChartData4] = useState({});
     const [SampleChartData5, setSampleChartData5] = useState({});
     const [SampleChartData6, setSampleChartData6] = useState({});
 
@@ -379,36 +378,6 @@ const Superuserhome = () => {
                       label: 'Date/Time vs Strain Gauge 3',
                       data: straingauge3,
                       borderColor: 'green',
-                      borderWidth: 1,
-                      pointBorderColor: 'black',  
-                      pointRadius: 1,
-                      pointHoverRadius: 1,
-                      tension: 0,
-                  }
-                ]
-              });
-            setSampleChartData3({
-                labels: label,
-                datasets: [
-                  {
-                      label: 'Date/Time vs Acclerometer 1',
-                      data: accelerometer1,
-                      borderColor: 'red',
-                      borderWidth: 1,
-                      pointBorderColor: 'black',  
-                      pointRadius: 1,
-                      pointHoverRadius: 1,
-                      tension: 0,
-                  }
-                ]
-              });
-            setSampleChartData4({
-                labels: label,
-                datasets: [
-                  {
-                      label: 'Date/Time vs Accelerometer 2',
-                      data: accelerometer2,
-                      borderColor: 'blue',
                       borderWidth: 1,
                       pointBorderColor: 'black',  
                       pointRadius: 1,
@@ -1082,6 +1051,61 @@ const handleCountryChange = (e) => {
     };
 
 
+
+    const [accelData, setAccelData] = useState([]);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(AccelerometerData);
+          const reader = response.body.getReader();
+          const result = await reader.read();
+          const decoder = new TextDecoder('utf-8');
+          const csv = decoder.decode(result.value);
+  
+          // Parse CSV using PapaParse
+          const parsedData = Papa.parse(csv, { header: true }).data;
+          console.log('Parsed Data:', parsedData); // Debug: Check parsed data
+          setAccelData(parsedData);
+        } catch (error) {
+          console.error('Error fetching or parsing CSV:', error);
+        }
+      };
+  
+      fetchData();
+    }, []);
+  
+    // Prepare data for plotting
+    const data = {
+      labels: accelData.map((entry, index) => index), // Assuming time-based labels
+      datasets: [
+        {
+          label: 'X-axis',
+          data: accelData.map(entry => parseFloat(entry.x)),
+          borderColor: 'red',
+          backgroundColor: 'rgba(255, 0, 0, 0.2)',
+          pointRadius: 0, // No points on the line
+          pointHoverRadius: 0, // No points on hover]
+        },
+        {
+          label: 'Y-axis',
+          data: accelData.map(entry => parseFloat(entry.y)),
+          borderColor: 'blue',
+          backgroundColor: 'rgba(0, 0, 255, 0.2)',
+          pointRadius: 0, // No points on the line
+          pointHoverRadius: 0, // No points on hover
+        },
+        {
+          label: 'Z-axis',
+          data: accelData.map(entry => parseFloat(entry.z)),
+          borderColor: 'green',
+          backgroundColor: 'rgba(0, 255, 0, 0.2)',
+          pointRadius: 0, // No points on the line
+          pointHoverRadius: 0, // No points on hover
+        },
+      ],
+    };
+
   return (
     <>
       <div className="flex fixed z-50 w-full justify-center bg-gray-100 py-2 shadow-xl">
@@ -1218,23 +1242,17 @@ const handleCountryChange = (e) => {
             <button className='w-1/3 p-2 border border-gray-300 rounded-lg mx-2 overflow-hidden shadow-lg hover:bg-indigo-800 hover:text-white' onClick={accelerometerbtn}>Camera</button>
         </div>
         <div className='w-11/12 ml-24 p-6 pt-12 flex bg-white'>
-            <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
-                <h1 className='text-center font-bold'>Accelerometer 1</h1><br />
-                {SampleChartData3.labels && SampleChartData3.datasets && SampleChartData3.labels.length > 0 && SampleChartData3.datasets.length > 0 ? (
-                    <Line data={SampleChartData3}/>
-                    ) : (
-                    <h1>Loading...</h1>
-                )}
-            </div>
+            <div>
+              <h2>Accelerometer Graph</h2>
+              {accelData.length > 0 ? (
+                <div style={{ height: '400px', width: '600px' }}>
+                  <Line data={data} />
+                </div>
+              ) : (
+                <p>Loading data...</p>
+              )}
+        </div>
 
-            <div className="bg-gray-100 w-1/2 shadow-xl">
-            <h1 className='text-center font-bold'>Accelerometer 2</h1><br />
-            {SampleChartData4.labels && SampleChartData4.datasets && SampleChartData4.labels.length > 0 && SampleChartData4.datasets.length > 0 ? (
-                    <Line data={SampleChartData4} />
-                    ) : (
-                    <h1>Loading...</h1>
-            )}
-            </div>
         </div>
         <div className='w-11/12 ml-24 p-6 flex bg-white'>
             <div className="bg-gray-100 w-1/2 mx-8 shadow-xl">
